@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -44,10 +43,11 @@
     "url": "https://github.com/Fnux8890/3.SEM-LT/issues"
   },
   "homepage": "https://github.com/Fnux8890/3.SEM-LT#readme",
-  "devDependencies": {
-    "prettier": "2.4.1"
-  },
   "dependencies": {
+    "express": "^4.17.1",
     "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
   }
 }
