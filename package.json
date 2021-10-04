@@ -44,10 +44,13 @@
   },
   "homepage": "https://github.com/Fnux8890/3.SEM-LT#readme",
   "dependencies": {
+    "bson": "^4.5.2",
     "express": "^4.17.1",
+    "mongoose": "^6.0.8",
     "pug": "^3.0.2"
   },
   "devDependencies": {
+    "bootstrap": "^5.1.1",
     "nodemon": "^2.0.13"
   }
 }
