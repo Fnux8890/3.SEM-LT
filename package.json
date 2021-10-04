@@ -4,7 +4,9 @@
   "description": "This is a semsester project for 3. semester on learning technology on SDU",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
+    "start": "npm run startServer",
+    "build": "babel app.js -d dist",
+    "startServer": "node utils/ShellScripts.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -48,6 +50,12 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
+    "@babel/node": "^7.15.4",
+    "@babel/preset-env": "^7.15.6",
+    "nodemon": "^2.0.13",
+    "open": "^8.2.1",
+    "shelljs": "^0.8.4"
   }
 }

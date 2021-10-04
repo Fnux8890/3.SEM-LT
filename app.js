@@ -1,6 +1,12 @@
 const Express = require("express");
 const app = Express();
 
-const gate = 3000;
+const port = 3000;
 
-app.listen(gate, console.log(`server listening at gate ${gate}}...`))
+app.get("/", (req, res) => {
+    res.status(200).send( "Welcome to this EMPTY site");
+})
+
+app.listen(port, console.log(`server listening at port http://localhost:${port}`))
+
+require("open")(`http://localhost:${port}`)
