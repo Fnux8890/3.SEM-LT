@@ -9,7 +9,7 @@ const gate = 3000;
 app.use(express.json())
 
 //routes
-app.use("/api/v1/tasks",routes)
+app.use("/api/v1/users",routes)
 
 const start = async () => {
     try {

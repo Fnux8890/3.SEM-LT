@@ -1,9 +1,12 @@
 const express = require("express")
-const {getAllTasks} = require("../tasks/tasks.js")
 const router = express.Router()
 
-router.route("/").get((req,res)=> {
-    res.send(getAllTasks)
-})
+const {getAllUsers,
+    createUser,
+    getUser,updateUser,
+    deleteUser} = require("../users/users.js")
+
+router.route("/").get(getAllUsers).post(createUser)
+router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser)
 
 module.exports = router
