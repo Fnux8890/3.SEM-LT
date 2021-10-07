@@ -13,7 +13,7 @@ app.use('/api/v1/users', routes)
 
 const start = async () => {
 	try {
-		await connectDB()
+		connectDB()
 		app.listen(gate, console.log(`server listening at gate ${port}...`))
 	} catch (error) {
 		console.log(error)
