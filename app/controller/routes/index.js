@@ -6,12 +6,11 @@ const router = express.Router()
 
 router.route('/')
 .get((req, res)=>{
-    res.render('index')
+    res.render('index', {
+        test: "this is the index site",
+        logedIn: true
+    })
 })
-
-
-
-
 
 
 module.exports = router;

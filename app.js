@@ -21,7 +21,8 @@ app.use('/', index)
 
 const start = async () => {
 	try {
-		connectDB()
+        //TODO man burde ikke connecte til databasen med det samme
+		//connectDB()
 		app.listen(port, console.log(`server listening at: http://localhost:${port}`))
 	} catch (error) {
 		console.log(error.message)
