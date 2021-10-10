@@ -30,14 +30,14 @@ div.loginbox {
 	left: calc(50% - 50px);
 }
 
-h1.login {
+h1 {
 	margin: 0;
 	padding: 0 0 20px;
 	text-align: center;
 	font-size: 22px;
 }
 
-.loginbox p {
+div.loginbox p {
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
@@ -54,17 +54,8 @@ input[type='password'] {
 	border-bottom: 1px solid #fff;
 	background: transparent;
 	outline: none;
-	height: 40px;
-	font-size: 16px;
-}
-
-.loginbox input[type='text'],
-input [type='password'] {
-	border: none;
-	border-bottom: 1px solid #fff;
-	background: transparent;
-	height: 40px;
 	color: #fff;
+	height: 40px;
 	font-size: 16px;
 }
 
@@ -92,4 +83,10 @@ input [type='password'] {
 
 .loginbox a:hover {
 	color: #ffc107;
+}
+
+div.loginbox p#usernameerror {
+	color: red;
+	text-align: center;
+	visibility: hidden;
 }

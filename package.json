@@ -44,6 +44,7 @@
   },
   "homepage": "https://github.com/Fnux8890/3.SEM-LT#readme",
   "dependencies": {
+    "axios": "^0.22.0",
     "bson": "^4.5.2",
     "express": "^4.17.1",
     "mongoose": "^6.0.8",
