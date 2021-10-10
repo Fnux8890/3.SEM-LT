@@ -2,8 +2,10 @@ const express = require("express");
 const app = express();
 const connectDB = require("./app/db/connect");
 const path = require("path");
-const bodyParser = require("body-parser");
-
+// require files
+const userRoutes = require("./app/controller/routes/users");
+const pageRoutes = require("./app/controller/routes/page");
+// port
 const port = 3000;
 
 //Load view enigne
@@ -12,19 +14,16 @@ app.set("view engine", "pug");
 
 //middleware
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 //routes
-let users = require("./app/controller/routes/users");
-let index = require("./app/controller/routes/index");
+app.use("/api/v1/users", userRoutes);
+app.use("/", pageRoutes);
 
-app.use("/api/v1/users", users);
-app.use("/", index);
-
-const start = async () => {
+const start = () => {
   try {
     //TODO man burde ikke connecte til databasen med det samme
-    //connectDB()
+    //connectDB();
     app.listen(
       port,
       console.log(`server listening at: http://localhost:${port}`)
@@ -33,5 +32,4 @@ const start = async () => {
     console.log(error.message);
   }
 };
-
 start();
