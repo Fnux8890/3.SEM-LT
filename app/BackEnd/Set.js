@@ -1,0 +1,13 @@
+const {Exercise, Test} = require('../ExerciseModule');
+
+class Set{
+    constructor(ID, name, description, exercises, test){
+        this.ID = ID; //int
+        this.name = name; //string
+        this.description = description; //string 
+        this.exercises = exercises; //Exercise[]
+        this.test = test; //Test()
+    }
+}
+
+module.exports = {'Set': Set};
