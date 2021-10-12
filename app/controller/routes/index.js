@@ -11,6 +11,13 @@ router.route("/").get((req, res) => {
   res.end();
 });
 
+router.get("/index", (req, res) => {
+  res.render("", {
+    logedIn: logedIn,
+  });
+  res.end();
+});
+
 router.post("/login", (req, res) => {
   logedIn = !logedIn;
   res.end();

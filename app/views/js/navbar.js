@@ -2,10 +2,10 @@ $(function () {
   $("#login").on("click", function () {
     $.ajax({
       type: "POST",
-      url: "/login",
+      url: "/page/login",
       data: { login: true },
       success: () => {
-        window.location.href = "/";
+        window.location.href = "/page/";
       },
     });
   });
