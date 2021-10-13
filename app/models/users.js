@@ -5,6 +5,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true,"must provide a name"]
     },
+    password: {
+        type: String,
+        required: [true,"must provide a password"]
+    },
     set1: [{ 
         exercise1: {
         type:Boolean,

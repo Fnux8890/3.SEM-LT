@@ -48,7 +48,8 @@
     "bson": "^4.5.2",
     "express": "^4.17.1",
     "mongoose": "^6.0.8",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "require": "^2.4.20"
   },
   "devDependencies": {
     "bootstrap": "^5.1.1",

@@ -87,6 +87,7 @@ input[type='password'] {
 
 div.loginbox p#usernameerror {
 	color: red;
+	position: fixed;
 	text-align: center;
 	visibility: hidden;
 }

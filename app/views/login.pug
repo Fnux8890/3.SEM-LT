@@ -6,18 +6,24 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Login screen
         link(rel='stylesheet', href='main.css')
-        script(src="browser-app.js") 
+        
     body
         div(class = 'loginbox')
             img(src='avatar.png' class='avatar')
             h1 Login here 
             form
                 p Username
-                input(type="text" name='' placeholder='Enter Username')
+                input(type="text" name='' placeholder='Enter Username' id='username')
                 p Password
-                input(type="password", name='' placeholder='Enter Password')
+                input(type="password", name='' placeholder='Enter Password' id='password')
                 input(type="submit" name='' value='Login')
                 br
                 a(href="http://localhost:3000/lostpassword") Lost your password?
                 br
                 a(href="http://localhost:3000/createaccount") Don't have an account? Sign up 
+        script(
+			src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+			integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer")
+        script(src="browser-app2.js") 
