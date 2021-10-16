@@ -1,0 +1,12 @@
+docktype 
+html 
+    header
+        title #{errorCode}
+        style
+            include ../css/main.css
+            include ../css/error.css
+    body
+        include Navbar/navbar
+        .ErrorContainer 
+            h1 #{errorCode}
+            h3 #{errorMessage}

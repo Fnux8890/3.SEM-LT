@@ -4,15 +4,8 @@ const path = require("path");
 const router = express.Router();
 let logedIn = false;
 
-router.route("/").get((req, res) => {
-  res.render("index", {
-    logedIn: logedIn,
-  });
-  res.end();
-});
-
 router.get("/index", (req, res) => {
-  res.render("", {
+  res.render("index", {
     logedIn: logedIn,
   });
   res.end();

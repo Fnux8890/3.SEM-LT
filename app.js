@@ -23,6 +23,17 @@ app.use("/page/*", insertNavbar);
 app.use("/api/v1/users", userRoutes);
 app.use("/page", pageRoutes);
 
+//error handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+
+  res.render("error", {
+    errorCode: err.status,
+    errorMessage: err.message,
+  });
+});
+
+//server setup
 const start = () => {
   try {
     //TODO man burde ikke connecte til databasen med det samme
