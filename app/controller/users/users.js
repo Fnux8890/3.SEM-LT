@@ -24,19 +24,17 @@ const createUser = async (req, res) => {
 					})
 				} else {
 					bcrypt.hash(req.body.password, 10, (err, hash) => {
-							if (err) {
-								return res.status(500).json({
-									error:err
-								})
-							} 
-							else {
-								const newuser = users.create({
-						username: req.body.username,
-						password: hash
-							
-						})
-						res.status(200).json({ newuser })
-					}
+						if (err) {
+							return res.status(500).json({
+								error: err,
+							})
+						} else {
+							const newuser = users.create({
+								username: req.body.username,
+								password: hash,
+							})
+							res.status(200).json({ newuser })
+						}
 					})
 				}
 			})
@@ -87,10 +85,54 @@ const deleteUser = async (req, res) => {
 	}
 }
 
+const loginUser = async (req, res, next) => {
+	try {
+		users
+			.find({ username: req.body.username })
+			.exec()
+			.then(user => {
+				if (user.length < 1) {
+					return res.status(401).json({
+						message: 'Auth failed',
+					})
+				}
+				bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+					if (err) {
+						return res.status(401).json({
+							message: 'Auth failed',
+						})
+					}
+					if (result) {
+						const token = jwt.sign(
+							{
+								username: user[0].username,
+								userID: user[0]._id,
+							},
+							process.env.JWT_KEY,
+							{
+								expiresIn: '1h',
+							}
+						)
+						return res.status(200).json({
+							message: 'Auth succesful',
+							token: token,
+						})
+					}
+					res.status(401).json({
+						message: 'Auth failed',
+					})
+				})
+			})
+	} catch (error) {
+		res.status(500).json({ msg: error })
+	}
+}
+
 module.exports = {
 	getAllUsers,
 	createUser,
 	getUser,
 	updateUser,
 	deleteUser,
+	loginUser,
 }
