@@ -25,8 +25,7 @@ function usernameError() {
 
 document.addEventListener('submit', async e => {
 	e.preventDefault()
-	const username = document.getElementById('username').value
-	console.log(username)
+	
 	const password = document.getElementById('password').value
 	console.log(password)
 	const confirm = document.getElementById('confirmpassword').value
@@ -34,6 +33,7 @@ document.addEventListener('submit', async e => {
 
 	if (password == confirm)
 		try {
+			const username = document.getElementById('username').value
 			await axios.post('/api/v1/users', { username, password })
 			console.log('user added')
 			//window.open('http://localhost:3000/user-overview', '_parent')
