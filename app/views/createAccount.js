@@ -34,6 +34,7 @@ document.addEventListener('submit', async e => {
 	if (password == confirm)
 		try {
 			const username = document.getElementById('username').value
+			console.log(username)
 			await axios.post('/api/v1/users', { username, password })
 			console.log('user added')
 			//window.open('http://localhost:3000/user-overview', '_parent')

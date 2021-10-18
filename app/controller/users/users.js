@@ -23,9 +23,21 @@ const createUser = async (req, res) => {
 						message: 'name already exists',
 					})
 				} else {
-					const newuser = users.create(req.body)
-
-					res.status(200).json({ newuser })
+					bcrypt.hash(req.body.password, 10, (err, hash) => {
+							if (err) {
+								return res.status(500).json({
+									error:err
+								})
+							} 
+							else {
+								const newuser = users.create({
+						username: req.body.username,
+						password: hash
+							
+						})
+						res.status(200).json({ newuser })
+					}
+					})
 				}
 			})
 	} catch (error) {
