@@ -7,13 +7,15 @@ const path = require('path')
 
 const port = 3000
 
+//view engine
 app.set('views', path.join(__dirname, '/app/views'))
 app.set('view engine', 'pug')
 
 //middleware
 
 app.use(express.static('./app/views'))
-app.use(express.json())
+app.use(express.json()) //Kan se JSON payloads fra front-end
+app.use(express.urlencoded({ extended: false })) //Kan se String/text payloads fra front-end
 
 //routes
 app.use('/api/v1/users', userRoutes)

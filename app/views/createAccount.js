@@ -1,36 +1,53 @@
-var createaccount = document.getElementById('createaccount-btn')
+const createaccount = document.getElementById('createaccount-btn')
 const element = document.getElementById('usernameerror')
 
 console.log(createaccount)
 
-function togglevisibility() {
-	
+function passwordError() {
 	element.style.fontSize = '14px'
-	element.style.position = "fixed"
+	element.style.position = 'fixed'
 	element.style.top = '320px'
-	element.style.left = '10px'
+	element.style.left = '80px'
 	element.style.visibility = 'visible'
+	element.textContent = "Password doesn't match"
+	console.log('passworderror')
+}
+
+function usernameError() {
+	element.style.fontSize = '14px'
+	element.style.position = 'fixed'
+	element.style.top = '180px'
+	element.style.left = '75px'
+	element.style.visibility = 'visible'
+	element.textContent = 'Username already exists'
+	console.log('usernameerror')
 }
 
 document.addEventListener('submit', async e => {
 	e.preventDefault()
-	const name = document.getElementById('username').value
+	const username = document.getElementById('username').value
+	console.log(username)
 	const password = document.getElementById('password').value
+	console.log(password)
 	const confirm = document.getElementById('confirmpassword').value
+	console.log(confirm)
 
-	if (name && password == confirm)
+	if (password == confirm)
 		try {
-			await axios.post('/api/v1/users', { name,password })
+			await axios.post('/api/v1/users', { username, password })
 			console.log('user added')
-			window.open('http://localhost:3000/user-overview', '_parent')
+			//window.open('http://localhost:3000/user-overview', '_parent')
 		} catch (error) {
 			console.log(error)
-			togglevisibility()
+			usernameError()
+			setTimeout(() => {
+				element.style.visibility = 'hidden'
+			}, 5000)
 		}
 	else {
-		togglevisibility()
+		passwordError()
 		setTimeout(() => {
 			element.style.visibility = 'hidden'
-		  }, 2000)
+		}, 5000)
 	}
 })

@@ -1,5 +1,8 @@
 const users = require('../../models/users')
 
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 const getAllUsers = async (req, res) => {
 	try {
 		const user = await users.find({})
@@ -11,8 +14,20 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
 	try {
-		const user = await users.create(req.body)
-		res.status(201).json({ user })
+		users
+			.find({ username: req.body.username })
+			.exec()
+			.then(user => {
+				if (user.length >= 1) {
+					return res.status(409).json({
+						message: 'name already exists',
+					})
+				} else {
+					const newuser = users.create(req.body)
+
+					res.status(200).json({ newuser })
+				}
+			})
 	} catch (error) {
 		res.status(500).json({ msg: error })
 	}
