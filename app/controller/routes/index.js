@@ -1,16 +1,16 @@
-const { log } = require('console');
-const express = require('express');
-const path = require('path');
-const router = express.Router()
-//Eksempel på hente class + lave instance:
-//let {Exercise} = require("../../BackEnd/ExerciseModule");
-//let test = new Exercise(12, 23, 32, 23, 234);
-//console.log(test);
+const { log } = require("console");
+const express = require("express");
+const path = require("path");
+const router = express.Router();
+let logedIn = false;
 
-router.route('/')
-.get((req, res)=>{
-    res.render('index')
-})
+//this is a test
+router.get("/index", (req, res) => {
+  res.render("index", {
+    logedIn: logedIn,
+  });
+  res.end();
+});
 
 
 module.exports = router;
