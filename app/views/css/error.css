@@ -1,0 +1,4 @@
+.ErrorContainer {
+  display: grid;
+  place-items: center;
+}

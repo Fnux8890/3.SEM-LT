@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const connectDB = () => {
 	//const url = 'mongodb://127.0.0.1:27017/Users'
@@ -14,4 +14,4 @@ const connectDB = () => {
 	})()
 }
 
-module.exports = connectDB
+module.exports = connectDB;

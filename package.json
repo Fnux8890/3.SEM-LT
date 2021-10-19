@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node script1.js"
   },
   "repository": {
     "type": "git",
@@ -57,5 +57,9 @@
   "devDependencies": {
     "bootstrap": "^5.1.1",
     "nodemon": "^2.0.13"
+  },
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=7.0.0"
   }
 }
