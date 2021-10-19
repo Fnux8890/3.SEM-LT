@@ -4,6 +4,7 @@ const path = require("path");
 const router = express.Router();
 let logedIn = false;
 
+//this is a test
 router.get("/index", (req, res) => {
   res.render("index", {
     logedIn: logedIn,
@@ -11,9 +12,5 @@ router.get("/index", (req, res) => {
   res.end();
 });
 
-router.post("/login", (req, res) => {
-  logedIn = !logedIn;
-  res.end();
-});
 
 module.exports = router;
