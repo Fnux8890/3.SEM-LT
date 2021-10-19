@@ -5,19 +5,23 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Login screen
-        link(rel='stylesheet', href='/main.css')
+        //link(rel='stylesheet', ='../css/main.css')
+        style  
+            include ../css/main.css
         script
-            include ./utils/jquery-3.3.1.min.js
+            include ../js/utils/jquery-3.3.1.min.js
         script(
 			src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
 			integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer")
-        script(src="login.js")
+        script
+            include ../js/login.js
         
     body
-        div(class = 'loginbox')
-            img(src='/avatar.png' class='avatar')
+       include ./Navbar/navbar
+         div(class = 'loginbox')
+            img(src='../css/img/avatar.png' class='avatar')
             h1 Login here 
             form
                 p Username
