@@ -52,7 +52,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.8",
     "pug": "^3.0.2",
-    "require": "^2.4.20"
+    "require": "^0.4.4"
   },
   "devDependencies": {
     "bootstrap": "^5.1.1",
