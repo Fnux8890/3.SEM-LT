@@ -23,6 +23,10 @@ app.use("/page/*", insertNavbar);
 
 //routes
 app.options("*", cors());
+// app.use("/", (req, res) => {
+//   res.redirect("/page/login");
+//   res.end();
+// });
 app.use("/api/v1/users", userRoutes);
 app.use("/page", pageRoutes);
 

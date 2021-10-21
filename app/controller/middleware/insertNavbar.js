@@ -27,8 +27,10 @@ async function* walk(dir) {
 
 export const insertNavbar = (req, res, next) => {
   if (req.method === "GET") {
-    let afterPagePath = req.baseUrl.split("/").pop();
+    let afterPagePath = req.baseUrl.split("/");
+    let currentFilePath;
     let matchFound = false;
+    let folderSubLevel;
     (async () => {
       for await (const p of walk(
         join(__dirname, "..", "..", "..", "app", "views", "pages")
@@ -39,14 +41,30 @@ export const insertNavbar = (req, res, next) => {
         } else {
           currentFile = p.split("/").pop().split(".").shift();
         }
-        if (currentFile === afterPagePath) {
+        if (currentFile === afterPagePath[afterPagePath.length - 1]) {
           matchFound = true;
+          let endPath;
+          if (platform() === "win32") {
+            endPath = p.split("\\");
+          } else {
+            endPath = p.split("/");
+          }
+          let j = endPath.indexOf("pages");
+          for (let i = 0; i <= j; i++) {
+            endPath.shift();
+          }
+          folderSubLevel = endPath.length - 1;
+          currentFilePath = `${endPath.shift()}/${endPath.shift()}`;
+
           break;
         }
       }
     })()
       .then(() => {
-        if (matchFound === false && afterPagePath !== "page") {
+        if (
+          matchFound === false &&
+          afterPagePath[afterPagePath.length - 1] !== "page"
+        ) {
           console.log(`AfterPagePath: ${afterPagePath}`);
           const err = new Error(
             "File does not exists under the views directory"
@@ -54,20 +72,32 @@ export const insertNavbar = (req, res, next) => {
           err.status = 404;
           next(err);
         }
-        if (matchFound === true && afterPagePath !== "page") {
+        if (
+          matchFound === true &&
+          afterPagePath[afterPagePath.length - 1] !== "page"
+        ) {
           let file = join(
             __dirname,
             "../../../app",
             "views",
             "pages",
-            `${afterPagePath}.pug`
+            `${currentFilePath}`
           );
           let pugFile = readFileSync(file, "utf-8");
-          if (pugFile.indexOf("include ./Navbar/navbar") === -1) {
+          if (pugFile.indexOf("Navbar/navbar") === -1) {
+            let insertNavbarString = ``;
+            if (folderSubLevel > 1) {
+              for (let index = 0; index < folderSubLevel; index++) {
+                insertNavbarString += `../`;
+              }
+              insertNavbarString += `Navbar/navbar\n        `;
+            } else {
+              insertNavbarString = `./Navbar/navbar\n        `;
+            }
             pugFile = insert(
               pugFile,
               pugFile.indexOf("body") + "body".length + 9,
-              "include ./Navbar/navbar\n        "
+              `include ${insertNavbarString}`
             );
             writeFileSync(file, pugFile, "utf-8");
           }
