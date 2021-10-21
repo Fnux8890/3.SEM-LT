@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
+import { join } from "path";
+import { promises, readFileSync, writeFileSync } from "fs";
+import { platform } from "os";
 
 /**
  * This method is used to insert at string into another string at a given index.
@@ -18,23 +18,23 @@ function insert(original, index, string) {
 }
 
 async function* walk(dir) {
-  for await (const d of await fs.promises.opendir(dir)) {
-    const entry = path.join(dir, d.name);
+  for await (const d of await promises.opendir(dir)) {
+    const entry = join(dir, d.name);
     if (d.isDirectory()) yield* await walk(entry);
     else if (d.isFile()) yield entry;
   }
 }
 
-module.exports = insertNavbar = (req, res, next) => {
+export const insertNavbar = (req, res, next) => {
   if (req.method === "GET") {
+    let afterPagePath = req.baseUrl.split("/").pop();
+    let matchFound = false;
     (async () => {
-      let afterPagePath = req.baseUrl.split("/").pop();
-      let matchFound = false;
       for await (const p of walk(
-        path.join(__dirname, "..", "..", "..", "app", "views", "pages")
+        join(__dirname, "..", "..", "..", "app", "views", "pages")
       )) {
         let currentFile;
-        if (os.platform() === "win32") {
+        if (platform() === "win32") {
           currentFile = p.split("\\").pop().split(".").shift();
         } else {
           currentFile = p.split("/").pop().split(".").shift();
@@ -44,29 +44,38 @@ module.exports = insertNavbar = (req, res, next) => {
           break;
         }
       }
-      if (matchFound === false) {
-        const err = new Error("File does not exists under the views directory");
-        err.status = 404;
-        next(err);
-      } else {
-        let file = path.join(
-          __dirname,
-          "../../../app",
-          "views",
-          "pages",
-          `${afterPagePath}.pug`
-        );
-        let pugFile = fs.readFileSync(file, "utf-8");
-        if (pugFile.indexOf("include ./Navbar/navbar") === -1) {
-          pugFile = insert(
-            pugFile,
-            pugFile.indexOf("body") + "body".length + 9,
-            "include ./Navbar/navbar\n        "
+    })()
+      .then(() => {
+        if (matchFound === false && afterPagePath !== "page") {
+          console.log(`AfterPagePath: ${afterPagePath}`);
+          const err = new Error(
+            "File does not exists under the views directory"
           );
-          fs.writeFileSync(file, pugFile, "utf-8");
+          err.status = 404;
+          next(err);
         }
-        next();
-      }
-    })();
+        if (matchFound === true && afterPagePath !== "page") {
+          let file = join(
+            __dirname,
+            "../../../app",
+            "views",
+            "pages",
+            `${afterPagePath}.pug`
+          );
+          let pugFile = readFileSync(file, "utf-8");
+          if (pugFile.indexOf("include ./Navbar/navbar") === -1) {
+            pugFile = insert(
+              pugFile,
+              pugFile.indexOf("body") + "body".length + 9,
+              "include ./Navbar/navbar\n        "
+            );
+            writeFileSync(file, pugFile, "utf-8");
+          }
+          next();
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }
 };

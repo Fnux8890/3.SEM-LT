@@ -4,7 +4,7 @@
   "description": "This is a semsester project for 3. semester on learning technology on SDU",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
+    "start": "nodemon --exec babel-node app",
     "test": "node script1.js"
   },
   "repository": {
@@ -44,18 +44,23 @@
   },
   "homepage": "https://github.com/Fnux8890/3.SEM-LT#readme",
   "dependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "axios": "^0.22.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "bcrypt": "^5.0.1",
     "bson": "^4.5.2",
-    "env": "0.0.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jsconfig.json": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.8",
-    "pug": "^3.0.2",
-    "require": "^0.4.4"
+    "npm": "^8.1.0",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
-    "bootstrap": "^5.1.1",
     "nodemon": "^2.0.13"
   },
   "engines": {
