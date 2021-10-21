@@ -1,22 +1,17 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-const users = require('../../models/users')
+import users from "../../models/users";
 
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const {
-	getAllUsers,
-	createUser,
-	getUser,
-	updateUser,
-	deleteUser,
-	loginUser,
-} = require('../users/users.js')
+import { default as userJS } from "../users/users.js";
+const { getAllUsers, createUser, getUser, updateUser, deleteUser, loginUser } =
+  userJS;
 
-router.route('/').get(getAllUsers).post(createUser)
-router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
-router.route('/login').post(loginUser)
+router.route("/").get(getAllUsers).post(createUser);
+router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+router.route("/login").post(loginUser);
 
-module.exports = router;
+export default router;
