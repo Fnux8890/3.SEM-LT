@@ -1,70 +1,81 @@
 {
-  "name": "3.sem-lt",
-  "version": "0.0.1",
-  "description": "This is a semsester project for 3. semester on learning technology on SDU",
-  "main": "app.js",
-  "scripts": {
-    "start": "nodemon --exec babel-node app",
-    "test": "node script1.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Fnux8890/3.SEM-LT.git"
-  },
-  "keywords": [
-    "Express",
-    "node.js",
-    "MVC",
-    "Language",
-    "learning",
-    "SQL",
-    "MONGODB",
-    "JWT"
-  ],
-  "contributors": [
-    {
-      "name": "Mihcael Pedersen"
-    },
-    {
-      "name": "Jacob Florczak"
-    },
-    {
-      "name": "Sebastian Christiansen"
-    },
-    {
-      "name": "Hannah Gaudesen"
-    },
-    {
-      "name": "Irene Parus"
-    }
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Fnux8890/3.SEM-LT/issues"
-  },
-  "homepage": "https://github.com/Fnux8890/3.SEM-LT#readme",
-  "dependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.8",
-    "@babel/node": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "axios": "^0.22.0",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "bcrypt": "^5.0.1",
-    "bson": "^4.5.2",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "jsconfig.json": "^2.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.8",
-    "npm": "^8.1.0",
-    "pug": "^3.0.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.13"
-  },
-  "engines": {
-    "node": ">=12.0.0",
-    "npm": ">=7.0.0"
-  }
+	"name": "3.sem-lt",
+	"version": "0.0.1",
+	"description": "This is a semsester project for 3. semester on learning technology on SDU",
+	"private": true,
+	"scripts": {
+		"build": "webpack",
+		"start": "npm run build && nodemon --exec babel-node app",
+		"test": "node script1.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Fnux8890/3.SEM-LT.git"
+	},
+	"keywords": [
+		"Express",
+		"node.js",
+		"MVC",
+		"Language",
+		"learning",
+		"SQL",
+		"MONGODB",
+		"JWT"
+	],
+	"contributors": [
+		{
+			"name": "Mihcael Pedersen"
+		},
+		{
+			"name": "Jacob Florczak"
+		},
+		{
+			"name": "Sebastian Christiansen"
+		},
+		{
+			"name": "Hannah Gaudesen"
+		},
+		{
+			"name": "Irene Parus"
+		}
+	],
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Fnux8890/3.SEM-LT/issues"
+	},
+	"homepage": "https://github.com/Fnux8890/3.SEM-LT#readme",
+	"dependencies": {
+		"@babel/cli": "^7.15.7",
+		"@babel/node": "^7.15.8",
+		"@babel/runtime": "^7.15.4",
+		"animejs": "^3.2.1",
+		"axios": "^0.22.0",
+		"babel-plugin-module-resolver": "^4.1.0",
+		"bcrypt": "^5.0.1",
+		"bson": "^4.5.2",
+		"core-js": "^3.18.3",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"interactjs": "^1.10.11",
+		"jquery": "^3.6.0",
+		"jsconfig.json": "^2.2.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.0.8",
+		"npm": "^8.1.0",
+		"pug": "^3.0.2"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.15.8",
+		"@babel/plugin-transform-runtime": "^7.15.8",
+		"@babel/preset-env": "^7.15.8",
+		"babel-loader": "^8.2.3",
+		"nodemon": "^2.0.13",
+		"webpack": "^5.59.1",
+		"webpack-cli": "^4.9.1",
+		"webpack-dev-server": "^4.3.1"
+	},
+	"engines": {
+		"node": ">=12.0.0",
+		"npm": ">=7.0.0"
+	}
 }
