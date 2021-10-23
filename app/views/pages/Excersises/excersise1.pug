@@ -6,25 +6,24 @@ html
         meta(charset='utf-8')
         script(src="../../js/dist/excersise.js")
     body
-        include ../Navbar/navbar
-        .cardStack
-        .curtain
-        .tutorial
-            p Tutorial på Engelsk
-            p Tutorial på Dansk
+         .container 
             #drawcardContainer
-                button#drawCard Draw Card
-            #tutorialContainer
-                button#tutorialbutton I understand
-        .vokal
-        .vokalE
-            | E
-
-            div(class = 'dropÆ')
-        div(class = 'vokalÆ')
-            | Æ
-
-            div(class = 'dropÆ')
-        
+                 button#drawCard Draw Card
+            .cardStack
+                .cardStack-Container
+            .mainContent 
+                .curtain
+                .tutorial
+                    p Tutorial på Engelsk
+                    p Tutorial på Dansk
+                    
+                    .tutorialContainer
+                        button#tutorialbutton I understand
+            .vokal
+                .vokalE
+                    p E
+                div(class = 'vokalÆ')
+                    p Æ
+            
         
     

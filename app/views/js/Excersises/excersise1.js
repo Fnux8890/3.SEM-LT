@@ -1,6 +1,7 @@
 import $ from "jquery";
-import "animejs";
+import anime from "animejs";
 import interact from "interactjs";
+const timeline = anime.timeline;
 function animationFromStack(card) {
 	viewportWidth = window.innerWidth / 2 - $(card).width() / 2;
 	viewportHeight = window.innerHeight / 2 - $(card).height() / 2;
@@ -87,7 +88,7 @@ $(() => {
                 <div class="back">${element}</div>
             </div>
         </div>`;
-		$(".cardStack").append(card);
+		$(".cardStack-Container").append(card);
 		$(`#card${index}`).css({
 			transform: `translateX(${offset}px)`,
 			"z-index": index,
@@ -105,7 +106,7 @@ $(() => {
 		$("#drawcardContainer").css("visibility", "visible");
 		$(".curtain").remove();
 	});
-
+	//TODO find a method to place the card in a container when the animation is done
 	$("#drawCard").on("click", async () => {
 		animationFromStack(`.card5`).then(() => {
 			draggable = true;
@@ -114,8 +115,10 @@ $(() => {
 					.draggable({
 						listeners: {
 							start(event) {
-								$(".vokalE, .vokalÆ").css("opacity", "0.6");
-								$(".dropE, .dropÆ").css("visibility", "visible");
+								$(".vokalE, .vokalÆ").css({
+									opacity: 0.5,
+									"border-style": "dashed",
+								});
 							},
 							move(event) {
 								position.x += event.dx;
@@ -129,14 +132,16 @@ $(() => {
 						animationToCenter(".card5").then(() => {
 							position = { x: viewportWidth, y: viewportHeight };
 						});
-						$(".vokalE, .vokalÆ").css("opacity", "1");
-						$(".dropE, .dropÆ").css("visibility", "hidden");
+						$(".vokalE, .vokalÆ").css({
+							opacity: 1,
+							"border-style": "none",
+						});
 					});
 			}
 		});
 	});
 
-	interact(".dropE").dropzone({
+	interact(".vokalE").dropzone({
 		accept: ".card",
 		ondrop: function (event) {
 			alert("Hello");
@@ -144,7 +149,7 @@ $(() => {
 		},
 	});
 
-	interact(".dropÆ").dropzone({
+	interact(".vokalÆ").dropzone({
 		accept: ".card",
 		ondrop: function (event) {
 			alert("Hello");

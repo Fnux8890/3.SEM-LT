@@ -5,9 +5,6 @@ module.exports = {
 		excersise: {
 			import: "./app/views/js/Excersises/excersise1.js",
 		},
-		test: {
-			import: "./app/views/js/Excersises/test.js",
-		},
 		login: {
 			import: "./app/views/js/login/login.js",
 		},

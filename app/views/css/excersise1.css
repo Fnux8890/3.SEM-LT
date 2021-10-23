@@ -1,101 +1,140 @@
 body {
-  margin: 0;
-  background-color: burlywood;
+	margin: 0;
+	background-color: burlywood;
 }
+
+.container {
+	display: grid;
+	gap: 1rem;
+	grid-template-areas:
+		"stack . drawcard . ."
+		". mainContent mainContent mainContent ."
+		"vokaler vokaler vokaler vokaler vokaler";
+	/*
+	grid-template-columns: repeat(5, minmax(240px, 1fr));*/
+	grid-auto-rows: auto;
+	height: 100vh;
+}
+
+.cardStack {
+	grid-area: stack;
+}
+
+.cardStack .cardStack-Container {
+	display: grid;
+	place-items: center;
+}
+
+.cardStack .cardStack-Container > .cardcontainer {
+	margin-top: 1rem;
+	margin-left: 1rem;
+	position: absolute;
+}
+
+.mainContent {
+	grid-area: mainContent;
+	display: grid;
+	place-items: center;
+}
+
 .card {
-  height: 200px;
-  width: 200px;
-  background-color: powderblue;
-  position: absolute;
-  border-radius: 10px;
-  transform-style: preserve-3d;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	height: 200px;
+	width: 200px;
+	background-color: powderblue;
+	border-radius: 10px;
+	transform-style: preserve-3d;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 .front,
 .back {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border-style: solid;
-  border-radius: 10px;
-  justify-content: center;
-  align-items: center;
-  backface-visibility: hidden;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	border-style: solid;
+	border-radius: 10px;
+	justify-content: center;
+	align-items: center;
+	backface-visibility: hidden;
 }
 .front {
-  color: #fff;
-  background: #2196f3;
+	color: #fff;
+	background: #2196f3;
 }
 .back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: rotateX(180deg);
-  color: #2196f3;
-  background: #fff;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: rotateX(180deg);
+	color: #2196f3;
+	background: #fff;
 }
 #drawcardContainer {
-  display: grid;
-  place-items: center;
-  visibility: hidden;
+	grid-area: drawcard;
+	margin-top: 1rem;
+	justify-self: center;
+	visibility: hidden;
 }
 .vokal {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-    margin-top: 750px;
+	grid-area: vokaler;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-auto-rows: auto;
+	place-items: center;
 }
+
 .vokalE,
 .vokalÆ {
-    position: relative;
-    color: black;
-    text-align: center;
-    font-size: 120px;
-    opacity: 1;
+	color: black;
+	text-align: center;
+	font-size: 120px;
+	opacity: 1;
+	border-style: none;
+	border-radius: 10px;
+	padding: 40px 55px;
 }
-.dropE,
-.dropÆ {
-  position: absolute;
-  text-align: center;
-  border-style: dashed;
-  border-radius: 10px;
-  height: 120px;
-  width: 120px;
-  bottom: 10px;
-  left: 21.5vw;
-  visibility: hidden;
+
+.vokalE p,
+.vokalÆ p {
+	padding: 0;
+	margin: 0;
 }
+
+.vokalE p {
+	padding: 0 17px;
+}
+
 .tutorial {
-  position: absolute;
-  text-align: center;
-  border-style: solid;
-  border-radius: 10px;
-  width: 20%;
-  justify-content: center;
-  margin-top: 350px;
-  margin-left: 800px;
-  background-color: grey;
-  visibility: visible;
-  z-index: 11;
+	text-align: center;
+	border-style: solid;
+	border-radius: 10px;
+	max-width: 300px;
+	width: 80%;
+	min-width: 100px;
+	max-height: 6em;
+	justify-content: center;
+	background-color: white;
+	visibility: visible;
+	z-index: 11;
 }
+
+.tutorialContainer {
+	display: grid;
+	place-items: center right;
+}
+
 #tutorialbutton {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  margin-top: 600px;
-  visibility: "visible";
-  margin-left: 1800px;
-  z-index: 11;
+	visibility: "visible";
+	z-index: 11;
 }
 .curtain {
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.6;
-  z-index: 10;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0.6;
+	z-index: 10;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
