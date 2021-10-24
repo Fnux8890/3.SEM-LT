@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+ul li {
+	list-style: none;
+}
+
+h1.overview {
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid rgb(0, 0, 0);
+	line-height: 0.1em;
+	margin: 100px 0 20px;
+}
+
+h1.overview span.overview {
+	margin-bottom: 50px;
+	padding: 0 10px;
+	background-color: rgb(255, 255, 255);
+	font-size: 150%;
+}
+
+ul {
+	display: grid;
+	gap: 50px;
+	margin-top: 100px;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: 800px 500px 100px;
+}
+li {
+	transform: skewY(0);
+	padding-top: 150%;
+	z-index: 1;
+	transition-property: z-index;
+	transition-duration: 0.3s;
+}
+.details {
+	margin-left: 150px;
+	position: absolute;
+	z-index: 2;
+	width: 50%;
+	height: 50%;
+	top: 0;
+	background-color: #c4c5c5;
+	border-radius: 2vw;
+	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
+	box-sizing: border-box;
+	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
+	transform: rotate(0deg) translate(0, 0);
+	transition-property: transform;
+	transition-duration: 0.3s;
+}
+
+.smallcard {
+	margin-left: 150px;
+	position: absolute;
+	z-index: 2;
+	width: 30%;
+	height: 20%;
+	top: 0;
+	background-color: #d7dadb;
+	border-radius: 1vw;
+	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
+	box-sizing: border-box;
+	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
+	transform: rotate(0deg) translate(-6%, 65%);
+	/*visibility: hidden;*/
+}
+
+h2,
+p,
+img {
+	position: absolute;
+	z-index: 4;
+}
+
+p {
+	font-size: 1.4em;
+
+	padding: 2% 2.5% 2% 2.5%;
+	top: 40%;
+	left: 10%;
+}
+
+h2 {
+	text-align: center;
+	width: 100%;
+	left: -0%;
+	top: 10%;
+	background-color: #fcf8f4;
+	line-height: 140%;
+	transition-property: top;
+	transition-duration: 0.3s;
+}
+
+.clicked {
+	transition-property: transform;
+	transition-duration: 0.8s;
+	transform: scale(2, 2);
+	z-index: 10;
+}
+
+.notSelected {
+	pointer-events: none;
+}
+
+li:hover {
+	z-index: 4;
+}
+li:hover h2 {
+	top: 10%;
+}
+li:hover .details:not(.clicked) {
+	transform: translate(5.5%, 15%) scale(1.2) rotate(4deg);
+}
+
+@media (min-width: 0px) {
+	.details {
+		box-shadow: inset 0px 0px 0px 2.2vw #fcf8f4;
+	}
+}

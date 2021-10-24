@@ -37,7 +37,7 @@ document.addEventListener('submit', async e => {
 			console.log(username)
 			await axios.post('/api/v1/users', { username, password })
 			console.log('user added')
-			window.open('http://localhost:3000/user-overview', '_parent')
+			window.open('http://localhost:3000/page/user-overview', '_parent')
 		} catch (error) {
 			console.log(error)
 			usernameError()

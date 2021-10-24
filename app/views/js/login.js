@@ -25,7 +25,7 @@ $(() => {
 
 			if (auth) {
 				console.log('login succesful')
-				window.open('http://localhost:3000/user-overview', '_parent')
+				window.open('http://localhost:3000/page/user-overview', '_parent')
 			} else {
 				loginError()
 			}

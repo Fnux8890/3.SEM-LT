@@ -1,10 +1,5 @@
-const express = require("express");
-const router = express.Router();
-
-const users = require('../../models/users')
-
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const express = require('express')
+const router = express.Router()
 
 const {
 	getAllUsers,
@@ -19,4 +14,4 @@ router.route('/').get(getAllUsers).post(createUser)
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
 router.route('/login').post(loginUser)
 
-module.exports = router;
+module.exports = router

@@ -3,7 +3,8 @@ const app = express()
 const connectDB = require('./app/db/connect')
 const path = require('path')
 const fs = require('fs')
-const insertNavbar = require('./app/controller/middleware/insertNavbar')
+//const insertNavbar = require('./app/controller/middleware/insertNavbar')
+
 // require files
 const userRoutes = require('./app/controller/routes/users')
 const pageRoutes = require('./app/controller/routes/pages')
@@ -18,7 +19,7 @@ app.set('view engine', 'pug')
 app.use(express.static(path.join(__dirname, 'app', 'views')))
 app.use(express.json()) //Kan se JSON payloads fra front-end
 app.use(express.urlencoded({ extended: false })) //Kan se String/text payloads fra front-end
-app.use('/page/*', insertNavbar)
+//app.use('/page/*', insertNavbar)
 
 //routes
 app.use('/api/v1/users', userRoutes)
