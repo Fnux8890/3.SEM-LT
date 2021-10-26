@@ -1,5 +1,8 @@
 {
 	"env": {
 		"JWT_KEY": "secret"
+	},
+	"events": {
+		"restart": "npm run build"
 	}
 }

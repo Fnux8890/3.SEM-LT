@@ -48,6 +48,10 @@
 		"@babel/cli": "^7.15.7",
 		"@babel/node": "^7.15.8",
 		"@babel/runtime": "^7.15.4",
+		"@fortawesome/fontawesome-free": "^5.15.4",
+		"@fortawesome/fontawesome-svg-core": "^1.2.36",
+		"@fortawesome/free-regular-svg-icons": "^5.15.4",
+		"@fortawesome/free-solid-svg-icons": "^5.15.4",
 		"animejs": "^3.2.1",
 		"axios": "^0.22.0",
 		"babel-plugin-module-resolver": "^4.1.0",
@@ -62,7 +66,8 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.0.8",
 		"npm": "^8.1.0",
-		"pug": "^3.0.2"
+		"pug": "^3.0.2",
+		"source-map-loader": "^3.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.15.8",

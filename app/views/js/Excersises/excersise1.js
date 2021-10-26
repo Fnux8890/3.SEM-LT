@@ -1,6 +1,13 @@
 import $ from "jquery";
 import anime from "animejs";
 import interact from "interactjs";
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
+import { faQuestionCircle, faVolumeUp, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faQuestionCircle);
+library.add(faVolumeUp);
+library.add(faTimes);
+
 const timeline = anime.timeline;
 function animationFromStack(card) {
 	viewportWidth = window.innerWidth / 2 - $(card).width() / 2;
@@ -53,7 +60,7 @@ function animationToCenter(card) {
 	var t1 = timeline({
 		targets: card,
 	});
-
+	//TODO: Ændre slutning til at kortet ender centralt i "maincontent" div.
 	t1.add({
 		translateX: translateToX,
 		translateY: translateToY,
@@ -89,22 +96,27 @@ $(() => {
             </div>
         </div>`;
 		$(".cardStack-Container").append(card);
+		let zlayer = $(".front").css("z-index");
 		$(`#card${index}`).css({
 			transform: `translateX(${offset}px)`,
-			"z-index": index,
+			"z-index": zlayer + index,
 		});
 		offset += 5;
 	});
+
+	let helpIcon = `<div class='helpIcon'>${(icon({prefix: 'fas', iconName: 'question-circle'}).html)}</div>`
+	$(".cardStack-Container").append(helpIcon);
 
 	$(window).resize(function () {
 		animationToCenter(`.card5`);
 	});
 
 	$("#tutorialbutton").on("click", () => {
-		$(".tutorial").css("visibility", "hidden");
-		$("#tutorialbutton").css("visibility", "hidden");
+		$(".tutorial").remove();
+		$("#tutorialbutton").remove();
 		$("#drawcardContainer").css("visibility", "visible");
 		$(".curtain").remove();
+		$(".speaker").append(icon({prefix: 'fas', iconName: 'volume-up'}).html);
 	});
 	//TODO find a method to place the card in a container when the animation is done
 	$("#drawCard").on("click", async () => {
@@ -156,4 +168,23 @@ $(() => {
 			//Rigtigt eller fokert svar
 		},
 	});
+
+	//Indsætning af ikon (krydset)
+	$(".close").append(icon({prefix: 'fas', iconName: 'times'}).html);
+
+	$(".close svg").on("click", function() {
+		alert("Closing...");
+		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
+	})
+
+	//Viser tutorial igen ved klik på hjælp ikon
+	$(".helpIcon").on("click", function() {
+		$(".tutorial").css("visibility", "visible");
+		$("#tutorialbutton").css("visibility", "visible");
+		$("#drawcardContainer").css("visibility", "visible");
+		let curtain = `<div class="curtain"></div>`
+		$("body").append(curtain);
+		$(".speaker").remove();
+	})
+
 });
