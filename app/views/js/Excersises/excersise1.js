@@ -1,44 +1,73 @@
 import $ from "jquery";
 import anime from "animejs";
 import interact from "interactjs";
-import { library, icon } from '@fortawesome/fontawesome-svg-core';
-import { faQuestionCircle, faVolumeUp, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import {
+	faQuestionCircle,
+	faVolumeUp,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 
+function convertRemToPixels(rem) {
+	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+
 const timeline = anime.timeline;
 function animationFromStack(card) {
-	viewportWidth = window.innerWidth / 2 - $(card).width() / 2;
-	viewportHeight = window.innerHeight / 2 - $(card).height() / 2;
+	let y = $(".mainContent").offset().top - convertRemToPixels(1);
+	let x = $(".mainContent").offset().left - convertRemToPixels(1);
+	x += $(".mainContent").width() / 2;
+	x -= $(card).width() / 2;
+	y += $(".mainContent").height() / 2;
+	y -= $(card).height() / 2;
 
 	var t1 = anime.timeline({
 		targets: card,
 	});
 
 	t1.add({
-		translateX: viewportWidth,
-		translateY: viewportHeight,
+		// translateX: viewportWidth,
+		// translateY: viewportHeight,
+		translateX: x,
+		translateY: y,
 		easing: "easeOutQuint",
 		duration: 1000,
-	});
+	})
+		.finished.then(() => {
+			$(card)
+				.css({
+					transform: "none",
+				})
+				.parent()
+				.appendTo(".mainContent")
+				.css({
+					"grid-area": "Main",
+				});
+			console.log(`x: ${x}  y: ${y}`);
+			anime(
+				{
+					targets: card,
+					scale: [
+						{ value: 1 },
+						{ value: 1.2, duration: 400 },
+						{ value: 1, duration: 400 },
+					],
+					rotateX: { delay: 20, value: "+=180", duration: 500 },
+					easing: "easeInOutSine",
+					duration: 1200,
+				},
+				"-=200"
+			);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 
-	t1.add(
-		{
-			scale: [
-				{ value: 1 },
-				{ value: 1.2, duration: 400 },
-				{ value: 1, duration: 400 },
-			],
-			rotateX: { delay: 20, value: "+=180", duration: 500 },
-			easing: "easeInOutSine",
-			duration: 1200,
-		},
-		"-=200"
-	);
-
-	position = { x: viewportWidth, y: viewportHeight };
+	position = { x: x, y: y };
 
 	return t1.finished;
 }
@@ -104,7 +133,9 @@ $(() => {
 		offset += 5;
 	});
 
-	let helpIcon = `<div class='helpIcon'>${(icon({prefix: 'fas', iconName: 'question-circle'}).html)}</div>`
+	let helpIcon = `<div class='helpIcon'>${
+		icon({ prefix: "fas", iconName: "question-circle" }).html
+	}</div>`;
 	$(".cardStack-Container").append(helpIcon);
 
 	$(window).resize(function () {
@@ -116,41 +147,45 @@ $(() => {
 		$("#tutorialbutton").remove();
 		$("#drawcardContainer").css("visibility", "visible");
 		$(".curtain").remove();
-		$(".speaker").append(icon({prefix: 'fas', iconName: 'volume-up'}).html);
+		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
 	});
 	//TODO find a method to place the card in a container when the animation is done
 	$("#drawCard").on("click", async () => {
-		animationFromStack(`.card5`).then(() => {
-			draggable = true;
-			if (draggable === true) {
-				interact(".card5")
-					.draggable({
-						listeners: {
-							start(event) {
-								$(".vokalE, .vokalÆ").css({
-									opacity: 0.5,
-									"border-style": "dashed",
-								});
-							},
-							move(event) {
-								position.x += event.dx;
-								position.y += event.dy;
+		animationFromStack(`.card5`)
+			.then(() => {
+				draggable = true;
+				if (draggable === true) {
+					interact(".card5")
+						.draggable({
+							listeners: {
+								start(event) {
+									$(".vokalE, .vokalÆ").css({
+										opacity: 0.5,
+										"border-style": "dashed",
+									});
+								},
+								move(event) {
+									position.x += event.dx;
+									position.y += event.dy;
 
-								event.target.style.transform = `translate(${position.x}px, ${position.y}px) rotateX(180deg)`;
+									event.target.style.transform = `translate(${position.x}px, ${position.y}px) rotateX(180deg)`;
+								},
 							},
-						},
-					})
-					.on("dragend", (event) => {
-						animationToCenter(".card5").then(() => {
-							position = { x: viewportWidth, y: viewportHeight };
+						})
+						.on("dragend", (event) => {
+							animationToCenter(".card5").then(() => {
+								position = { x: viewportWidth, y: viewportHeight };
+							});
+							$(".vokalE, .vokalÆ").css({
+								opacity: 1,
+								"border-style": "none",
+							});
 						});
-						$(".vokalE, .vokalÆ").css({
-							opacity: 1,
-							"border-style": "none",
-						});
-					});
-			}
-		});
+				}
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
 	});
 
 	interact(".vokalE").dropzone({
@@ -170,21 +205,20 @@ $(() => {
 	});
 
 	//Indsætning af ikon (krydset)
-	$(".close").append(icon({prefix: 'fas', iconName: 'times'}).html);
+	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
 
-	$(".close svg").on("click", function() {
+	$(".close svg").on("click", function () {
 		alert("Closing...");
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
-	})
+	});
 
 	//Viser tutorial igen ved klik på hjælp ikon
-	$(".helpIcon").on("click", function() {
+	$(".helpIcon").on("click", function () {
 		$(".tutorial").css("visibility", "visible");
 		$("#tutorialbutton").css("visibility", "visible");
 		$("#drawcardContainer").css("visibility", "visible");
-		let curtain = `<div class="curtain"></div>`
+		let curtain = `<div class="curtain"></div>`;
 		$("body").append(curtain);
 		$(".speaker").remove();
-	})
-
+	});
 });
