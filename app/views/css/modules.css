@@ -19,6 +19,16 @@ h1.overview span.overview {
 	font-size: 150%;
 }
 
+h1 {
+	text-align: center;
+}
+
+.smallcard > h2 {
+	text-align: center;
+	top: 30%;
+	background-color: none;
+}
+
 ul {
 	display: grid;
 	gap: 50px;
@@ -45,18 +55,35 @@ div.smallcard {
 	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
 	box-sizing: border-box;
 	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
-	animation: 1s fadeIn;
-	animation-fill-mode: forwards;
-	transition-property: transform;
-	transition-duration: 0.3s;
-
 	visibility: hidden;
+	/*transition-property: transform;
+	transition-duration: 2s;*/
+}
+
+.show {
+	animation: fadeIn 1.2s linear forwards;
 }
 
 #set1 {
+	top: 10%;
+	left: 10%;
+	width: 50%;
+	height: 30%;
+}
+
+#set2 {
 	top: 50%;
-	left: 50%;
-	z-index: 500;
+	left: 10%;
+}
+
+#set3 {
+	top: 90%;
+	left: 10%;
+}
+
+#set4 {
+	top: 130%;
+	left: 10%;
 }
 
 .details {
