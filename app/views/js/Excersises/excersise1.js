@@ -15,25 +15,28 @@ library.add(faTimes);
 function convertRemToPixels(rem) {
 	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
-
-const timeline = anime.timeline;
-function animationFromStack(card) {
+//TODO calculate position in context to where it is reletive to center x and y
+function findMaincontentCenter(card) {
 	let y = $(".mainContent").offset().top - convertRemToPixels(1);
 	let x = $(".mainContent").offset().left - convertRemToPixels(1);
 	x += $(".mainContent").width() / 2;
 	x -= $(card).width() / 2;
 	y += $(".mainContent").height() / 2;
 	y -= $(card).height() / 2;
+	return { x, y };
+}
+
+const timeline = anime.timeline;
+function animationFromStack(card) {
+	let maincontentCenter = findMaincontentCenter(card);
 
 	var t1 = anime.timeline({
 		targets: card,
 	});
 
 	t1.add({
-		// translateX: viewportWidth,
-		// translateY: viewportHeight,
-		translateX: x,
-		translateY: y,
+		translateX: maincontentCenter.x,
+		translateY: maincontentCenter.y,
 		easing: "easeOutQuint",
 		duration: 1000,
 	})
@@ -47,7 +50,6 @@ function animationFromStack(card) {
 				.css({
 					"grid-area": "Main",
 				});
-			console.log(`x: ${x}  y: ${y}`);
 			anime(
 				{
 					targets: card,
@@ -67,51 +69,32 @@ function animationFromStack(card) {
 			console.log(err);
 		});
 
-	position = { x: x, y: y };
-
 	return t1.finished;
 }
 
 function animationToCenter(card) {
-	let translateToX = 0;
-	let translateToY = 0;
-	if (position.x > centerPosition.x) {
-		translateToX = -position.x + centerPosition.x - $(card).width() / 2;
-	} else {
-		translateToX = centerPosition.x - position.x - $(card).width() / 2;
-	}
-	if (position.y > centerPosition.y) {
-		translateToY = position.y - centerPosition.y + $(card).height() / 2;
-	} else {
-		translateToY = -centerPosition.y + position.y + $(card).height() / 2;
-	}
-
+	let maincontentCenter = findMaincontentCenter(card);
+	position = maincontentCenter;
 	var t1 = timeline({
 		targets: card,
 	});
 	//TODO: Ændre slutning til at kortet ender centralt i "maincontent" div.
 	t1.add({
-		translateX: translateToX,
-		translateY: translateToY,
+		translateX: maincontentCenter.x,
+		translateY: maincontentCenter.x,
 		easing: "easeOutQuint",
 		duration: 1000,
 	});
 	position = {
-		x: $(card).position().left,
-		y: $(card).position().top,
+		x: maincontentCenter.x,
+		y: maincontentCenter.y,
 	};
 
 	return t1.finished;
 }
 
 const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-let viewportWidth = window.innerWidth / 2;
-let viewportHeight = window.innerHeight / 2;
-let position = {};
-let centerPosition = {
-	x: window.innerWidth / 2,
-	y: window.innerHeight / 2,
-};
+let position = { x: 0, y: 0 };
 
 $(() => {
 	let draggable = false;
@@ -137,10 +120,6 @@ $(() => {
 		icon({ prefix: "fas", iconName: "question-circle" }).html
 	}</div>`;
 	$(".cardStack-Container").append(helpIcon);
-
-	$(window).resize(function () {
-		animationToCenter(`.card5`);
-	});
 
 	$("#tutorialbutton").on("click", () => {
 		$(".tutorial").remove();
@@ -174,7 +153,11 @@ $(() => {
 						})
 						.on("dragend", (event) => {
 							animationToCenter(".card5").then(() => {
-								position = { x: viewportWidth, y: viewportHeight };
+								position = {
+									x: findMaincontentCenter(".card5").x,
+									y: findMaincontentCenter(".card5").y,
+								};
+								console.log(JSON.stringify(position));
 							});
 							$(".vokalE, .vokalÆ").css({
 								opacity: 1,
