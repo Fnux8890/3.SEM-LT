@@ -33,6 +33,32 @@ li {
 	transition-property: z-index;
 	transition-duration: 0.3s;
 }
+
+div.smallcard {
+	position: absolute;
+	z-index: 12;
+	width: 100%;
+	height: 30%;
+	top: 0;
+	background-color: #c4c5c5;
+	border-radius: 2vw;
+	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
+	box-sizing: border-box;
+	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
+	animation: 1s fadeIn;
+	animation-fill-mode: forwards;
+	transition-property: transform;
+	transition-duration: 0.3s;
+
+	visibility: hidden;
+}
+
+#set1 {
+	top: 50%;
+	left: 50%;
+	z-index: 500;
+}
+
 .details {
 	margin-left: 150px;
 	position: absolute;
@@ -50,20 +76,22 @@ li {
 	transition-duration: 0.3s;
 }
 
-.smallcard {
-	margin-left: 150px;
-	position: absolute;
-	z-index: 2;
-	width: 30%;
-	height: 20%;
-	top: 0;
-	background-color: #d7dadb;
-	border-radius: 1vw;
-	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
-	box-sizing: border-box;
-	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
-	transform: rotate(0deg) translate(-6%, 65%);
-	/*visibility: hidden;*/
+@keyframes fadeIn {
+	99% {
+		visibility: hidden;
+	}
+	100% {
+		visibility: visible;
+	}
+}
+
+.smallcard:hover {
+	transform: translate(5.5%, 15%) scale(1.1);
+}
+
+div#exercises {
+	border-top: hidden;
+	border-style: dashed;
 }
 
 h2,
@@ -97,6 +125,10 @@ h2 {
 	transition-duration: 0.8s;
 	transform: scale(2, 2);
 	z-index: 10;
+}
+
+.slideRight {
+	transform: translate(100%) scale(2, 2);
 }
 
 .notSelected {
