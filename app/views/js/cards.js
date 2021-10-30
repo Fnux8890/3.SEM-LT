@@ -7,10 +7,21 @@ $(() => {
 	$('div#basic1').on('click', function () {
 		$(this).toggleClass('slideRight')
 		$('.smallcard').toggleClass('show')
+		$('#basic2').css('visibility', 'hidden')
 	})
 
-	$('div#set1').on('click', function () {
+	$('div#set1').one('click', function () {
 		console.log('clicked')
+		//transform: translate(5.5%, 15%) scale(1.1)
+		$(this).css('transform', 'translate(5.5%, 15%) scale(1.1)')
+		$(this).after(`
+		<div id="exercise1">
+		<div class="dashed-circle">Exercise 1</div>
+		<div class="dashed-circle">Exercise 2</div>
+		<div class="dashed-circle">Exercise 3</div>
+		<div class="dashed-circle">Exercise 4</div>
+		</div>
+		`)
 	})
 
 	/*$('div#basic1').one('click', function () {

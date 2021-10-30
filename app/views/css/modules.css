@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
+body {
+	background-color: green;
+}
+
 ul li {
 	list-style: none;
 }
@@ -7,26 +11,75 @@ ul li {
 h1.overview {
 	width: 100%;
 	text-align: center;
-	border-bottom: 1px solid rgb(0, 0, 0);
+	border-bottom: 5px solid rgb(255, 0, 0);
 	line-height: 0.1em;
 	margin: 100px 0 20px;
+}
+
+.dashed-circle {
+	float: left;
+	left: 30px;
+	top: -20%;
+
+	position: relative;
+	display: block;
+	margin: 10px;
+	width: 100px;
+	height: 100px;
+	border: 13px dashed white;
+	border-radius: 50%;
+	line-height: 100px;
+	text-align: center;
+	font-family: Helvetica;
+	color: white;
+}
+.dashed-circle:before {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: -16px;
+	border-radius: 50%;
+	background: red;
+	content: '';
+}
+.dashed-circle:after {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: 5px;
+	border: 3px dashed white;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.4);
+	content: '';
 }
 
 h1.overview span.overview {
 	margin-bottom: 50px;
 	padding: 0 10px;
-	background-color: rgb(255, 255, 255);
+	background-color: green;
 	font-size: 150%;
+	color: red;
 }
 
 h1 {
 	text-align: center;
 }
 
-.smallcard > h2 {
+.smallcard > h1 {
 	text-align: center;
 	top: 30%;
+	background-color: #fcf8f4;
+}
+
+.smallcard > h2 {
 	background-color: none;
+	top: 30%;
 }
 
 ul {
@@ -47,12 +100,13 @@ li {
 div.smallcard {
 	position: absolute;
 	z-index: 12;
-	width: 100%;
+	left: 25.5%;
+	width: 45%;
 	height: 30%;
 	top: 0;
 	background-color: #c4c5c5;
 	border-radius: 2vw;
-	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
+	box-shadow: inset 0px 0px 0px 2vw #fcf8f4;
 	box-sizing: border-box;
 	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
 	visibility: hidden;
@@ -64,26 +118,33 @@ div.smallcard {
 	animation: fadeIn 1.2s linear forwards;
 }
 
+#exercise1 {
+	position: absolute;
+	z-index: 15;
+	margin-top: 150px;
+	height: 100px;
+
+	width: 42%;
+	left: 28%;
+}
+
 #set1 {
 	top: 10%;
-	left: 10%;
-	width: 50%;
-	height: 30%;
 }
 
 #set2 {
+	animation-duration: 1.4s;
 	top: 50%;
-	left: 10%;
 }
 
 #set3 {
+	animation-duration: 1.6s;
 	top: 90%;
-	left: 10%;
 }
 
 #set4 {
+	animation-duration: 1.8s;
 	top: 130%;
-	left: 10%;
 }
 
 .details {
@@ -116,9 +177,10 @@ div.smallcard {
 	transform: translate(5.5%, 15%) scale(1.1);
 }
 
-div#exercises {
-	border-top: hidden;
-	border-style: dashed;
+.square {
+	border-style: solid;
+	width: 50px;
+	height: 50px;
 }
 
 h2,
