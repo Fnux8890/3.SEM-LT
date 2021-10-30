@@ -40,7 +40,7 @@ body {
 .card {
 	height: 200px;
 	width: 200px;
-	background-color: powderblue;
+	background-color: transparent;
 	border-radius: 10px;
 	transform-style: preserve-3d;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -54,6 +54,7 @@ body {
 	border-radius: 10px;
 	justify-content: center;
 	align-items: center;
+	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 	z-index: 10;
 }
@@ -65,6 +66,7 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
+	-webkit-transform: rotateX(180deg);
 	transform: rotateX(180deg);
 	color: #2196f3;
 	background: #fff;
