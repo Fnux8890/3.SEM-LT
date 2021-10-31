@@ -1,4 +1,3 @@
-import $ from "jquery";
 import anime from "animejs";
 import interact from "interactjs";
 import { library, icon } from "@fortawesome/fontawesome-svg-core";
