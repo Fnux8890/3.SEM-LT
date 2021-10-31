@@ -1,7 +1,6 @@
 import $ from "jquery";
 import "axios";
 $(() => {
-	console.log("hello world");
 	const element = document.getElementById("usernameerror");
 
 	function loginError() {

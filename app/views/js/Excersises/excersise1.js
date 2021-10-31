@@ -12,6 +12,26 @@ library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 
+$(() => {
+	let draggable = false;
+	SetupHtmlDivs();
+
+	draggable = CardDraggable(draggable);
+
+	DropzoneCardInteract(".vokalE");
+	DropzoneCardInteract(".vokalÆ");
+
+	//Indsætning af ikon (krydset)
+	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
+
+	$(".close svg").on("click", function () {
+		alert("Closing...");
+		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
+	});
+
+	ShowTutorialAgain();
+});
+
 /**
  * Convertes from int to rem
  * @param {Int} rem how many rem units
@@ -112,26 +132,6 @@ function animationToCenter(card) {
 
 const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 let position = { x: 0, y: 0 };
-
-$(() => {
-	let draggable = false;
-	SetupHtmlDivs();
-
-	draggable = CardDraggable(draggable);
-
-	DropzoneCardInteract(".vokalE");
-	DropzoneCardInteract(".vokalÆ");
-
-	//Indsætning af ikon (krydset)
-	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
-
-	$(".close svg").on("click", function () {
-		alert("Closing...");
-		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
-	});
-
-	ShowTutorialAgain();
-});
 
 function DropzoneCardInteract(div) {
 	interact(div).dropzone({

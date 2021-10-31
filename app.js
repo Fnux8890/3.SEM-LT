@@ -7,6 +7,7 @@ import { insertNavbar } from "@middleware/insertNavbar";
 // import routes
 import userRoutes from "./app/controller/routes/users";
 import pageRoutes from "./app/controller/routes/pages";
+import sass from "node-sass";
 //const declare
 const port = 3000;
 const app = express();
@@ -16,6 +17,7 @@ app.set("views", join(__dirname, "app", "views", "pages"));
 app.set("view engine", "pug");
 
 //middleware
+sass.render({});
 app.options("*", cors());
 app.use(express.static(join(__dirname, "app", "views")));
 app.use("scripts/", express.static("/node_modules/"));

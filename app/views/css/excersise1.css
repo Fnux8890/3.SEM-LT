@@ -161,4 +161,5 @@ body {
 }
 .speaker {
 	grid-area: speaker;
+	cursor: pointer;
 }
