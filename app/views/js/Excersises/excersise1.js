@@ -6,13 +6,17 @@ import {
 	faVolumeUp,
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+import "../../css/excersise1.scss";
+
+const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
+let position = { x: 0, y: 0 };
+let draggable = false;
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 
 $(() => {
-	let draggable = false;
 	SetupHtmlDivs();
 
 	draggable = CardDraggable(draggable);
@@ -129,9 +133,6 @@ function animationToCenter(card) {
 	return t1.finished;
 }
 
-const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-let position = { x: 0, y: 0 };
-
 function DropzoneCardInteract(div) {
 	interact(div).dropzone({
 		accept: ".card",
@@ -148,20 +149,6 @@ function SetupHtmlDivs() {
 	MakeCardStack();
 
 	MakeHelpIcon();
-
-	MakeTutorialModal();
-}
-/**
- * Makes the tutorial modal and its logical
- */
-function MakeTutorialModal() {
-	$("#tutorialbutton").on("click", () => {
-		$(".tutorial").remove();
-		$("#tutorialbutton").remove();
-		$("#drawcardContainer").css("visibility", "visible");
-		$(".curtain").remove();
-		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
-	});
 }
 
 /**
@@ -193,7 +180,13 @@ function ShowTutorialAgain() {
  * @returns Boolean depedendt if the card is draggable
  */
 function CardDraggable(draggable) {
-	$("#drawCard").on("click", async () => {
+	$("#tutorialbutton").on("click", async () => {
+		RemoveTutorial();
+		const delay = (ms) =>
+			new Promise((resolve) => {
+				setTimeout(resolve, ms);
+			});
+		await delay(200);
 		animationFromStack(`.card5`)
 			.then(() => {
 				draggable = true;
@@ -229,6 +222,14 @@ function CardDraggable(draggable) {
 			});
 	});
 	return draggable;
+}
+
+function RemoveTutorial() {
+	$(".tutorial").remove();
+	$("#tutorialbutton").remove();
+	$("#drawcardContainer").css("visibility", "visible");
+	$(".curtain").remove();
+	$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
 }
 
 /**

@@ -1,24 +1,40 @@
 const path = require("path");
 const { SourceMapDevToolPlugin, ProvidePlugin } = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const NodePolyfillWebpackPlugin = require("node-polyfill-webpack-plugin");
 module.exports = {
+	target: "node",
 	mode: "development",
 	entry: {
 		excersise: {
 			import: "./app/views/js/Excersises/excersise1.js",
 		},
-		login: {
-			import: "./app/views/js/login/login.js",
-		},
-		navbar: {
-			import: "./app/views/js/Navbar/navbar.js",
-		},
+		main: [
+			path.resolve(__dirname, "./app/views/js/login/login.js"),
+			path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
+		],
 	},
 	output: {
 		filename: "[name].js",
-		path: path.resolve(__dirname, "app/views/js/dist"),
+		path: path.resolve(__dirname, "app/views/dist"),
+		clean: true,
 	},
 	module: {
 		rules: [
+			{
+				test: /\.(s[ac]|c)ss$/i,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							publicPath: "/css/",
+						},
+					},
+					"css-loader",
+					"sass-loader",
+					"postcss-loader",
+				],
+			},
 			{
 				test: /\.m?js$/,
 				exclude: /(node_modules|bower_components)/,
@@ -59,7 +75,6 @@ module.exports = {
 			},
 		},
 	},
-
 	plugins: [
 		new SourceMapDevToolPlugin({ filename: "[file].map" }),
 		new ProvidePlugin({
@@ -67,5 +82,10 @@ module.exports = {
 			jQuery: "jquery",
 			"window.jQuery": "jquery",
 		}),
+		new MiniCssExtractPlugin({
+			filename: "main.bundle.css",
+			chunkFilename: "[id].css",
+		}),
 	],
+	devtool: "source-map",
 };

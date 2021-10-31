@@ -150,6 +150,10 @@ body {
 	font-size: calc(15px + 2vw);
 	margin-top: 1rem;
 	margin-right: 1rem;
+
+	svg {
+		cursor: pointer;
+	}
 }
 .helpIcon {
 	position: absolute;
