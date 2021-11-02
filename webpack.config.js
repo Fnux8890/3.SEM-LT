@@ -72,6 +72,12 @@ module.exports = {
 					priority: -20,
 					reuseExistingChunk: true,
 				},
+				styles: {
+					name: "styles",
+					type: "css/mini-extract",
+					chunks: "all",
+					enforce: true,
+				},
 			},
 		},
 	},

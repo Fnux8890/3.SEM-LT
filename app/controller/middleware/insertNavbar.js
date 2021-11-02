@@ -64,6 +64,10 @@ export const insertNavbar = (req, res, next) => {
 			}
 		})()
 			.then(() => {
+				//TODO make better map handler
+				if (afterPagePath[afterPagePath.length - 1].includes("map")) {
+					return;
+				}
 				if (
 					matchFound === false &&
 					afterPagePath[afterPagePath.length - 1] !== "page"
