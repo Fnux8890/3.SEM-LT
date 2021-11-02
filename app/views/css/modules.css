@@ -4,6 +4,10 @@ body {
 	background-color: green;
 }
 
+#container {
+	z-index: -50000000;
+}
+
 ul li {
 	list-style: none;
 }
@@ -57,6 +61,49 @@ h1.overview {
 	border-radius: 50%;
 	background: rgba(0, 0, 0, 0.4);
 	content: '';
+}
+
+.dashed-circle:hover {
+	transform: translate(5.5%, 15%) scale(1.1);
+}
+
+.dice {
+	padding: 4px;
+	background-color: tomato;
+	width: 104px;
+	height: 104px;
+	border-radius: 10%;
+	position: absolute;
+	left: 80%;
+	font-family: Helvetica;
+}
+
+.dice:hover {
+	transform: translate(5.5%, 15%) scale(1.1);
+}
+
+.fourth-face {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.fourth-face .column {
+	display: flex;
+
+	justify-content: space-between;
+}
+
+.fourth-face .dot:nth-of-type(2) {
+	align-self: flex-end;
+}
+
+.dot {
+	display: block;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-color: white;
 }
 
 h1.overview span.overview {
@@ -120,7 +167,7 @@ div.smallcard {
 
 #exercise1 {
 	position: absolute;
-	z-index: 15;
+	z-index: 50000;
 	margin-top: 150px;
 	height: 100px;
 
@@ -238,4 +285,8 @@ li:hover .details:not(.clicked) {
 	.details {
 		box-shadow: inset 0px 0px 0px 2.2vw #fcf8f4;
 	}
+}
+
+.hide {
+	visibility: hidden;
 }

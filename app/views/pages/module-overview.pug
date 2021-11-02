@@ -8,18 +8,32 @@ html(lang='en')
     link(rel='stylesheet' href='../css/modules.css')
     script(src='../js/utils/jquery.js')
     script(src='../js/cards.js')
-    
+    script.
   body
+    audio(controls='' autoplay='')
+      source(src='../css/jazz.mp4' type='audio/mpeg')
     #container
       h1.overview
-        span.overview Basic
+        span.overview Basic modules
+      #set1.smallcard
+        h1 Set 1
+        h2 E and Æ vowal sounds
+      #set2.smallcard
+        h1 Set 2
+        h2 Coming soon
+      #set3.smallcard
+        h1 Set 3
+        h2 Coming soon
+      #set4.smallcard
+        h1 Set 4
+        h2 Coming soon
       ul
         li
-          .details
+          #basic1.details
             h2 Basic 1
             p In this module, you will blabla
         li
-          .details
+          #basic2.details
             h2 Basic 2
             p Coming soon
         li
@@ -31,7 +45,7 @@ html(lang='en')
             h2 Basic 4
             p Coming soon
       h1.overview
-        span.overview Special
+        span.overview Special modules
       ul
         li
           .details
