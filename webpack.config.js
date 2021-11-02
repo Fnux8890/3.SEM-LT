@@ -89,7 +89,7 @@ module.exports = {
 			"window.jQuery": "jquery",
 		}),
 		new MiniCssExtractPlugin({
-			filename: "main.bundle.css",
+			filename: "css/[name].css",
 			chunkFilename: "[id].css",
 		}),
 	],
