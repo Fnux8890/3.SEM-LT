@@ -8,13 +8,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../../css/excersise1.scss";
 
-const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 let position = { x: 0, y: 0 };
 let draggable = false;
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
+
+$.ajax({
+	url: `http://localhost:3000/Build/Exercise?id=${n}`,
+	type: 'GET',
+
+})
 
 $(() => {
 	SetupHtmlDivs();
@@ -232,6 +237,7 @@ function RemoveTutorial() {
 	$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
 }
 
+const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 /**
  * Setsup the cardstack dependend on how many cards there is
  */
