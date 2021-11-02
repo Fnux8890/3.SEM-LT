@@ -1,4 +1,4 @@
-import {
+import myModel,{
   find,
   create,
   findOne,
@@ -20,7 +20,7 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    find({ username: req.body.username })
+    await myModel.find({ username: req.body.username})
       .exec()
       .then((user) => {
         if (user.length >= 1) {
@@ -34,7 +34,7 @@ const createUser = async (req, res) => {
                 error: err,
               });
             } else {
-              const newuser = create({
+              const newuser = myModel.create({
                 username: req.body.username,
                 password: hash,
               });

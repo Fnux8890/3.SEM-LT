@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import { connect } from "mongoose";
 
 const connectDB = () => {
 	//const url = 'mongodb://127.0.0.1:27017/Users'
@@ -6,7 +6,7 @@ const connectDB = () => {
 		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 	;(async () => {
 		try {
-			await mongoose.connect(url)
+			await connect(url)
 			console.log(`MongoDB Connected`)
 		} catch (err) {
 			console.error(err)
@@ -14,4 +14,4 @@ const connectDB = () => {
 	})()
 }
 
-module.exports = connectDB;
+export default connectDB;

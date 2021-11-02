@@ -13,6 +13,9 @@ module.exports = {
 			path.resolve(__dirname, "./app/views/js/login/login.js"),
 			path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
 		],
+		createAccount: [
+			path.resolve(__dirname, "./app/views/js/login/createAccount.js"),
+		]
 	},
 	output: {
 		filename: "[name].js",

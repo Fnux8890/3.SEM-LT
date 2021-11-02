@@ -5,7 +5,8 @@
 	"private": true,
 	"scripts": {
 		"build": "webpack",
-		"start": "npm run build && nodemon --exec babel-node app",
+		"watch": "webpack --watch",
+		"start": "nodemon --exec babel-node app",
 		"test": "node script1.js"
 	},
 	"repository": {

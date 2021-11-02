@@ -7,6 +7,7 @@ import { insertNavbar } from "@middleware/insertNavbar";
 // import routes
 import userRoutes from "./app/controller/routes/users";
 import pageRoutes from "./app/controller/routes/pages";
+import buildRoute from "./app/controller/routes/buildRoute";
 //const declare
 const port = 3000;
 const app = express();
@@ -26,6 +27,7 @@ app.use("/page/*", insertNavbar);
 //routes
 app.use("/api/v1/users", userRoutes);
 app.use("/page", pageRoutes);
+app.use("/build", buildRoute);
 
 //error handler
 app.use((err, req, res, next) => {

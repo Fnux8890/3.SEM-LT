@@ -5,16 +5,16 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Login screen
-        //link(rel='stylesheet', ='../css/main.css')
-        style  
-            include ../../css/main.css
+        link(rel='stylesheet', type="text/css" href ='../../dist/css/styles.css')
+        //-style  
+        //-    include ../../css/main.css
         script(src = "../../dist/main.js")
-        //script(src = "../../js/dist/test.js")
+        //-script(src = "../../js/dist/test.js")
 
-    body
-       include ../Navbar/navbar
-         .loginModal
-         div(class = 'loginbox')
+    bodys
+        include ../../Navbar/navbar
+        .loginModal
+        div(class = 'loginbox')
             img(src='../css/img/avatar.png' class='avatar')
             h1 Login here 
             form
@@ -25,8 +25,8 @@ html(lang="en")
                 p#usernameerror: i  Wrong username or password 
                 input(type="submit" name='' value='Login')
                 br
-                a(href="http://localhost:3000/lostpassword") Lost your password?
+                a(href="http://localhost:3000/page/lostpassword") Lost your password?
                 br
-                a(href="http://localhost:3000/createaccount") Don't have an account? Sign up 
+                a(href="http://localhost:3000/page/createaccount") Don't have an account? Sign up 
         
         
