@@ -47,6 +47,8 @@ Temporary Items
 .apdisk
 
 ### Node ###
+# files
+package-lock.json*
 # Logs
 logs
 *.log
