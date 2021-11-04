@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const os = require("os");
 
-/**
+/*
  * This method is used to insert at string into another string at a given index.
  * @param {String} original The original string
  * @param {Integer} index The index of where to insert the string
