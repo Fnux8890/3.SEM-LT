@@ -32,6 +32,6 @@ const UserSchema = new Schema({
 	],
 })
 
-const myModal = model('User', UserSchema)
+const myModel = model('User', UserSchema)
 
-export default myModal
+export default myModel

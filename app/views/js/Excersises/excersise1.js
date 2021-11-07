@@ -15,11 +15,11 @@ library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 
-// $.ajax({
-// 	url: `http://localhost:3000/Build/Exercise?id=${n}`,
-// 	type: 'GET',
+	$.ajax({
+	url: `http://localhost:3000/Build/Exercise?id=${n}`,
+	type: 'GET',
 
-// })
+})
 
 $(() => {
 	SetupHtmlDivs();
