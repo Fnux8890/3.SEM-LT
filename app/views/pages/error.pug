@@ -2,11 +2,9 @@ docktype
 html 
     header
         title #{errorCode}
-        style
-            include ../css/main.css
-            include ../css/error.css
+        link(rel="stylesheet", type="text/css" href="../dist/css/styles.css")
     body
-        include Navbar/navbar
+        include ./Navbar/navbar
         .ErrorContainer 
             h1 #{errorCode}
             h3 #{errorMessage}
