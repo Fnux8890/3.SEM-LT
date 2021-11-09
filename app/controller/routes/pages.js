@@ -17,4 +17,8 @@ router.route("/excersise1").get((req, res) => {
 	res.render("./Excersises/excersise1");
 });
 
+router.route("/excersise2").get((req, res) => {
+	res.render("./Excersises/exercise2");
+})
+
 export default router;

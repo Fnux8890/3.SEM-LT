@@ -9,6 +9,9 @@ module.exports = {
 		excersise: {
 			import: "./app/views/js/Excersises/excersise1.js",
 		},
+		exercise2: {
+			import: "./app/views/js/Excersises/exercise2.js"
+		},
 		main: [
 			path.resolve(__dirname, "./app/views/js/login/login.js"),
 			path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
