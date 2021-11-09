@@ -3,7 +3,7 @@ import connectDB from "./app/db/connect";
 import { join } from "path";
 import cors from "cors";
 // custom middlewares
-import { insertNavbar } from "@middleware/insertNavbar";
+//import { insertNavbar } from "@middleware/insertNavbar"; **FÅR ERROR SKAL FIXES**
 // import routes
 import userRoutes from "./app/controller/routes/users";
 import pageRoutes from "./app/controller/routes/pages";
@@ -22,7 +22,7 @@ app.use(express.static(join(__dirname, "app", "views")));
 app.use("scripts/", express.static("/node_modules/"));
 app.use(express.json()); //Kan se JSON payloads fra front-end
 app.use(express.urlencoded({ extended: false })); //Kan se String/text payloads fra front-end
-app.use("/page/*", insertNavbar);
+//app.use("/page/*", insertNavbar); **FÅR ERROR SKAL FIXES**
 
 //routes
 app.use("/api/v1/users", userRoutes);
