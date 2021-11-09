@@ -10,21 +10,28 @@ import "../../css/excersise1.scss";
 
 let position = { x: 0, y: 0 };
 let draggable = false;
+const ord = [];
+let currentCard = "";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 
-	$.ajax({
-	url: `http://localhost:3000/Build/Exercise?id=${n}`,
-	type: 'GET',
-
-})
-
 $(() => {
-	SetupHtmlDivs();
-
-	draggable = CardDraggable(draggable);
+	$.ajax({
+		url: `http://localhost:3000/Build/Exercise?id=1`,
+		type: "GET",
+		success: function (data) {
+			data.forEach((object) => {
+				ord.push(object);
+			});
+			ord.sort(() => {
+				Math.random() > 0.5 ? 1 : -1;
+			});
+			SetupHtmlDivs();
+			draggable = CardDraggable(draggable);
+		},
+	});
 
 	DropzoneCardInteract(".vokalE");
 	DropzoneCardInteract(".vokalÆ");
@@ -36,7 +43,6 @@ $(() => {
 		alert("Closing...");
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
 	});
-	console.log("test");
 	ShowTutorialAgain();
 });
 
@@ -142,7 +148,22 @@ function DropzoneCardInteract(div) {
 	interact(div).dropzone({
 		accept: ".card",
 		ondrop: function (event) {
-			alert("Hello");
+			console.log(
+				`your choice: ${$(div).text()} \ncorrectChoice: ${
+					ord[currentCard].answer
+				}\nProccesing`
+			);
+			(async () => {
+				return new Promise((resolve) => {
+					setTimeout(resolve, 1000);
+				});
+			})().then(() => {
+				if ($(div).text() === ord[currentCard].answer) {
+					console.log(`Your answer is correct`);
+				} else {
+					console.log(`Your answer is incorrect`);
+				}
+			});
 		},
 	});
 }
@@ -185,6 +206,7 @@ function ShowTutorialAgain() {
  * @returns Boolean depedendt if the card is draggable
  */
 function CardDraggable(draggable) {
+	let card = `.card${currentCard}`;
 	$("#tutorialbutton").on("click", async () => {
 		RemoveTutorial();
 		const delay = (ms) =>
@@ -192,11 +214,11 @@ function CardDraggable(draggable) {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
-		animationFromStack(`.card5`)
+		animationFromStack(card)
 			.then(() => {
 				draggable = true;
 				if (draggable === true) {
-					interact(".card5")
+					interact(card)
 						.draggable({
 							listeners: {
 								start(event) {
@@ -214,7 +236,7 @@ function CardDraggable(draggable) {
 							},
 						})
 						.on("dragend", (event) => {
-							animationToCenter(".card5");
+							animationToCenter(card);
 							$(".vokalE, .vokalÆ").css({
 								opacity: 1,
 								"border-style": "none",
@@ -237,7 +259,6 @@ function RemoveTutorial() {
 	$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
 }
 
-const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 /**
  * Setsup the cardstack dependend on how many cards there is
  */
@@ -248,7 +269,7 @@ function MakeCardStack() {
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
                 <div class="front">Bagside af kort</div>
-                <div class="back">${element}</div>
+                <div class="back">${element.word.word}</div>
             </div>
         </div>`;
 		$(".cardStack-Container").append(card);
@@ -259,4 +280,5 @@ function MakeCardStack() {
 		});
 		offset += 5;
 	});
+	currentCard = ord.length - 1;
 }
