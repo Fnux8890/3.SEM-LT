@@ -269,7 +269,7 @@ function MakeCardStack() {
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
                 <div class="front">Bagside af kort</div>
-                <div class="back">${element.word.word}</div>
+                <div class="back">${element.word}</div>
             </div>
         </div>`;
 		$(".cardStack-Container").append(card);

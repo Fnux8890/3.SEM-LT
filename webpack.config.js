@@ -1,7 +1,6 @@
 const path = require("path");
 const { SourceMapDevToolPlugin, ProvidePlugin } = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const NodePolyfillWebpackPlugin = require("node-polyfill-webpack-plugin");
 module.exports = {
 	target: "node",
 	mode: "development",
@@ -15,7 +14,7 @@ module.exports = {
 		],
 		createAccount: [
 			path.resolve(__dirname, "./app/views/js/login/createAccount.js"),
-		]
+		],
 	},
 	output: {
 		filename: "[name].js",
@@ -30,10 +29,15 @@ module.exports = {
 					{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							publicPath: "/css/",
+							publicPath: "../",
 						},
 					},
-					"css-loader",
+					{
+						loader: "css-loader",
+						options: {
+							url: true,
+						},
+					},
 					"sass-loader",
 					"postcss-loader",
 				],
@@ -53,6 +57,22 @@ module.exports = {
 				enforce: "pre",
 				use: ["source-map-loader"],
 			},
+			{
+				test: /\.(s[ac]|c)ss$/i,
+				enforce: "pre",
+				use: ["source-map-loader"],
+			},
+			// {
+			// 	test: /\.(svg|png|jpe?g|gif)$/,
+			// 	use: {
+			// 		loader: "file-loader",
+			// 		options: {
+			// 			name: "[name].[ext]",
+			// 			outputPath: "img",
+			// 			public: "../",
+			// 		},
+			// 	},
+			// },
 		],
 	},
 	optimization: {

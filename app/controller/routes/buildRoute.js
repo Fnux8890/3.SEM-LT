@@ -22,7 +22,7 @@ async function getExerciseWithWords(exerciseId) {
 	let result = await exercisesModel.aggregate([
 		{
 			$match: {
-				name: `Exercise ${exerciseId}`,
+				name: "Exercise 1",
 			},
 		},
 		{
@@ -50,6 +50,22 @@ async function getExerciseWithWords(exerciseId) {
 		{
 			$unwind: {
 				path: "$cards.word",
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				name: "$name",
+				description: "$description",
+				subject: "$subject",
+				instructions: "$instructions",
+				answerOptions: "$answerOptions",
+				cards: {
+					answer: "$cards.answer",
+					word: "$cards.word.word",
+					translation: "$cards.word.translation",
+					soundFile: "$cards.word.soundfile",
+				},
 			},
 		},
 		{
