@@ -10,9 +10,9 @@ import {
 import "../../css/exercise1.scss";
 
 let position = { x: 0, y: 0 };
-let draggable = false;
 const ord = [];
 let currentCard = "";
+let tutorial = "";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -31,7 +31,7 @@ $(() => {
 				Math.random() > 0.5 ? 1 : -1;
 			});
 			SetupHtmlDivs(data);
-			draggable = CardDraggable(draggable);
+			CardDraggable();
 		},
 	});
 
@@ -48,7 +48,6 @@ $(() => {
 		alert("Closing...");
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
 	});
-	ShowTutorialAgain();
 });
 
 /**
@@ -184,6 +183,7 @@ function SetupHtmlDivs(data) {
 	MakeCardStack();
 	populateTutorial(data);
 	MakeHelpIcon();
+	ShowTutorialAgain();
 }
 
 function populateTutorial(data) {
@@ -203,75 +203,80 @@ function MakeHelpIcon() {
 }
 
 /**
- * Viser tutorial igen ved klik på hjælp ikon
- */
-function ShowTutorialAgain() {
-	$(".helpIcon").on("click", function () {
-		$(".tutorial").css("visibility", "visible");
-		$("#tutorialbutton").css("visibility", "visible");
-		$("#drawcardContainer").css("visibility", "visible");
-		let curtain = `<div class="curtain"></div>`;
-		$("body").append(curtain);
-		$(".speaker").remove();
-	});
-}
-/**
  *
- * @param {Boolean} draggable Is the card draggable or not
- * @returns Boolean depedendt if the card is draggable
  */
-function CardDraggable(draggable) {
+function CardDraggable() {
 	let card = `.card${currentCard}`;
 	$("#tutorialbutton").on("click", async () => {
-		RemoveTutorial();
+		tutorial = await RemoveTutorial();
 		const delay = (ms) =>
 			new Promise((resolve) => {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
-		animationFromStack(card)
-			.then(() => {
-				draggable = true;
-				if (draggable === true) {
-					interact(card)
-						.draggable({
-							listeners: {
-								start(event) {
-									$(".vokalE, .vokalÆ").css({
-										opacity: 0.5,
-										"border-style": "dashed",
-									});
-								},
-								move(event) {
-									position.x += event.dx;
-									position.y += event.dy;
-
-									event.target.style.transform = `translate(${position.x}px, ${position.y}px) rotateX(180deg)`;
-								},
-							},
-						})
-						.on("dragend", (event) => {
-							animationToCenter(card);
-							$(".vokalE, .vokalÆ").css({
-								opacity: 1,
-								"border-style": "none",
-							});
-						});
-				}
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
+		if ($(".mainContent .cardcontainer").length === 0) {
+			FromStackAnimation(card);
+		}
 	});
-	return draggable;
+}
+
+function FromStackAnimation(card) {
+	animationFromStack(card)
+		.then(() => {
+			interact(card)
+				.draggable({
+					listeners: {
+						start(event) {
+							$(".vokalE, .vokalÆ").css({
+								opacity: 0.5,
+								"border-style": "dashed",
+							});
+						},
+						move(event) {
+							position.x += event.dx;
+							position.y += event.dy;
+
+							event.target.style.transform = `translate(${position.x}px, ${position.y}px) rotateX(180deg)`;
+						},
+					},
+				})
+				.on("dragend", (event) => {
+					animationToCenter(card);
+					$(".vokalE, .vokalÆ").css({
+						opacity: 1,
+						"border-style": "none",
+					});
+				});
+		})
+		.catch((error) => {
+			console.log(error.message);
+		});
+}
+
+/**
+ * Viser tutorial igen ved klik på hjælp ikon
+ */
+function ShowTutorialAgain() {
+	$(".helpIcon").on("click", function () {
+		$(".mainContent")
+			.append(`<div class='curtain'></div>`)
+			.append(`<div class='tutorial'></div>`);
+		$(".tutorial").append(tutorial);
+		$(".speaker").remove();
+		CardDraggable();
+	});
 }
 
 function RemoveTutorial() {
-	$(".tutorial").remove();
-	$("#tutorialbutton").remove();
-	$("#drawcardContainer").css("visibility", "visible");
-	$(".curtain").remove();
-	$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+	return new Promise((resolve) => {
+		let html = $(".tutorial").html();
+		$(".tutorial").remove();
+		// $("#tutorialbutton").css("visibility", "hidden");
+		$("#tutorialbutton").remove();
+		$(".curtain").remove();
+		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+		resolve(html);
+	});
 }
 
 /**
