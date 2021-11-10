@@ -7,13 +7,13 @@ const router = Router();
 const fs = require("fs");
 const async = require("async");
 
-router.route("/Exercise").get(async (req, res) => {
+router.route("/ExerciseInformation").get(async (req, res) => {
 	if (req.query.id === undefined) {
 		res.json({ error: "Id is not defined" });
 		return;
 	}
 	let exerciseObj = await getExerciseWithWords(req.query.id);
-	res.json(exerciseObj.cards);
+	res.json(exerciseObj);
 });
 
 export default router;

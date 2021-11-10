@@ -13,8 +13,11 @@
           "alias": {
             "@middleware": "./app/controller/middleware",
             "@models": "./app/models",
-            "@public": "./app/views/*"
+            "@public": "./app/views/",
+            "@distCss": "./app/views/dist/css",
+            "@publicCss": "./app/views/css"
           }
-        }]
+        }],
+        ["@babel/plugin-syntax-dynamic-import"]
       ]
 }

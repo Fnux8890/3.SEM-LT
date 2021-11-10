@@ -1,12 +1,13 @@
 const path = require("path");
 const { SourceMapDevToolPlugin, ProvidePlugin } = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
 	target: "node",
 	mode: "development",
 	entry: {
-		excersise: {
-			import: "./app/views/js/Excersises/excersise1.js",
+		exercise: {
+			import: "./app/views/js/Exercises/exercise1.js",
 		},
 		main: [
 			path.resolve(__dirname, "./app/views/js/login/login.js"),
@@ -99,10 +100,13 @@ module.exports = {
 					name: "styles",
 					type: "css/mini-extract",
 					chunks: "all",
+					minChunks: 2,
 					enforce: true,
 				},
 			},
 		},
+		minimizer: [new CssMinimizerPlugin()],
+		minimize: false,
 	},
 	plugins: [
 		new SourceMapDevToolPlugin({ filename: "[file].map" }),

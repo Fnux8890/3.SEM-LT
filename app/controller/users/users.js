@@ -1,17 +1,11 @@
-import myModel, {
-	find,
-	create,
-	findOne,
-	findOneAndUpdate,
-	findOneAndDelete,
-} from "../../models/usersModel";
+import myModel from "../../models/usersModel";
 
 import { hash as _hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
 	try {
-		const user = await find({});
+		const user = await myModel.find({});
 		res.status(200).json({ user });
 	} catch (error) {
 		res.status(500).json({ msg: error });
@@ -52,7 +46,7 @@ const createUser = async (req, res) => {
 const getUser = async (req, res) => {
 	try {
 		const { id: userID } = req.params;
-		const user = await findOne({ _id: userID });
+		const user = await myModel.findOne({ _id: userID });
 		if (!user) {
 			return res.status(404).json({ msg: `No user with id: ${userID}}` });
 		}
@@ -65,7 +59,7 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
 	try {
 		const { id: userID } = req.params;
-		const user = await findOneAndUpdate({ _id: userID }, req.body, {
+		const user = await myModel.findOneAndUpdate({ _id: userID }, req.body, {
 			new: true,
 			runValidators: true,
 		});
@@ -81,7 +75,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
 	try {
 		const { id: userID } = req.params;
-		const user = await findOneAndDelete({ _id: userID });
+		const user = await myModel.findOneAndDelete({ _id: userID });
 		if (!user) {
 			return res.status(404).json({ msg: `No user with id: ${userID}}` });
 		}
@@ -93,7 +87,8 @@ const deleteUser = async (req, res) => {
 
 const loginUser = async (req, res, next) => {
 	try {
-		find({ username: req.body.username })
+		myModel
+			.find({ username: req.body.username })
 			.exec()
 			.then((user) => {
 				if (user.length < 1) {

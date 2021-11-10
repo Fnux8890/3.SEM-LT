@@ -82,7 +82,7 @@ export const insertNavbar = (req, res, next) => {
 				if (
 					matchFound === true &&
 					afterPagePath[afterPagePath.length - 1] !== "page" &&
-					currentFilePath.includes("excersise") === false
+					currentFilePath.includes("exercise") === false
 				) {
 					let file = join(
 						__dirname,

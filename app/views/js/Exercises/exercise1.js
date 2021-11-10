@@ -5,8 +5,9 @@ import {
 	faQuestionCircle,
 	faVolumeUp,
 	faTimes,
+	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/excersise1.scss";
+import "../../css/exercise1.scss";
 
 let position = { x: 0, y: 0 };
 let draggable = false;
@@ -16,19 +17,20 @@ let currentCard = "";
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
+library.add(faThumbsUp);
 
 $(() => {
 	$.ajax({
-		url: `http://localhost:3000/Build/Exercise?id=1`,
+		url: `http://localhost:3000/Build/ExerciseInformation?id=1`,
 		type: "GET",
 		success: function (data) {
-			data.forEach((object) => {
+			data.cards.forEach((object) => {
 				ord.push(object);
 			});
 			ord.sort(() => {
 				Math.random() > 0.5 ? 1 : -1;
 			});
-			SetupHtmlDivs();
+			SetupHtmlDivs(data);
 			draggable = CardDraggable(draggable);
 		},
 	});
@@ -38,6 +40,9 @@ $(() => {
 
 	//Indsætning af ikon (krydset)
 	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
+	$("#tutorialbutton").append(
+		icon({ prefix: "fas", iconName: "thumbs-up" }).html
+	);
 
 	$(".close svg").on("click", function () {
 		alert("Closing...");
@@ -171,12 +176,18 @@ function DropzoneCardInteract(div) {
 /**
  * The basic setup for the html document.
  */
-function SetupHtmlDivs() {
+function SetupHtmlDivs(data) {
 	MakeCardStack();
-
+	populateTutorial(data);
 	MakeHelpIcon();
 }
 
+function populateTutorial(data) {
+	let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
+	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
+	$("#eng").html(eng);
+	$("#dan").html(dan);
+}
 /**
  * Makes and inserts the help icon
  */

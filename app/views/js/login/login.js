@@ -1,5 +1,5 @@
 import "axios";
-import '../../css/main.scss'
+import "../../css/login.scss";
 $(() => {
 	const element = document.getElementById("usernameerror");
 
