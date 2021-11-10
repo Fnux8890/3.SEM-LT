@@ -97,11 +97,15 @@ function animationFromStack(card) {
 			$(card)
 				.css({
 					transform: "none",
+					"box-shadow": "none",
 				})
 				.parent()
 				.appendTo(".mainContent")
 				.css({
 					"grid-area": "Main",
+					"border-radius": "10px",
+					"box-shadow":
+						"0 6px 6px rgba(0, 0, 0, 0.23), 0 10px 20px rgba(0, 0, 0, 0.19)",
 				});
 			anime(
 				{
@@ -279,7 +283,7 @@ function MakeCardStack() {
 		let card = `
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
-                <div class="front">Bagside af kort</div>
+                <div class="front">E or Æ vokal word</div>
                 <div class="back">${element.word}</div>
             </div>
         </div>`;
