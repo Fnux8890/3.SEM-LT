@@ -88,8 +88,8 @@ body {
 	z-index: -1;
 }
 
-.vokalE,
-.vokalÆ {
+.vokalA,
+.vokalB {
 	color: black;
 	text-align: center;
 	font-size: 120px;
@@ -99,13 +99,13 @@ body {
 	padding: 40px 55px;
 }
 
-.vokalE p,
-.vokalÆ p {
+.vokalA p,
+.vokalB p {
 	padding: 0;
 	margin: 0;
 }
 
-.vokalE p {
+.vokalA p {
 	padding: 0 17px;
 }
 
@@ -216,4 +216,9 @@ body {
 .speaker {
 	grid-area: speaker;
 	cursor: pointer;
+}
+
+#animation {
+	grid-area: drawcard;
+	background-color: #2196f3;
 }

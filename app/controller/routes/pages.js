@@ -16,5 +16,8 @@ router.route("/user-overview").get((req, res) => {
 router.route("/exercise1").get((req, res) => {
 	res.render("./Exercises/exercise1");
 });
+router.route("/index").get((req, res) => {
+	res.render("./index");
+});
 
 export default router;

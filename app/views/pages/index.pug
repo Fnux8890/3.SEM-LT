@@ -2,12 +2,9 @@ doctype html
 html
     head
         title
-        style
-            include ../css/main.css
+        link(rel="stylesheet", href="../dist/css/main.css")
     body
         include ./Navbar/navbar
-        .body 
-            button#login login
-
-
-
+        .sites(style = "display: grid; place-items: center; margin-top: 20px")
+            button(onClick ='location.href="http://localhost:3000/page/exercise1"') Exercise 1
+        

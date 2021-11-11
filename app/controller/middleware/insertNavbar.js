@@ -57,8 +57,11 @@ export const insertNavbar = (req, res, next) => {
 						endPath.shift();
 					}
 					folderSubLevel = endPath.length - 1;
-					currentFilePath = `${endPath.shift()}/${endPath.shift()}`;
-
+					if (folderSubLevel > 0) {
+						currentFilePath = `${endPath.shift()}/${endPath.shift()}`;
+					} else {
+						currentFilePath = `${endPath.shift()}`;
+					}
 					break;
 				}
 			}

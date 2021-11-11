@@ -8,6 +8,7 @@ import {
 	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../css/exercise1.scss";
+import lottie from "lottie-web/build/player/lottie";
 
 let position = { x: 0, y: 0 };
 const ord = [];
@@ -35,8 +36,8 @@ $(() => {
 		},
 	});
 
-	DropzoneCardInteract(".vokalE");
-	DropzoneCardInteract(".vokalÆ");
+	DropzoneCardInteract(".vokalA");
+	DropzoneCardInteract(".vokalB");
 
 	//Indsætning af ikon (krydset)
 	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
@@ -79,19 +80,19 @@ const timeline = anime.timeline;
  * @param {String} card The target card div/class
  * @returns Returns a pormis for when animation is done
  */
-function animationFromStack(card) {
+async function animationFromStack(card) {
 	let maincontentCenter = findMaincontentCenter(card);
 
-	var t1 = anime.timeline({
+	let t1 = anime.timeline({
 		targets: card,
 	});
-
-	t1.add({
-		translateX: maincontentCenter.x,
-		translateY: maincontentCenter.y,
-		easing: "easeOutQuint",
-		duration: 1000,
-	})
+	await t1
+		.add({
+			translateX: maincontentCenter.x,
+			translateY: maincontentCenter.y,
+			easing: "easeOutQuint",
+			duration: 1000,
+		})
 		.finished.then(() => {
 			$(card)
 				.css({
@@ -106,9 +107,11 @@ function animationFromStack(card) {
 					"box-shadow":
 						"0 6px 6px rgba(0, 0, 0, 0.23), 0 10px 20px rgba(0, 0, 0, 0.19)",
 				});
-			anime(
+			let cardFlip = anime.timeline({
+				targets: card,
+			});
+			cardFlip.add(
 				{
-					targets: card,
 					scale: [
 						{ value: 1 },
 						{ value: 1.2, duration: 400 },
@@ -120,12 +123,11 @@ function animationFromStack(card) {
 				},
 				"-=200"
 			);
+			return cardFlip.finished;
 		})
 		.catch((err) => {
 			console.log(err);
 		});
-
-	return t1.finished;
 }
 /**
  * Used to animate back to where the card was draged from.
@@ -166,13 +168,32 @@ function DropzoneCardInteract(div) {
 					setTimeout(resolve, 1000);
 				});
 			})().then(() => {
-				if ($(div).text() === ord[currentCard].answer) {
-					console.log(`Your answer is correct`);
+				if ($(div).text().trim(" ") === ord[currentCard].answer.trim(" ")) {
+					animateCorrectAnswer();
 				} else {
-					console.log(`Your answer is incorrect`);
+					AnimateIncorrectAnswer();
 				}
 			});
 		},
+	});
+}
+
+function animateCorrectAnswer() {
+	$(`.card${currentCard} .back`).css({
+		"background-color": "green",
+	});
+	let anim = lottie.loadAnimation({
+		container: document.getElementById("animation"), // the dom element that will contain the animation
+		renderer: "svg",
+		loop: true,
+		autoplay: true,
+		path: "https://assets2.lottiefiles.com/packages/lf20_30iie6.json", // the path to the animation json
+	});
+	anim.play();
+}
+function AnimateIncorrectAnswer() {
+	$(`.card${currentCard} .back`).css({
+		"background-color": "red",
 	});
 }
 
@@ -182,8 +203,16 @@ function DropzoneCardInteract(div) {
 function SetupHtmlDivs(data) {
 	MakeCardStack();
 	populateTutorial(data);
+	populateAnswers(data);
 	MakeHelpIcon();
 	ShowTutorialAgain();
+}
+
+function populateAnswers(data) {
+	let answerA = `<p> ${data.answerOptions[0]} </p>`;
+	let answerB = `<p> ${data.answerOptions[1]} </p>`;
+	$(".vokal").find(".vokalA").html(answerA);
+	$(".vokal").find(".vokalB").html(answerB);
 }
 
 function populateTutorial(data) {
@@ -227,7 +256,8 @@ function FromStackAnimation(card) {
 				.draggable({
 					listeners: {
 						start(event) {
-							$(".vokalE, .vokalÆ").css({
+							console.log(ord[currentCard].answer);
+							$(".vokalA, .vokalB").css({
 								opacity: 0.5,
 								"border-style": "dashed",
 							});
@@ -242,7 +272,7 @@ function FromStackAnimation(card) {
 				})
 				.on("dragend", (event) => {
 					animationToCenter(card);
-					$(".vokalE, .vokalÆ").css({
+					$(".vokalA, .vokalB").css({
 						opacity: 1,
 						"border-style": "none",
 					});
@@ -271,7 +301,6 @@ function RemoveTutorial() {
 	return new Promise((resolve) => {
 		let html = $(".tutorial").html();
 		$(".tutorial").remove();
-		// $("#tutorialbutton").css("visibility", "hidden");
 		$("#tutorialbutton").remove();
 		$(".curtain").remove();
 		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
