@@ -6,6 +6,8 @@ import {
 	faVolumeUp,
 	faTimes,
     faMicrophone,
+	faPlay,
+	faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../css/exercise2.scss"; 
 
@@ -13,7 +15,8 @@ library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 library.add(faMicrophone);
-
+library.add(faPlay);
+library.add(faStar);
 
 $(() => {
 	SetupHtmlDivs();
@@ -21,7 +24,7 @@ $(() => {
 	//Indsætning af ikon (krydset)
 	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
 
-	$(".record").append(icon({prefix: "fas", iconName: "microphone"}).html)
+	$(".record").append(icon({prefix: "fas", iconName: "microphone"}).html);
 
 	$(".close svg").on("click", function () {
 		alert("Closing...");
@@ -34,7 +37,13 @@ $(() => {
         RemoveTutorial();
         animationFromStack(`.card5`);
 		$(".translation").css("visibility", "visible");
+		$(".sentence").css("visibility", "visible");
     });
+
+	//Lav seperat knap til afspil lydfil her eller nede i functionen?
+	$(".record").on("click", () => {
+		StartRecording();
+	})
 });
 
 /**
@@ -122,6 +131,8 @@ function SetupHtmlDivs() {
     MakeCardStackEng();
 
 	SetupSentence();
+
+	setupRating();
 }
 
 /**
@@ -184,7 +195,7 @@ function MakeCardStack() {
 const ordENG = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"]; 
 
 function MakeCardStackEng() {
-	let sentenceTranslated = `<p class="sentenceTranslated">Translated <span class="focusWord" style="font-weight: bold;">${ordENG[0]}</span> Sentence</p>`
+	let sentenceTranslated = `<p class="sentenceTranslated"><span class="focusWord" style="font-weight: bold;">${ordENG[0]}</span></p>`
     $('.translation').append(sentenceTranslated);
 	$('.translation').prepend()
 }
@@ -195,10 +206,50 @@ function SetupSentence() {
 	const wordIndex = sentence.indexOf(word);
 	const firstPart = sentence.slice(0, wordIndex);
 	const secondPart = sentence.slice(wordIndex + word.length + 1);
-	console.log(firstPart);
-	console.log(secondPart);
 	let firstDiv = `<div class="firstPart">${firstPart}</div>`
 	let secondDiv = `<div class="secondPart">${secondPart}</div>`
 	let wordDiv = `<div class="word"></div>`
 	$(".sentence").append([firstDiv, wordDiv, secondDiv]);
+}
+
+function StartRecording() {
+	navigator.mediaDevices.getUserMedia({ audio: true })
+  	.then(stream => {
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+
+    const audioChunks = [];
+
+    mediaRecorder.addEventListener("dataavailable", event => {
+    	audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener("stop", () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+	  console.log(audio);
+    });
+
+	setTimeout(() => {
+		mediaRecorder.stop();
+		$(".record svg").remove();
+		let playrecording = `<div class="playRec"></div>`
+		$(".play").append(playrecording);
+		$(".playRec").append(icon({prefix: "fas", iconName: "play"}).html);
+		$(".playRec").on("click", () => {
+			audio.play();
+		})
+		//Fjern record knap og append afspil lydfil knap
+	  }, 3000);
+  });
+}
+
+function setupRating() {
+	var i;
+	for(i = 0; i < 5; i++) {
+		let ratingStars = `<span class="star stars${i}"></span>`;
+		$(".rating").append(ratingStars);
+		$(`.stars${i}`).append(icon({prefix: "fas", iconName: "star"}).html);
+	}
 }

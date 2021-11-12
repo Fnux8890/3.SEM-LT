@@ -40,13 +40,16 @@
   width: calc(206px * 3);
   height: 100%;
   background-color: white;
+  visibility: hidden;
   .firstPart {
     grid-area: sentenceFirst;
     place-self: center;
+    font-size: 2rem;
   }
   .secondPart {
     grid-area: sentenceLast;
     place-self: center;
+    font-size: 2rem;
   }
   .word {
     place-self: center;
@@ -57,4 +60,12 @@
   grid-area: vokaler;
   place-self: center;
   font-size: calc(15px + 2vw);
+    svg {
+      visibility: visible;
+    }
+}
+
+.rating {
+  grid-area: vokaler;
+  place-self: start center;
 }
