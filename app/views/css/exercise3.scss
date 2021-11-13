@@ -47,7 +47,7 @@ body {
 
 //64 89
 .card {
-	height: 140px;
+	height: 130px;
 	width: 200px;
 	background-color: transparent;
 	border-radius: 10px;
@@ -100,13 +100,17 @@ body {
 }
 
 .answerOption {
+	height: 65px;
+	width: 200px;
 	color: black;
 	text-align: center;
+	display: grid;
+	place-items: center;
 	/* font-size: 120px; */
 	opacity: 1;
 	border-style: none;
 	border-radius: 10px;
-	padding: 20px 55px;
+	margin: 5px;
 	z-index: 1;
 	cursor: pointer;
 

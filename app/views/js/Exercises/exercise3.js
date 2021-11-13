@@ -14,8 +14,7 @@ import "../../css/exercise3.scss";
 $(() => {
 	//const words = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 	//const answerOptions = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-	const words = [
-		{
+	const words = [{
 			word: "ord1",
 			translation: "word1",
 			soundfile: ["s1", "s2", "s3"],
@@ -58,11 +57,11 @@ $(() => {
 	//     post: function
 	// })
 
-	fetch("/page/ex3")
-		.then((response) => response.json())
-		.then((data) => {
-			//console.log("client: " + JSON.stringify(data, null, 4));
-		});
+	// fetch("/page/ex3")
+	// 	.then((response) => response.json())
+	// 	.then((data) => {
+	// 		//console.log("client: " + JSON.stringify(data, null, 4));
+	// 	});
 
 	$(document).on("click", ".mainContent .cardcontainer", function () {
 		console.log(`card was clicked`);
@@ -91,8 +90,7 @@ $(() => {
 			console.log(
 				`CORRECT - word: ${mainWord.translation} == answerOption: ${aoText}`
 			);
-			colorChange.add(
-				{
+			colorChange.add({
 					targets: this,
 					background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
 					complete: function (anim) {
@@ -106,8 +104,7 @@ $(() => {
 			newCard();
 		} else {
 			console.log("FALSE - play false-sound");
-			colorChange.add(
-				{
+			colorChange.add({
 					targets: this,
 					background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
 					complete: function (anim) {
@@ -146,7 +143,7 @@ $(() => {
 			return;
 		}
 		cardIndex--;
-		animationFromStack(`#card${cardIndex}`);
+
 
 		let answerOptions = [words[cardIndex]];
 
@@ -162,13 +159,7 @@ $(() => {
 		}
 
 		MakeAnswerOptions(answerOptions);
-
-		// $.ajax({
-		//     type: "POST",
-		//     url: "/page/anwOpts",
-		//     data: JSON.stringify(answerOptions),
-		//     contentType: "application/json"
-		// });
+		animationFromStack(`#card${cardIndex}`);
 	}
 
 	/**
@@ -263,11 +254,11 @@ $(() => {
 		});
 
 		t1.add({
-			translateX: maincontentCenter.x,
-			translateY: maincontentCenter.y,
-			easing: "easeOutQuint",
-			duration: 1000,
-		})
+				translateX: maincontentCenter.x,
+				translateY: maincontentCenter.y,
+				easing: "easeOutQuint",
+				duration: 1000,
+			})
 			.finished.then(() => {
 				$(card)
 					.css({
@@ -278,11 +269,9 @@ $(() => {
 					.css({
 						"grid-area": "Main",
 					});
-				anime(
-					{
+				anime({
 						targets: card,
-						scale: [
-							{
+						scale: [{
 								value: 1,
 							},
 							{
@@ -381,7 +370,7 @@ $(() => {
 			let card = `
             <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
                 <div class="card card${index}" id='card${index}'>
-                    <div class="front">${icon(faQuestionCircle).html}</div>
+                    <div class="front">${icon(faVolumeUp).html}</div>
                     <div class="back">${element.word}</div>
                 </div>
             </div>`;

@@ -1,10 +1,14 @@
-import { Router } from "express";
+import {
+	Router
+} from "express";
 const router = Router();
 
 //
 import express from "express";
 import connectDB from "../../db/connect";
-import { ObjectId } from "mongodb";
+import {
+	ObjectId
+} from "mongodb";
 // import {
 // 	mongoClient
 // } from "mongodb";
@@ -205,7 +209,7 @@ router.route("/exercise3").get((req, res) => {
 
 			//res.render('./Excersises/exercise3', doc);
 			//res.send(JSON.stringify(doc));
-			res.render("./Excersises/exercise3", doc);
+			res.render("./Exercises/exercise3", doc);
 		}
 
 		function errorFunction(err) {
