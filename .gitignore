@@ -48,7 +48,7 @@ Temporary Items
 
 ### Node ###
 # files
-package-lock.json*
+
 # Logs
 logs
 *.log

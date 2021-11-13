@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
+import { join } from "path";
+import { promises, readFileSync, writeFileSync } from "fs";
+import { platform } from "os";
 
 /*
  * This method is used to insert at string into another string at a given index.
@@ -10,63 +10,113 @@ const os = require("os");
  * @returns A string with the given string inserted at index
  */
 function insert(original, index, string) {
-  if (index > 0) {
-    return original.substring(0, index) + string + original.substr(index);
-  }
+	if (index > 0) {
+		return original.substring(0, index) + string + original.substr(index);
+	}
 
-  return string + original;
+	return string + original;
 }
-
+/**
+ * Denne function har tilformål at asyncornt gennemgå en mappe og under mapper efter filer.
+ * @param {String} dir The directory to go through
+ */
 async function* walk(dir) {
-  for await (const d of await fs.promises.opendir(dir)) {
-    const entry = path.join(dir, d.name);
-    if (d.isDirectory()) yield* await walk(entry);
-    else if (d.isFile()) yield entry;
-  }
+	for await (const d of await promises.opendir(dir)) {
+		const entry = join(dir, d.name);
+		if (d.isDirectory()) yield* await walk(entry);
+		else if (d.isFile()) yield entry;
+	}
 }
-
-module.exports = insertNavbar = (req, res, next) => {
-  if (req.method === "GET") {
-    (async () => {
-      let afterPagePath = req.baseUrl.split("/").pop();
-      let matchFound = false;
-      for await (const p of walk(
-        path.join(__dirname, "..", "..", "..", "app", "views", "pages")
-      )) {
-        let currentFile;
-        if (os.platform() === "win32") {
-          currentFile = p.split("\\").pop().split(".").shift();
-        } else {
-          currentFile = p.split("/").pop().split(".").shift();
-        }
-        if (currentFile === afterPagePath) {
-          matchFound = true;
-          break;
-        }
-      }
-      if (matchFound === false) {
-        const err = new Error("File does not exists under the views directory");
-        err.status = 404;
-        next(err);
-      } else {
-        let file = path.join(
-          __dirname,
-          "../../../app",
-          "views",
-          "pages",
-          `${afterPagePath}.pug`
-        );
-        let pugFile = fs.readFileSync(file, "utf-8");
-        if (pugFile.indexOf("include ./Navbar/navbar") === -1) {
-          pugFile = insert(
-            pugFile,
-            pugFile.indexOf("body") + "body".length + 9,
-            "include ./Navbar/navbar\n        "
-          );
-          fs.writeFileSync(file, pugFile, "utf-8");
-        }
-        next();
-      }
-    })();
-  }
+//TODO should make the function to multiple function
+export const insertNavbar = (req, res, next) => {
+	if (req.method === "GET") {
+		let afterPagePath = req.baseUrl.split("/");
+		let currentFilePath;
+		let matchFound = false;
+		let folderSubLevel;
+		(async () => {
+			for await (const p of walk(
+				join(__dirname, "..", "..", "..", "app", "views", "pages")
+			)) {
+				let currentFile;
+				if (platform() === "win32") {
+					currentFile = p.split("\\").pop().split(".").shift();
+				} else {
+					currentFile = p.split("/").pop().split(".").shift();
+				}
+				if (currentFile === afterPagePath[afterPagePath.length - 1]) {
+					matchFound = true;
+					let endPath;
+					if (platform() === "win32") {
+						endPath = p.split("\\");
+					} else {
+						endPath = p.split("/");
+					}
+					let j = endPath.indexOf("pages");
+					for (let i = 0; i <= j; i++) {
+						endPath.shift();
+					}
+					folderSubLevel = endPath.length - 1;
+					if (folderSubLevel > 0) {
+						currentFilePath = `${endPath.shift()}/${endPath.shift()}`;
+					} else {
+						currentFilePath = `${endPath.shift()}`;
+					}
+					break;
+				}
+			}
+		})()
+			.then(() => {
+				//TODO make better map handler
+				if (afterPagePath[afterPagePath.length - 1].includes("map")) {
+					return;
+				}
+				if (
+					matchFound === false &&
+					afterPagePath[afterPagePath.length - 1] !== "page"
+				) {
+					console.log(`AfterPagePath: ${afterPagePath}`);
+					const err = new Error(
+						"File does not exists under the views directory"
+					);
+					err.status = 404;
+					next(err);
+				}
+				if (
+					matchFound === true &&
+					afterPagePath[afterPagePath.length - 1] !== "page" &&
+					currentFilePath.includes("exercise") === false
+				) {
+					let file = join(
+						__dirname,
+						"../../../app",
+						"views",
+						"pages",
+						`${currentFilePath}`
+					);
+					let pugFile = readFileSync(file, "utf-8");
+					if (pugFile.indexOf("Navbar/navbar") === -1) {
+						let insertNavbarString = ``;
+						if (folderSubLevel >= 1) {
+							for (let index = 0; index < folderSubLevel; index++) {
+								insertNavbarString += `../`;
+							}
+							insertNavbarString += `Navbar/navbar\n        `;
+						} else {
+							insertNavbarString = `./Navbar/navbar\n        `;
+						}
+						pugFile = insert(
+							pugFile,
+							pugFile.indexOf("body") + "body".length + 9,
+							`include ${insertNavbarString}`
+						);
+						writeFileSync(file, pugFile, "utf-8");
+					}
+				}
+				next();
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
+	}
 };

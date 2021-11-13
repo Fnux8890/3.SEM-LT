@@ -1,52 +1,62 @@
-const express = require('express')
-const app = express()
-const connectDB = require('./app/db/connect')
-const path = require('path')
-const fs = require('fs')
-//const insertNavbar = require('./app/controller/middleware/insertNavbar')
-
-// require files
-const userRoutes = require('./app/controller/routes/users')
-const pageRoutes = require('./app/controller/routes/pages')
-// port
-const port = 3000
+import express from "express";
+import connectDB from "./app/db/connect";
+import { join } from "path";
+import cors from "cors";
+// custom middlewares
+import { insertNavbar } from "@middleware/insertNavbar";
+// import routes
+import userRoutes from "./app/controller/routes/users";
+import pageRoutes from "./app/controller/routes/pages";
+import buildRoute from "./app/controller/routes/buildRoute";
+//const declare
+const port = 3000;
+const app = express();
 
 //Load view enigne
-app.set('views', path.join(__dirname, 'app', 'views', 'pages'))
-app.set('view engine', 'pug')
+app.set("views", join(__dirname, "app", "views", "pages"));
+app.set("view engine", "pug");
 
 //middleware
-app.use(express.static(path.join(__dirname, 'app', 'views')))
-app.use(express.json()) //Kan se JSON payloads fra front-end
-app.use(express.urlencoded({ extended: false })) //Kan se String/text payloads fra front-end
-//app.use('/page/*', insertNavbar)
+app.options("*", cors());
+app.use(express.static(join(__dirname, "app", "views")));
+app.use("scripts/", express.static("/node_modules/"));
+app.use(express.json()); //Kan se JSON payloads fra front-end
+app.use(express.urlencoded({ extended: false })); //Kan se String/text payloads fra front-end
+app.use("/page/*", insertNavbar);
 
 //routes
-app.use('/api/v1/users', userRoutes)
-app.use('/page', pageRoutes)
+app.get("/", (req, res) => {
+	res.redirect("/page/index");
+	res.end();
+});
+app.use("/api/v1/users", userRoutes);
+app.use("/page", pageRoutes);
+app.use("/build", buildRoute);
 
 //error handler
 app.use((err, req, res, next) => {
-	console.log(err.message)
-	res.status(err.status || 500)
+	console.log("Stack: " + err.stack);
+	console.log("Message: " + err.message);
+	console.log("Status: " + err.status);
+	res.status(err.status || 500);
 
-	res.render('error', {
+	res.render("error", {
 		errorCode: err.status,
 		errorMessage: err.message,
-	})
-})
+	});
+});
 
 //server setup
 const start = () => {
 	try {
 		//TODO man burde ikke connecte til databasen med det samme
-		connectDB()
+		connectDB();
 		app.listen(
 			port,
 			console.log(`server listening at: http://localhost:${port}`)
-		)
+		);
 	} catch (error) {
-		console.log(error.message)
+		console.log(error.message);
 	}
-}
-start()
+};
+start();
