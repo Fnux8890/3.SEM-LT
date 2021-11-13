@@ -11,3 +11,5 @@ class Set{
 }
 
 module.exports = {'Set': Set};
+
+//bygger exercises som henter ordene fra collection - hver exercise har sin egen collection

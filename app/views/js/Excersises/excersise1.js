@@ -1,6 +1,9 @@
 import anime from "animejs";
 import interact from "interactjs";
-import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import {
+	library,
+	icon
+} from "@fortawesome/fontawesome-svg-core";
 import {
 	faQuestionCircle,
 	faVolumeUp,
@@ -9,7 +12,10 @@ import {
 import "../../css/excersise1.scss";
 
 const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-let position = { x: 0, y: 0 };
+let position = {
+	x: 0,
+	y: 0
+};
 let draggable = false;
 
 library.add(faQuestionCircle);
@@ -25,7 +31,10 @@ $(() => {
 	DropzoneCardInteract(".vokalÆ");
 
 	//Indsætning af ikon (krydset)
-	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
+	$(".close").append(icon({
+		prefix: "fas",
+		iconName: "times"
+	}).html);
 
 	$(".close svg").on("click", function () {
 		alert("Closing...");
@@ -55,7 +64,10 @@ function findMaincontentCenter(card) {
 	x -= $(card).width() / 2;
 	y += $(".mainContent").height() / 2;
 	y -= $(card).height() / 2;
-	return { x, y };
+	return {
+		x,
+		y
+	};
 }
 
 const timeline = anime.timeline;
@@ -72,11 +84,11 @@ function animationFromStack(card) {
 	});
 
 	t1.add({
-		translateX: maincontentCenter.x,
-		translateY: maincontentCenter.y,
-		easing: "easeOutQuint",
-		duration: 1000,
-	})
+			translateX: maincontentCenter.x,
+			translateY: maincontentCenter.y,
+			easing: "easeOutQuint",
+			duration: 1000,
+		})
 		.finished.then(() => {
 			$(card)
 				.css({
@@ -87,15 +99,25 @@ function animationFromStack(card) {
 				.css({
 					"grid-area": "Main",
 				});
-			anime(
-				{
+			anime({
 					targets: card,
-					scale: [
-						{ value: 1 },
-						{ value: 1.2, duration: 400 },
-						{ value: 1, duration: 400 },
+					scale: [{
+							value: 1
+						},
+						{
+							value: 1.2,
+							duration: 400
+						},
+						{
+							value: 1,
+							duration: 400
+						},
 					],
-					rotateX: { delay: 20, value: "+=180", duration: 500 },
+					rotateX: {
+						delay: 20,
+						value: "+=180",
+						duration: 500
+					},
 					easing: "easeInOutSine",
 					duration: 1200,
 				},
@@ -108,15 +130,22 @@ function animationFromStack(card) {
 
 	return t1.finished;
 }
+
 /**
  * Used to animate back to where the card was draged from.
  * @param {String} card The target card div/class
  * @returns Returns a pormis for when animation is done
  */
 function animationToCenter(card) {
-	let { x, y } = position;
+	let {
+		x,
+		y
+	} = position;
 	x = -x;
-	let animateTo = { x: x, y: y };
+	let animateTo = {
+		x: x,
+		y: y
+	};
 	var t1 = timeline({
 		targets: card,
 	});
@@ -128,7 +157,10 @@ function animationToCenter(card) {
 		duration: 1000,
 	});
 
-	position = { x: 0, y: 0 };
+	position = {
+		x: 0,
+		y: 0
+	};
 
 	return t1.finished;
 }
@@ -229,7 +261,10 @@ function RemoveTutorial() {
 	$("#tutorialbutton").remove();
 	$("#drawcardContainer").css("visibility", "visible");
 	$(".curtain").remove();
-	$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+	$(".speaker").append(icon({
+		prefix: "fas",
+		iconName: "volume-up"
+	}).html);
 }
 
 /**

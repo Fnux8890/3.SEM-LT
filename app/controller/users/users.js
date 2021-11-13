@@ -6,21 +6,32 @@ import {
   findOneAndDelete,
 } from "../../models/users";
 
-import { hash as _hash, compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import {
+  hash as _hash,
+  compare
+} from "bcrypt";
+import {
+  sign
+} from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
   try {
     const user = await find({});
-    res.status(200).json({ user });
+    res.status(200).json({
+      user
+    });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({
+      msg: error
+    });
   }
 };
 
 const createUser = async (req, res) => {
   try {
-    find({ username: req.body.username })
+    find({
+        username: req.body.username
+      })
       .exec()
       .then((user) => {
         if (user.length >= 1) {
@@ -38,61 +49,97 @@ const createUser = async (req, res) => {
                 username: req.body.username,
                 password: hash,
               });
-              res.status(200).json({ newuser });
+              res.status(200).json({
+                newuser
+              });
             }
           });
         }
       });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({
+      msg: error
+    });
   }
 };
 
 const getUser = async (req, res) => {
   try {
-    const { id: userID } = req.params;
-    const user = await findOne({ _id: userID });
+    const {
+      id: userID
+    } = req.params;
+    const user = await findOne({
+      _id: userID
+    });
     if (!user) {
-      return res.status(404).json({ msg: `No user with id: ${userID}}` });
+      return res.status(404).json({
+        msg: `No user with id: ${userID}}`
+      });
     }
-    res.status(200).json({ user });
+    res.status(200).json({
+      user
+    });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({
+      msg: error
+    });
   }
 };
 
 const updateUser = async (req, res) => {
   try {
-    const { id: userID } = req.params;
-    const user = await findOneAndUpdate({ _id: userID }, req.body, {
+    const {
+      id: userID
+    } = req.params;
+    const user = await findOneAndUpdate({
+      _id: userID
+    }, req.body, {
       new: true,
       runValidators: true,
     });
     if (!user) {
-      return res.status(404).json({ msg: `No user with id: ${userID}}` });
+      return res.status(404).json({
+        msg: `No user with id: ${userID}}`
+      });
     }
-    res.status(200).json({ user });
+    res.status(200).json({
+      user
+    });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({
+      msg: error
+    });
   }
 };
 
 const deleteUser = async (req, res) => {
   try {
-    const { id: userID } = req.params;
-    const user = await findOneAndDelete({ _id: userID });
+    const {
+      id: userID
+    } = req.params;
+    const user = await findOneAndDelete({
+      _id: userID
+    });
     if (!user) {
-      return res.status(404).json({ msg: `No user with id: ${userID}}` });
+      return res.status(404).json({
+        msg: `No user with id: ${userID}}`
+      });
     }
-    res.status(200).json({ user });
+    res.status(200).json({
+      user
+    });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({
+      msg: error
+    });
   }
 };
 
 const loginUser = async (req, res, next) => {
   try {
-    find({ username: req.body.username })
+    find({
+        username: req.body.username
+      })
       .exec()
       .then((user) => {
         if (user.length < 1) {
@@ -107,13 +154,11 @@ const loginUser = async (req, res, next) => {
             });
           }
           if (result) {
-            const token = sign(
-              {
+            const token = sign({
                 username: user[0].username,
                 userID: user[0]._id,
               },
-              process.env.JWT_KEY,
-              {
+              process.env.JWT_KEY, {
                 expiresIn: "1h",
               }
             );
@@ -128,7 +173,9 @@ const loginUser = async (req, res, next) => {
         });
       });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({
+      msg: error
+    });
   }
 };
 
