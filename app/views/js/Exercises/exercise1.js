@@ -14,6 +14,7 @@ let position = { x: 0, y: 0 };
 const ord = [];
 let currentCard = "";
 let tutorial = "";
+let anim = "";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -149,6 +150,13 @@ function animationToCenter(card) {
 		duration: 1000,
 	});
 
+	t1.finished.then(() => {
+		$(`${card}`).css({
+			transform: "none",
+			transform: "rotateX(180deg)",
+		});
+	});
+
 	position = { x: 0, y: 0 };
 
 	return t1.finished;
@@ -179,23 +187,28 @@ function DropzoneCardInteract(div) {
 }
 
 function animateCorrectAnswer() {
-	$(`.card${currentCard} .back`).css({
-		"background-color": "green",
-	});
-	let anim = lottie.loadAnimation({
+	anim = lottie.loadAnimation({
 		container: document.getElementById("animation"), // the dom element that will contain the animation
 		renderer: "svg",
-		loop: true,
-		autoplay: true,
-		path: "https://assets2.lottiefiles.com/packages/lf20_30iie6.json", // the path to the animation json
+		loop: false,
+		autoplay: false,
+		path: "https://assets2.lottiefiles.com/packages/lf20_rovf9gzu.json", // the path to the animation json
 	});
+	$("#animation").css({ "z-index": "11" });
+	$(".mainContent")
+		.append(`<div class='curtain'></div>`)
+		.append(`<div class='tutorial'></div>`);
+	$(".tutorial").addClass("correct").html(`
+			<p>Congratulations your answer was correct!</p>
+			<button id="nextCard">Continue</button>
+	`);
+	$(".speaker").remove();
 	anim.play();
-}
-function AnimateIncorrectAnswer() {
-	$(`.card${currentCard} .back`).css({
-		"background-color": "red",
+	$(".correct > button").on("click", () => {
+		RemoveTutorial();
 	});
 }
+function AnimateIncorrectAnswer() {}
 
 /**
  * The basic setup for the html document.
@@ -293,6 +306,9 @@ function ShowTutorialAgain() {
 			.append(`<div class='tutorial'></div>`);
 		$(".tutorial").append(tutorial);
 		$(".speaker").remove();
+		$(".curtain").on("click", () => {
+			RemoveTutorial();
+		});
 		CardDraggable();
 	});
 }

@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"start": "nodemon  --exec babel-node --delay 3.2 app",
+		"start": "nodemon  --exec babel-node --delay 0.8 app",
 		"test": "node script1.js"
 	},
 	"repository": {
