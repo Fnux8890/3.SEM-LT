@@ -22,7 +22,7 @@ async function getExerciseWithWords(exerciseId) {
 	let result = await exercisesModel.aggregate([
 		{
 			$match: {
-				name: "Exercise 1",
+				name: `Exercise ${exerciseId}`,
 			},
 		},
 		{
