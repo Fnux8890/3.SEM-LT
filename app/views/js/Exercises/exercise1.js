@@ -105,31 +105,40 @@ async function animationFromStack(card) {
 				.css({
 					"grid-area": "Main",
 					"border-radius": "10px",
+				})
+				.children(card)
+				.css({
 					"box-shadow":
-						"0 6px 6px rgba(0, 0, 0, 0.23), 0 10px 20px rgba(0, 0, 0, 0.19)",
+						"6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)",
 				});
-			let cardFlip = anime.timeline({
-				targets: card,
-			});
-			cardFlip.add(
-				{
-					scale: [
-						{ value: 1 },
-						{ value: 1.2, duration: 400 },
-						{ value: 1, duration: 400 },
-					],
-					rotateX: { delay: 20, value: "+=180", duration: 500 },
-					easing: "easeInOutSine",
-					duration: 1200,
-				},
-				"-=200"
-			);
-			return cardFlip.finished;
+
+			return cardFlip(card);
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 }
+
+function cardFlip(card) {
+	let cardFlip = anime.timeline({
+		targets: card,
+	});
+	cardFlip.add(
+		{
+			scale: [
+				{ value: 1 },
+				{ value: 1.2, duration: 400 },
+				{ value: 1, duration: 400 },
+			],
+			rotateX: { delay: 20, value: "+=180", duration: 500 },
+			easing: "easeInOutSine",
+			duration: 1200,
+		},
+		"-=200"
+	);
+	return cardFlip.finished;
+}
+
 /**
  * Used to animate back to where the card was draged from.
  * @param {String} card The target card div/class
@@ -148,18 +157,15 @@ function animationToCenter(card) {
 		translateY: animateTo.y,
 		easing: "easeOutQuint",
 		duration: 1000,
-	});
-
-	t1.finished.then(() => {
+	}).finished.then(() => {
 		$(`${card}`).css({
 			transform: "none",
 			transform: "rotateX(180deg)",
 		});
+		position = { x: 0, y: 0 };
+
+		return t1.finished;
 	});
-
-	position = { x: 0, y: 0 };
-
-	return t1.finished;
 }
 
 function DropzoneCardInteract(div) {
@@ -187,28 +193,75 @@ function DropzoneCardInteract(div) {
 }
 
 function animateCorrectAnswer() {
-	anim = lottie.loadAnimation({
-		container: document.getElementById("animation"), // the dom element that will contain the animation
-		renderer: "svg",
-		loop: false,
-		autoplay: false,
-		path: "https://assets2.lottiefiles.com/packages/lf20_rovf9gzu.json", // the path to the animation json
+	let card = `.card${currentCard}`;
+	$(`${card} .front`).css({
+		"background-color": "green",
 	});
-	$("#animation").css({ "z-index": "11" });
-	$(".mainContent")
-		.append(`<div class='curtain'></div>`)
-		.append(`<div class='tutorial'></div>`);
-	$(".tutorial").addClass("correct").html(`
-			<p>Congratulations your answer was correct!</p>
-			<button id="nextCard">Continue</button>
+	$(`${card}`).css({
+		transform: "none",
+		transform: "rotateX(180deg)",
+	});
+	$(`${card} .front`).html(`
+	<span id='correct'></span>
 	`);
-	$(".speaker").remove();
-	anim.play();
-	$(".correct > button").on("click", () => {
-		RemoveTutorial();
+	$("#correct").css({
+		width: "100px",
+	});
+	anime({
+		targets: card,
+		scale: [
+			{ value: 1 },
+			{ value: 1.2, duration: 400 },
+			{ value: 1, duration: 400 },
+		],
+		rotateX: { delay: 20, value: "+=180", duration: 500 },
+		easing: "easeInOutSine",
+		duration: 1000,
+	}).finished.then(() => {
+		lottie.loadAnimation({
+			container: document.getElementById("correct"),
+			renderer: "svg",
+			loop: false,
+			autoPlay: false,
+			path: "https://assets3.lottiefiles.com/packages/lf20_6LimOm.json",
+		});
 	});
 }
-function AnimateIncorrectAnswer() {}
+function AnimateIncorrectAnswer() {
+	let card = `.card${currentCard}`;
+	$(`${card} .front`).css({
+		"background-color": "red",
+	});
+	$(`${card}`).css({
+		transform: "none",
+		transform: "rotateX(180deg)",
+	});
+	$(`${card} .front`).html(`
+	<span id='incorrect'></span>
+	`);
+	$("#incorrect").css({
+		width: "100px",
+	});
+	anime({
+		targets: card,
+		scale: [
+			{ value: 1 },
+			{ value: 1.2, duration: 400 },
+			{ value: 1, duration: 400 },
+		],
+		rotateX: { delay: 20, value: "+=180", duration: 500 },
+		easing: "easeInOutSine",
+		duration: 1000,
+	}).finished.then(() => {
+		lottie.loadAnimation({
+			container: document.getElementById("incorrect"),
+			renderer: "svg",
+			loop: false,
+			autoPlay: false,
+			path: "https://assets5.lottiefiles.com/temp/lf20_yYJhpG.json",
+		});
+	});
+}
 
 /**
  * The basic setup for the html document.
