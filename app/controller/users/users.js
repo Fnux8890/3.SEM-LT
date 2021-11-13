@@ -130,8 +130,6 @@ const loginUser = async (req, res, next) => {
 					}
 				);
 			});
-		res.setHeader('Authorization', 'Bearer ' + token);
-		res.redirect('/page/user-overview');
 	} catch (error) {
 		res.status(500).json({ msg: error });
 	}
