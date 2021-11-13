@@ -7,7 +7,7 @@ import {
 	faTimes,
 	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/exercise1.scss";
+import "../../assets/scss/layouts/exercises/exercise1.scss";
 import lottie from "lottie-web/build/player/lottie";
 
 let position = { x: 0, y: 0 };

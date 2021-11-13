@@ -1,4 +1,4 @@
-import "@publicCss/createAccount.scss";
+import "../../assets/scss/layouts/createAccount.scss";
 import axios from "axios";
 $(() => {
 	const createaccount = document.getElementById("createaccount-btn");
