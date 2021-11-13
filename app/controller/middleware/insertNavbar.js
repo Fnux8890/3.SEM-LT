@@ -57,13 +57,20 @@ export const insertNavbar = (req, res, next) => {
 						endPath.shift();
 					}
 					folderSubLevel = endPath.length - 1;
-					currentFilePath = `${endPath.shift()}/${endPath.shift()}`;
-
+					if (folderSubLevel > 0) {
+						currentFilePath = `${endPath.shift()}/${endPath.shift()}`;
+					} else {
+						currentFilePath = `${endPath.shift()}`;
+					}
 					break;
 				}
 			}
 		})()
 			.then(() => {
+				//TODO make better map handler
+				if (afterPagePath[afterPagePath.length - 1].includes("map")) {
+					return;
+				}
 				if (
 					matchFound === false &&
 					afterPagePath[afterPagePath.length - 1] !== "page"
@@ -78,7 +85,7 @@ export const insertNavbar = (req, res, next) => {
 				if (
 					matchFound === true &&
 					afterPagePath[afterPagePath.length - 1] !== "page" &&
-					currentFilePath.includes("excersise") === false
+					currentFilePath.includes("exercise") === false
 				) {
 					let file = join(
 						__dirname,

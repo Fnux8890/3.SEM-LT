@@ -1,17 +1,20 @@
 const path = require("path");
 const { SourceMapDevToolPlugin, ProvidePlugin } = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const NodePolyfillWebpackPlugin = require("node-polyfill-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
 	target: "node",
 	mode: "development",
 	entry: {
-		excersise: {
-			import: "./app/views/js/Excersises/excersise1.js",
+		exercise: {
+			import: "./app/views/js/Exercises/exercise1.js",
 		},
 		main: [
 			path.resolve(__dirname, "./app/views/js/login/login.js"),
 			path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
+		],
+		createAccount: [
+			path.resolve(__dirname, "./app/views/js/login/createAccount.js"),
 		],
 	},
 	output: {
@@ -27,10 +30,15 @@ module.exports = {
 					{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							publicPath: "/css/",
+							publicPath: "../",
 						},
 					},
-					"css-loader",
+					{
+						loader: "css-loader",
+						options: {
+							url: true,
+						},
+					},
 					"sass-loader",
 					"postcss-loader",
 				],
@@ -50,6 +58,22 @@ module.exports = {
 				enforce: "pre",
 				use: ["source-map-loader"],
 			},
+			{
+				test: /\.(s[ac]|c)ss$/i,
+				enforce: "pre",
+				use: ["source-map-loader"],
+			},
+			// {
+			// 	test: /\.(svg|png|jpe?g|gif)$/,
+			// 	use: {
+			// 		loader: "file-loader",
+			// 		options: {
+			// 			name: "[name].[ext]",
+			// 			outputPath: "img",
+			// 			public: "../",
+			// 		},
+			// 	},
+			// },
 		],
 	},
 	optimization: {
@@ -72,8 +96,17 @@ module.exports = {
 					priority: -20,
 					reuseExistingChunk: true,
 				},
+				styles: {
+					name: "styles",
+					type: "css/mini-extract",
+					chunks: "all",
+					minChunks: 2,
+					enforce: true,
+				},
 			},
 		},
+		minimizer: [new CssMinimizerPlugin()],
+		minimize: false,
 	},
 	plugins: [
 		new SourceMapDevToolPlugin({ filename: "[file].map" }),
@@ -83,7 +116,7 @@ module.exports = {
 			"window.jQuery": "jquery",
 		}),
 		new MiniCssExtractPlugin({
-			filename: "main.bundle.css",
+			filename: "css/[name].css",
 			chunkFilename: "[id].css",
 		}),
 	],

@@ -7,6 +7,7 @@ import { insertNavbar } from "@middleware/insertNavbar";
 // import routes
 import userRoutes from "./app/controller/routes/users";
 import pageRoutes from "./app/controller/routes/pages";
+import buildRoute from "./app/controller/routes/buildRoute";
 //const declare
 const port = 3000;
 const app = express();
@@ -24,14 +25,19 @@ app.use(express.urlencoded({ extended: false })); //Kan se String/text payloads 
 app.use("/page/*", insertNavbar);
 
 //routes
+app.get("/", (req, res) => {
+	res.redirect("/page/index");
+	res.end();
+});
 app.use("/api/v1/users", userRoutes);
 app.use("/page", pageRoutes);
+app.use("/build", buildRoute);
 
 //error handler
 app.use((err, req, res, next) => {
-	console.log(err.stack);
-	console.log(err.message);
-	console.log(err.status);
+	console.log("Stack: " + err.stack);
+	console.log("Message: " + err.message);
+	console.log("Status: " + err.status);
 	res.status(err.status || 500);
 
 	res.render("error", {

@@ -26,8 +26,11 @@ router.route("/user-overview").get((req, res) => {
 	res.render("./Login/user-overview");
 });
 
-router.route("/excersise1").get((req, res) => {
-	res.render("./Excersises/excersise1");
+router.route("/exercise1").get((req, res) => {
+	res.render("./Exercises/exercise1");
+});
+router.route("/index").get((req, res) => {
+	res.render("./index");
 });
 
 
