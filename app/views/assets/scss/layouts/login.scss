@@ -1,6 +1,4 @@
-body {
-	margin: 0;
-}
+@use "../main.scss" as *;
 // main should not contain specific css stylings but more general @sebastian
 .loginModal {
 	display: grid;
@@ -8,7 +6,7 @@ body {
 	font-family: sans-serif;
 	width: 100vw;
 	height: 100vh;
-	background: url(./img/placeholder.jpg);
+	background: url(../../img/placeholder.jpg);
 }
 
 div.loginbox {
