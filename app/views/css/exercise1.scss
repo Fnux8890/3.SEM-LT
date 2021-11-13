@@ -38,8 +38,8 @@ body {
 }
 
 .card {
-	height: 200px;
 	width: 200px;
+	height: 100px;
 	background-color: transparent;
 	border-radius: 10px;
 	transform-style: preserve-3d;
@@ -62,6 +62,7 @@ body {
 .front {
 	color: #fff;
 	background: #2196f3;
+	font-size: 1.5rem;
 }
 .back {
 	position: absolute;
@@ -71,7 +72,7 @@ body {
 	transform: rotateX(180deg);
 	color: #2196f3;
 	background: white;
-	font-size: 1.5vw;
+	font-size: 2rem;
 }
 #drawcardContainer {
 	grid-area: drawcard;
