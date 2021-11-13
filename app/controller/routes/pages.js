@@ -1,18 +1,13 @@
-import {
-	Router
-} from "express";
+import { Router } from "express";
 const router = Router();
 
 //
 import express from "express";
 import connectDB from "../../db/connect";
-import {
-	ObjectId
-} from "mongodb";
+import { ObjectId } from "mongodb";
 // import {
 // 	mongoClient
 // } from "mongodb";
-
 
 router.route("/login").get((req, res) => {
 	res.render("./Login/login");
@@ -29,10 +24,10 @@ router.route("/user-overview").get((req, res) => {
 router.route("/exercise1").get((req, res) => {
 	res.render("./Exercises/exercise1");
 });
+
 router.route("/index").get((req, res) => {
 	res.render("./index");
 });
-
 
 // var GetDocument = function (collection, field, value) {
 // 	// 	const url = 'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -93,7 +88,6 @@ router.route("/index").get((req, res) => {
 // 			_id: ObjectId(ex4)
 // 		});
 
-
 // 		function iterateFunc(doc) {
 // 			console.log(JSON.stringify(doc, null, 4));
 
@@ -125,7 +119,6 @@ router.route("/index").get((req, res) => {
 // 			return card.wordId;
 // 		});
 
-
 // 		console.log("word ids: " + JSON.stringify(wordArray));
 
 // 		client.close;
@@ -137,33 +130,32 @@ router.route("/index").get((req, res) => {
 // 	res.render(data);
 // }
 
-
-
-router.route('/anwOpts').post((req, res) => {
+router.route("/anwOpts").post((req, res) => {
 	let ansOpt = JSON.parse(req.body.answerOptions);
 	console.log("SERVER: " + ansOpt);
-	res.render('./Excersises/exercise3', ansOpt);
-})
+	res.render("./Excersises/exercise3", ansOpt);
+});
 
 // Connect using a MongoClient instance
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const fs = require('fs');
-const url = 'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const MongoClient = require("mongodb").MongoClient;
+const assert = require("assert");
+const fs = require("fs");
+const url =
+	"mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-
-router.route('/ex3').get((req, res) => {
+router.route("/ex3").get((req, res) => {
 	MongoClient.connect(url, function (err, client) {
 		assert.equal(null, err);
 
 		const db = client.db("myFirstDatabase");
 
-		let ex3 = "6183ee147a458ab24cd11e51"
-		let ex4 = "6183ee047a458ab24cd11e4c"
-		let ex1 = "618b8f5c0ffec8dde8060dd4"
+		let ex3 = "6183ee147a458ab24cd11e51";
+		let ex4 = "6183ee047a458ab24cd11e4c";
+		let ex1 = "618b8f5c0ffec8dde8060dd4";
 
-		var cursor = db.collection('test').find({ //fra test collection
-			_id: ObjectId(ex1)
+		var cursor = db.collection("test").find({
+			//fra test collection
+			_id: ObjectId(ex1),
 		});
 
 		function iterateFunc(doc) {
@@ -176,15 +168,14 @@ router.route('/ex3').get((req, res) => {
 		function errorFunction(err) {
 			console.log(err);
 		}
-		cursor.forEach(iterateFunc, errorFunction)
+		cursor.forEach(iterateFunc, errorFunction);
 		//wordObjArr[0].forEach(iterateFunc);
 
 		client.close;
 	});
-})
+});
 
 router.route("/exercise3").get((req, res) => {
-
 	//var jsonObject = await GetDoc();
 	//GetDoc();
 
@@ -193,12 +184,13 @@ router.route("/exercise3").get((req, res) => {
 
 		const db = client.db("myFirstDatabase");
 
-		let ex3 = "6183ee147a458ab24cd11e51"
-		let ex4 = "6183ee047a458ab24cd11e4c"
-		let ex1 = "618b8f5c0ffec8dde8060dd4"
+		let ex3 = "6183ee147a458ab24cd11e51";
+		let ex4 = "6183ee047a458ab24cd11e4c";
+		let ex1 = "618b8f5c0ffec8dde8060dd4";
 
-		var cursor = db.collection('test').find({ //fra test collection
-			_id: ObjectId(ex1)
+		var cursor = db.collection("test").find({
+			//fra test collection
+			_id: ObjectId(ex1),
 		});
 		//console.log(JSON.stringify(cursor));
 		var wordArray;
@@ -207,19 +199,19 @@ router.route("/exercise3").get((req, res) => {
 			console.log(JSON.stringify(doc, null, 4));
 			wordArray = doc.cards.map((card) => {
 				//return ObjectId(`"${card._id}"`);
-				return '"' + card._id + '"'
+				return '"' + card._id + '"';
 			});
 			console.log("wordarray: " + wordArray);
 
 			//res.render('./Excersises/exercise3', doc);
 			//res.send(JSON.stringify(doc));
-			res.render('./Excersises/exercise3', doc);
+			res.render("./Excersises/exercise3", doc);
 		}
 
 		function errorFunction(err) {
 			console.log(err);
 		}
-		cursor.forEach(iterateFunc, errorFunction)
+		cursor.forEach(iterateFunc, errorFunction);
 		//wordObjArr[0].forEach(iterateFunc);
 
 		client.close;
@@ -246,16 +238,12 @@ router.route("/exercise3").get((req, res) => {
 
 	//console.log("BEFORE WE RENDER: " + JSON.stringify(jsonObject, null, 4));
 
-
-
 	//console.log("word ids: " + JSON.stringify(wordArray));
 
 	//    res.render('./Excersises/exercise3', jsonObject);
 
 	//res.setHeader('Content-Type', 'application/json');
 	//res.send(jsonObject);
-
-
 
 	//res.send(jsonObject)
 	//res.render('./Excersises/exercise3', JSON.parse(jsonObject));
