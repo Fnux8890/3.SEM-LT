@@ -3,7 +3,7 @@
 
 body {
 	margin: 0;
-	background-color: #a0cebe;
+	background-color: $lightGreenCyan;
 }
 .container {
 	display: grid;
@@ -29,7 +29,7 @@ body {
 .answerOption {
 	height: 65px;
 	width: 200px;
-	
+
 	color: black;
 	text-align: center;
 	display: grid;
@@ -46,7 +46,7 @@ body {
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 .answerOption:hover {
-	background-color: #226b5e;
+	background-color: $secundaryColor;
 	color: white;
 	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.19), 0 8px 8px rgba(0, 0, 0, 0.23);
 }
@@ -54,4 +54,13 @@ body {
 .answerOption p {
 	padding: 0;
 	margin: 0;
+}
+
+.front{
+	color: #fff;
+	background: #305699;
+}
+.back{
+	color: #305699;
+	background: #fff;
 }
