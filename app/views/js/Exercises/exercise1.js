@@ -14,7 +14,6 @@ let position = { x: 0, y: 0 };
 const ord = [];
 let currentCard = "";
 let tutorial = "";
-let anim = "";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -172,6 +171,7 @@ function DropzoneCardInteract(div) {
 	interact(div).dropzone({
 		accept: ".card",
 		ondrop: function (event) {
+			AnimateToDropCenter(div);
 			console.log(
 				`your choice: ${$(div).text()} \ncorrectChoice: ${
 					ord[currentCard].answer
@@ -192,6 +192,25 @@ function DropzoneCardInteract(div) {
 	});
 }
 
+function AnimateToDropCenter(div) {
+	let dropX = $(div).offset().left;
+	let dropY = $(div).offset().top;
+	console.log(`${dropX}`);
+	console.log(`${dropY}`);
+
+	let animateTo = { x: dropX, y: dropY };
+	var t1 = timeline({
+		targets: `.card${currentCard}`,
+	});
+
+	t1.add({
+		translateX: animateTo.x,
+		translateY: animateTo.y,
+		easing: "easeOutQuint",
+		duration: 1000,
+	});
+}
+
 function animateCorrectAnswer() {
 	let card = `.card${currentCard}`;
 	$(`${card} .front`).css({
@@ -207,6 +226,14 @@ function animateCorrectAnswer() {
 	$("#correct").css({
 		width: "100px",
 	});
+	let correctAnimation = lottie.loadAnimation({
+		container: document.getElementById("correct"),
+		renderer: "svg",
+		loop: false,
+		autoPlay: false,
+		path: "https://assets3.lottiefiles.com/packages/lf20_6LimOm.json",
+	});
+	correctAnimation.autoplay = false;
 	anime({
 		targets: card,
 		scale: [
@@ -218,13 +245,7 @@ function animateCorrectAnswer() {
 		easing: "easeInOutSine",
 		duration: 1000,
 	}).finished.then(() => {
-		lottie.loadAnimation({
-			container: document.getElementById("correct"),
-			renderer: "svg",
-			loop: false,
-			autoPlay: false,
-			path: "https://assets3.lottiefiles.com/packages/lf20_6LimOm.json",
-		});
+		correctAnimation.play();
 	});
 }
 function AnimateIncorrectAnswer() {
@@ -242,6 +263,14 @@ function AnimateIncorrectAnswer() {
 	$("#incorrect").css({
 		width: "100px",
 	});
+	let incorrectAnimation = lottie.loadAnimation({
+		container: document.getElementById("incorrect"),
+		renderer: "svg",
+		loop: false,
+		autoPlay: false,
+		path: "https://assets5.lottiefiles.com/temp/lf20_yYJhpG.json",
+	});
+	incorrectAnimation.autoplay = false;
 	anime({
 		targets: card,
 		scale: [
@@ -253,13 +282,7 @@ function AnimateIncorrectAnswer() {
 		easing: "easeInOutSine",
 		duration: 1000,
 	}).finished.then(() => {
-		lottie.loadAnimation({
-			container: document.getElementById("incorrect"),
-			renderer: "svg",
-			loop: false,
-			autoPlay: false,
-			path: "https://assets5.lottiefiles.com/temp/lf20_yYJhpG.json",
-		});
+		incorrectAnimation.play();
 	});
 }
 
