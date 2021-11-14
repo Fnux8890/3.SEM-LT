@@ -10,65 +10,82 @@ import {
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../css/exercise3.scss";
+library.add(faQuestionCircle);
+library.add(faVolumeUp);
+library.add(faTimes);
 
 $(() => {
 	//const words = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 	//const answerOptions = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-	const words = [{
-			word: "ord1",
-			translation: "word1",
-			soundfile: ["s1", "s2", "s3"],
-		},
-		{
-			word: "ord2",
-			translation: "word2",
-			soundfile: ["s1", "s2", "s3"],
-		},
-		{
-			word: "ord3",
-			translation: "word3",
-			soundfile: ["s1", "s2", "s3"],
-		},
-		{
-			word: "ord4",
-			translation: "word4",
-			soundfile: ["s1", "s2", "s3"],
-		},
-		{
-			word: "ord5",
-			translation: "word5",
-			soundfile: ["s1", "s2", "s3"],
-		},
-		{
-			word: "ord6",
-			translation: "word6",
-			soundfile: ["s1", "s2", "s3"],
-		},
-	];
-	let currentWord;
+	// const words = [{
+	// 		word: "ord1",
+	// 		translation: "word1",
+	// 		soundfile: ["s1", "s2", "s3"],
+	// 	},
+	// 	{
+	// 		word: "ord2",
+	// 		translation: "word2",
+	// 		soundfile: ["s1", "s2", "s3"],
+	// 	},
+	// 	{
+	// 		word: "ord3",
+	// 		translation: "word3",
+	// 		soundfile: ["s1", "s2", "s3"],
+	// 	},
+	// 	{
+	// 		word: "ord4",
+	// 		translation: "word4",
+	// 		soundfile: ["s1", "s2", "s3"],
+	// 	},
+	// 	{
+	// 		word: "ord5",
+	// 		translation: "word5",
+	// 		soundfile: ["s1", "s2", "s3"],
+	// 	},
+	// 	{
+	// 		word: "ord6",
+	// 		translation: "word6",
+	// 		soundfile: ["s1", "s2", "s3"],
+	// 	},
+	// ];
+	const words = [];
+	let cardIndex;
 
-	console.log("start 2");
-	SetUpHtmlDivs();
-
-	// const answerOpts = {
-	//     answer1: "word1"
-	// };
-	// ajax.request({
-	//     post: function
-	// })
-
-	// fetch("/page/ex3")
-	// 	.then((response) => response.json())
-	// 	.then((data) => {
-	// 		//console.log("client: " + JSON.stringify(data, null, 4));
-	// 	});
+	$.ajax({
+		url: `http://localhost:3000/Build/ExerciseInformation?id=1`,
+		type: "GET",
+		success: function (data) {
+			data.cards.forEach((object) => {
+				words.push(object);
+			});
+			words.sort(() => {
+				Math.random() > 0.5 ? 1 : -1;
+			});
+		},
+	});
+	$.ajax({
+		url: `http://localhost:3000/Build/ExerciseInformation?id=3`,
+		type: "GET",
+		success: function (data) {
+			data.cards.forEach((object) => {
+				words.push(object);
+			});
+			words.sort(() => {
+				Math.random() > 0.5 ? 1 : -1;
+			});
+			console.log(words);
+			console.log(data);
+			cardIndex = words.length;
+			SetUpHtmlDivs(data);
+		},
+	});
 
 	$(document).on("click", ".mainContent .cardcontainer", function () {
 		console.log(`card was clicked`);
 
 		let word = GetWord($(this).attr("id"));
 		let soundfile =
-			word.soundfile[Math.floor(Math.random() * word.soundfile.length)];
+			word.soundFile[Math.floor(Math.random() * word.soundFile.length)];
 
 		console.log("Play: " + soundfile);
 	});
@@ -77,38 +94,33 @@ $(() => {
 		let mainId = $(".mainContent .cardcontainer").attr("id");
 		let mainWord = GetWord(mainId);
 
-		console.log("answeop clicked main word is: " + JSON.stringify(mainWord));
-		let aoText = $(this).text().trim();
-		console.log("aoText: " + aoText);
+		let clickedWord = $(this).text().trim();
 
 		var colorChange = anime.timeline({
 			easing: "linear",
 			direction: "normal",
 		});
 
-		if (mainWord.translation == aoText) {
+		if (mainWord.translation == clickedWord) {
 			console.log(
-				`CORRECT - word: ${mainWord.translation} == answerOption: ${aoText}`
+				`CORRECT - word: ${mainWord.translation} == answerOption: ${clickedWord}`
 			);
 			colorChange.add({
 					targets: this,
 					background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
 					complete: function (anim) {
-						//console.log("anim ending" + JSON.stringify(e, null, 2));
 						$(e.target).removeAttr("style");
 					},
 				},
 				0
 			);
-			animateOutOfFrame(`#card${GetIndex(mainId)}`);
-			newCard();
+			let a = animateOutOfFrame(`#card${GetIndex(mainId)}`);
 		} else {
 			console.log("FALSE - play false-sound");
 			colorChange.add({
 					targets: this,
 					background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
 					complete: function (anim) {
-						//console.log("anim ending" + JSON.stringify(e, null, 2));
 						$(e.target).removeAttr("style");
 					},
 				},
@@ -125,17 +137,18 @@ $(() => {
 		newCard();
 	});
 
-	library.add(faQuestionCircle);
-	library.add(faVolumeUp);
-	library.add(faTimes);
+
 
 	function endExercise() {
 		//$.get("/page/")
 	}
 
-	let cardIndex = words.length;
 
 	function newCard() {
+		if ($(".mainContent .cardcontainer").length > 0) {
+			console.log("Error - card not gone yet: " + $(".mainContent .cardcontainer").length);
+			return;
+		}
 		if (cardIndex == 0) {
 			$(".answerOption").remove();
 			console.log("GOOD JOB!");
@@ -143,7 +156,6 @@ $(() => {
 			return;
 		}
 		cardIndex--;
-
 
 		let answerOptions = [words[cardIndex]];
 
@@ -167,7 +179,6 @@ $(() => {
 	 * @param {Array<words>} words - Array of the answer-option's word-objects
 	 */
 	function MakeAnswerOptions(answerArray) {
-		let offset = 200;
 		$(".answerOption").remove();
 		shuffleArray(answerArray);
 		answerArray.forEach((element, index) => {
@@ -180,7 +191,6 @@ $(() => {
 				// transform: `translateY(${offset}px)`,
 			});
 		});
-		console.log("made cardstack");
 	}
 
 	/**
@@ -207,19 +217,14 @@ $(() => {
 		let regex = /[0-9]+$/;
 		let cardIndex = id.match(regex);
 
-		console.log("GI - id: " + id);
-		console.log("GI - cardIndex: " + cardIndex);
-
 		return cardIndex;
 	}
 
 	//-----Animation-----
 
-	function antimateColor(color) {}
-
 	const timeline = anime.timeline;
 	/**
-	 * Used to animate the card out of view
+	 * Used to animate the card out of view - then calls newCard()
 	 * @param {String} card The target card div/class
 	 * @returns Returns a pormis for when animation is done
 	 */
@@ -236,6 +241,7 @@ $(() => {
 		});
 		t1.finished.then(function () {
 			$(card).parent().remove();
+			newCard();
 		});
 		return t1.finished;
 	}
@@ -246,7 +252,6 @@ $(() => {
 	 * @returns Returns a pormis for when animation is done
 	 */
 	function animationFromStack(card) {
-		console.log("animationFromStack");
 		let maincontentCenter = findMaincontentCenter(card);
 
 		var t1 = anime.timeline({
@@ -341,10 +346,17 @@ $(() => {
 		});
 	}
 
+	function SetUpTutorial(data) {
+		let dkTutorial = data.instructions.instructionsDK;
+		let engTutorial = data.instructions.instructionsENG;
+		$(".tutorial").prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
+	}
+
 	/**
 	 * The basic setup for the html document.
 	 */
-	function SetUpHtmlDivs() {
+	function SetUpHtmlDivs(data) {
+		SetUpTutorial(data);
 		MakeCardStack();
 		MakeHelpIcon();
 	}
@@ -365,6 +377,7 @@ $(() => {
 	 * Setsup the cardstack dependend on how many cards there is
 	 */
 	function MakeCardStack() {
+		shuffleArray(words);
 		let offset = 5;
 		words.forEach((element, index) => {
 			let card = `
