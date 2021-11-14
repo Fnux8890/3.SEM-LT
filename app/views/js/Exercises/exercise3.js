@@ -9,7 +9,8 @@ import {
 	faVolumeUp,
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/exercise3.scss";
+import "../../assets/scss/layouts/exercises/exercise3.scss";
+//import "../../css/exercise3.scss";
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
@@ -114,7 +115,7 @@ $(() => {
 				},
 				0
 			);
-			let a = animateOutOfFrame(`#card${GetIndex(mainId)}`);
+			animateOutOfFrame(`#card${GetIndex(mainId)}`);
 		} else {
 			console.log("FALSE - play false-sound");
 			colorChange.add({
@@ -145,7 +146,7 @@ $(() => {
 
 
 	function newCard() {
-		if ($(".mainContent .cardcontainer").length > 0) {
+		if ($(".mainContent .cardcontainer").length != 0) {
 			console.log("Error - card not gone yet: " + $(".mainContent .cardcontainer").length);
 			return;
 		}
@@ -241,8 +242,10 @@ $(() => {
 		});
 		t1.finished.then(function () {
 			$(card).parent().remove();
+			console.log("card removed");
 			newCard();
 		});
+
 		return t1.finished;
 	}
 

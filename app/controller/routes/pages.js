@@ -9,6 +9,9 @@ import connectDB from "../../db/connect";
 import {
 	ObjectId
 } from "mongodb";
+import {
+	checkPrimeSync
+} from "crypto";
 // import {
 // 	mongoClient
 // } from "mongodb";
@@ -44,7 +47,7 @@ const url =
 router.route("/exercise3").get((req, res) => {
 	//var jsonObject = await GetDoc();
 	//GetDoc();
-
+	console.log("server got request");
 	MongoClient.connect(url, function (err, client) {
 		assert.equal(null, err);
 
