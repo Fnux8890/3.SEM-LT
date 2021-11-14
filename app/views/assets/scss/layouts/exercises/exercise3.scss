@@ -1,0 +1,42 @@
+@use "../exercise" as *;
+@use "../../abstracts" as *;
+
+body {
+	margin: 0;
+	background-color: #a0cebe;
+}
+
+.answerZone {
+	grid-area: answerOption;
+	display: grid;
+	//grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-template-columns: 50% 50%;
+	grid-auto-rows: auto;
+	place-items: center;
+	z-index: 0;
+}
+
+.answerOption {
+	color: black;
+	text-align: center;
+	/* font-size: 120px; */
+	opacity: 1;
+	border-style: none;
+	border-radius: 10px;
+	padding: 20px 55px;
+	z-index: 1;
+	cursor: pointer;
+
+	background-color: rgb(48, 151, 115);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.answerOption:hover {
+	background-color: #226b5e;
+	color: white;
+	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.19), 0 8px 8px rgba(0, 0, 0, 0.23);
+}
+
+.answerOption p {
+	padding: 0;
+	margin: 0;
+}
