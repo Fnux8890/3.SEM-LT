@@ -1,14 +1,23 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-	try {
-		const token = req.headers.authorization.split(' ')[1];
-		const decoded = jwt.verify(token, process.env.JWT_KEY);
-		req.userData = decoded;
-		next();
-	} catch (err) {
-		return res.status(401).json({
-			message: 'Auth failed',
+const requireAuth = (req, res, next) => {
+	console.log('hej ' + req.cookies);
+	const token = req.cookies.jwt;
+	console.log(token);
+
+	if (token) {
+		jwt.verify(token, process.env.JWT_KEY, (err, decodedToken) => {
+			if (err) {
+				console.log(err.message);
+				res.redirect('/login');
+			} else {
+				console.log(decodedToken);
+				next();
+			}
 		});
+	} else {
+		res.redirect('/login');
 	}
 };
+
+module.exports = { requireAuth };
