@@ -1,0 +1,63 @@
+//exercise
+@mixin container {
+	display: grid;
+	gap: 1rem;
+	grid-template-areas:
+		"stack . drawcard . close"
+		". mainContent mainContent mainContent ."
+		"vokaler vokaler vokaler vokaler vokaler";
+	grid-auto-rows: auto 300px auto;
+	height: 100vh;
+}
+
+@mixin button-WithGlyp {
+	padding: 20px;
+	margin-right: 1rem;
+	border-radius: 2px;
+	place-self: center end;
+	font-weight: 5em;
+	line-height: 1;
+	cursor: pointer;
+	filter: drop-shadow(0 2px 8px rgba(#275efe, 0.32));
+	margin-bottom: 1em;
+	background: #275efe;
+	border-radius: 24px;
+	transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+	border: none;
+	outline: none;
+	color: white;
+	@include fontMediaQuery;
+
+	svg {
+		padding-left: 10px;
+		margin-bottom: 2px;
+	}
+}
+
+@mixin button {
+	padding: 20px;
+	margin-right: 1rem;
+	border-radius: 2px;
+	place-self: center end;
+	font-weight: 5em;
+	line-height: 1;
+	cursor: pointer;
+	filter: drop-shadow(0 2px 8px rgba(#275efe, 0.32));
+	margin-bottom: 1em;
+	background: #275efe;
+	border-radius: 24px;
+	transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+	border: none;
+	outline: none;
+	color: white;
+	@include fontMediaQuery;
+}
+
+@mixin fontMediaQuery {
+	@media (max-width: 599px) {
+		font-size: 1em;
+	}
+	@media (min-width: 1201px) {
+		font-size: 1.3vw;
+	}
+}

@@ -1,0 +1,9 @@
+@use "./abstracts";
+body {
+	margin: 0;
+	background-color: abstracts.$backgroundColor;
+}
+
+button {
+	cursor: pointer;
+}

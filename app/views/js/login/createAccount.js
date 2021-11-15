@@ -1,8 +1,8 @@
-import '../../css/main.scss';
-import axios from "axios"
-$(()=>{
-	const createaccount = document.getElementById('createaccount-btn')
-	const element = document.getElementById('usernameerror')
+import "../../assets/scss/layouts/createAccount.scss";
+import axios from "axios";
+$(() => {
+	const createaccount = document.getElementById("createaccount-btn");
+	const element = document.getElementById("usernameerror");
 
 	console.log(createaccount)
 	

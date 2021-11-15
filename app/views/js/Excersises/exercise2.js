@@ -24,7 +24,7 @@ $(() => {
 	//Indsætning af ikon (krydset)
 	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
 
-	$(".record").append(icon({prefix: "fas", iconName: "microphone"}).html);
+	$(".microphone").append(icon({prefix: "fas", iconName: "microphone"}).html);
 
 	$(".close svg").on("click", function () {
 		alert("Closing...");
@@ -39,11 +39,6 @@ $(() => {
 		$(".translation").css("visibility", "visible");
 		$(".sentence").css("visibility", "visible");
     });
-
-	//Lav seperat knap til afspil lydfil her eller nede i functionen?
-	$(".record").on("click", () => {
-		StartRecording();
-	})
 });
 
 /**
@@ -210,46 +205,4 @@ function SetupSentence() {
 	let secondDiv = `<div class="secondPart">${secondPart}</div>`
 	let wordDiv = `<div class="word"></div>`
 	$(".sentence").append([firstDiv, wordDiv, secondDiv]);
-}
-
-function StartRecording() {
-	navigator.mediaDevices.getUserMedia({ audio: true })
-  	.then(stream => {
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
-
-    const audioChunks = [];
-
-    mediaRecorder.addEventListener("dataavailable", event => {
-    	audioChunks.push(event.data);
-    });
-
-    mediaRecorder.addEventListener("stop", () => {
-      const audioBlob = new Blob(audioChunks);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-	  console.log(audio);
-    });
-
-	setTimeout(() => {
-		mediaRecorder.stop();
-		$(".record svg").remove();
-		let playrecording = `<div class="playRec"></div>`
-		$(".play").append(playrecording);
-		$(".playRec").append(icon({prefix: "fas", iconName: "play"}).html);
-		$(".playRec").on("click", () => {
-			audio.play();
-		})
-		//Fjern record knap og append afspil lydfil knap
-	  }, 3000);
-  });
-}
-
-function setupRating() {
-	var i;
-	for(i = 0; i < 5; i++) {
-		let ratingStars = `<span class="star stars${i}"></span>`;
-		$(".rating").append(ratingStars);
-		$(`.stars${i}`).append(icon({prefix: "fas", iconName: "star"}).html);
-	}
 }

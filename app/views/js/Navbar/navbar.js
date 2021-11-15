@@ -1,4 +1,3 @@
-import $ from "jquery";
 // exmaple of how to change nav elements from the server
 $(function () {
 	$("#login").on("click", function () {

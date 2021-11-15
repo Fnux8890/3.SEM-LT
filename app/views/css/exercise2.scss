@@ -60,12 +60,17 @@
   grid-area: vokaler;
   place-self: center;
   font-size: calc(15px + 2vw);
-    svg {
-      visibility: visible;
-    }
 }
 
 .rating {
   grid-area: vokaler;
   place-self: start center;
+}
+
+.microphone {
+  visibility: visible;
+}
+
+.play {
+  visibility: hidden;
 }
