@@ -1,0 +1,23 @@
+{
+    "presets": ["@babel/preset-env"],
+    "plugins": [
+        ["@babel/plugin-transform-runtime",{
+            "absoluteRuntime": false,
+            "corejs": false,
+            "helpers": true,
+            "regenerator": true
+          }
+        ],
+        ["module-resolver", {
+          "root": ["./"],
+          "alias": {
+            "@middleware": "./app/controller/middleware",
+            "@models": "./app/models",
+            "@public": "./app/views/",
+            "@distCss": "./app/views/dist/css",
+            "@publicCss": "./app/views/css"
+          }
+        }],
+        ["@babel/plugin-syntax-dynamic-import"]
+      ]
+}

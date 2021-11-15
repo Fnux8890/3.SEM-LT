@@ -5,12 +5,11 @@ html(lang='en')
     meta(http-equiv='X-UA-Compatible' content='IE=edge')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     title Module overview
-    link(rel='stylesheet' href='../css/modules.css')
-    script(src='../js/utils/jquery.js')
-    script(src='../js/cards.js')
-    script.
-  body
-    #container
+    link(rel='stylesheet' href='../../dist/css/modules.css')
+    script(src='../dist/modules.js')
+  body 
+    include ./Navbar/navbar
+    #container 
       h1.overview
         span.overview Basic modules
       #set1.smallcard

@@ -1,24 +1,33 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from 'express';
+const router = Router();
+import { requireAuth } from '../middleware/user-auth';
 
 router.route('/login').get((req, res) => {
-	res.render('login')
-})
+	res.render('./Login/login');
+});
 
 router.route('/createaccount').get((req, res) => {
-	res.render('createaccount')
-})
+	res.render('./Login/createaccount');
+});
 
-router.route('/user-overview').get((req, res) => {
-	res.render('user-overview')
-})
+router.get('/user-overview', requireAuth, (req, res) => {
+	res.render('./Login/user-overview');
+});
 
-router.route('/module-overview').get((req, res) => {
-	res.render('module-overview')
-})
+router.get('/exercise1', requireAuth, (req, res) => {
+	res.render('./Exercises/exercise1');
+});
 
-router.route('/exercise1').get((req, res) => {
-	res.render('exercise1')
-})
+router.get('/exercise2', requireAuth, (req, res) => {
+	res.render('./Exercises/exercise1');
+});
 
-module.exports = router
+router.get('/exercise3', requireAuth, (req, res) => {
+	res.render('./Exercises/exercise1');
+});
+
+router.get('/module-overview', requireAuth, (req, res) => {
+	res.render('module-overview');
+});
+
+export default router;

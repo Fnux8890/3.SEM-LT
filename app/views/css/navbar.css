@@ -1,63 +1,63 @@
 .NavArea {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0px 0px;
-  grid-area: NavArea;
-  grid-template-areas: "Logo NavButtons NavButtons";
-  background-color: aquamarine;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 68px;
-  z-index: 1;
+	display: grid;
+	grid-auto-columns: 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 0px 0px;
+	grid-area: NavArea;
+	grid-template-areas: "Logo NavButtons NavButtons";
+	background-color: aquamarine;
+	position: sticky;
+	top: 0;
+	width: 100%;
+	height: 68px;
+	z-index: 10;
 }
 
 .Logo {
-  justify-self: center;
-  align-self: center;
-  grid-area: Logo;
+	justify-self: center;
+	align-self: center;
+	grid-area: Logo;
 }
 .NavButtons {
-  display: grid;
-  justify-self: end;
-  align-self: center;
-  grid-area: NavButtons;
-  grid-template-columns: auto;
-  grid-template-areas: "exercises profile";
-  height: 68px;
-  margin-right: 1em;
+	display: grid;
+	justify-self: end;
+	align-self: center;
+	grid-area: NavButtons;
+	grid-template-columns: auto;
+	grid-template-areas: "exercises profile";
+	height: 68px;
+	margin-right: 1em;
 }
 
 .loginButton {
-  align-self: center;
-  grid-area: profile;
+	align-self: center;
+	grid-area: profile;
 }
 
 .profile {
-  justify-self: center;
-  grid-area: profile;
-  width: 3em;
+	justify-self: center;
+	grid-area: profile;
+	width: 3em;
 }
 
 #profilePicture {
-  width: 100%;
+	width: 100%;
 }
 
 .exercises {
-  justify-self: center;
-  align-self: center;
-  grid-area: exercises;
-  width: 6em;
-  text-align: center;
+	justify-self: center;
+	align-self: center;
+	grid-area: exercises;
+	width: 6em;
+	text-align: center;
 }
 
 .Logo:hover {
-  cursor: pointer;
-  background-color: lightgrey;
+	cursor: pointer;
+	background-color: lightgrey;
 }
 
 .navButton {
-  padding: 0.5em;
-  cursor: pointer;
+	padding: 0.5em;
+	cursor: pointer;
 }
