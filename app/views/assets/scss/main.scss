@@ -1,9 +1,9 @@
 @use "./abstracts";
 body {
-	margin: 0;
-	background-color: abstracts.$backgroundColor;
+  margin: 0;
+  background: abstracts.$backgroundGradient;
 }
 
 button {
-	cursor: pointer;
+  cursor: pointer;
 }

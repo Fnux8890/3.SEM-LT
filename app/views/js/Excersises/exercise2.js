@@ -1,4 +1,5 @@
 import anime from "animejs";
+import rateit from "jquery.rateit";
 import "@lottiefiles/lottie-player";
 import { library, icon } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -9,7 +10,7 @@ import {
 	faPlay,
 	faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/exercise2.scss"; 
+import "../../assets/scss/layouts/exercises/exercise2.scss"; 
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -39,6 +40,19 @@ $(() => {
 		$(".translation").css("visibility", "visible");
 		$(".sentence").css("visibility", "visible");
     });
+
+	//Lav seperat knap til afspil lydfil her eller nede i functionen?
+	$(".microphone").on("click", () => {
+		StartRecording();
+	})
+
+	$(".rateit").rateit({
+		min: 0, 
+		max: 5,
+		icon: '★',
+		starwidth: 16,
+  		starheight: 16,
+	})
 });
 
 /**
@@ -127,7 +141,7 @@ function SetupHtmlDivs() {
 
 	SetupSentence();
 
-	setupRating();
+	//setupRating();
 }
 
 /**
@@ -206,3 +220,45 @@ function SetupSentence() {
 	let wordDiv = `<div class="word"></div>`
 	$(".sentence").append([firstDiv, wordDiv, secondDiv]);
 }
+
+function StartRecording() {
+	navigator.mediaDevices.getUserMedia({ audio: true })
+  	.then(stream => {
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+
+    const audioChunks = [];
+
+    mediaRecorder.addEventListener("dataavailable", event => {
+    	audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener("stop", () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+	  console.log(audio);
+	  $(".playRec").on("click", () => {
+		audio.play();
+	})
+    });
+
+	setTimeout(() => {
+		mediaRecorder.stop();
+		$(".microphone").remove();
+		let playrecording = `<div class="playRec"></div>`
+		$(".play").append(playrecording);
+		$(".playRec").append(icon({prefix: "fas", iconName: "play"}).html);
+		//Fjern record knap og append afspil lydfil knap
+	  }, 3000);
+  });
+}
+
+/*function setupRating() {
+	var i;
+	for(i = 0; i < 5; i++) {
+		let ratingStars = `<span class="star stars${i}"></span>`;
+		$(".rating").append(ratingStars);
+		$(`.stars${i}`).append(icon({prefix: "fas", iconName: "star"}).html);
+	}
+}*/
