@@ -1,4 +1,5 @@
 import anime from "animejs";
+import rateit from "jquery.rateit";
 import "@lottiefiles/lottie-player";
 import { library, icon } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -9,7 +10,7 @@ import {
 	faPlay,
 	faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/exercise2.scss"; 
+import "../../assets/scss/layouts/exercises/exercise2.scss"; 
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -43,6 +44,14 @@ $(() => {
 	//Lav seperat knap til afspil lydfil her eller nede i functionen?
 	$(".microphone").on("click", () => {
 		StartRecording();
+	})
+
+	$(".rateit").rateit({
+		min: 0, 
+		max: 5,
+		icon: '★',
+		starwidth: 16,
+  		starheight: 16,
 	})
 });
 
@@ -132,7 +141,7 @@ function SetupHtmlDivs() {
 
 	SetupSentence();
 
-	setupRating();
+	//setupRating();
 }
 
 /**
@@ -245,11 +254,11 @@ function StartRecording() {
   });
 }
 
-function setupRating() {
+/*function setupRating() {
 	var i;
 	for(i = 0; i < 5; i++) {
 		let ratingStars = `<span class="star stars${i}"></span>`;
 		$(".rating").append(ratingStars);
 		$(`.stars${i}`).append(icon({prefix: "fas", iconName: "star"}).html);
 	}
-}
+}*/

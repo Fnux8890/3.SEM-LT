@@ -7,7 +7,7 @@ module.exports = {
 	mode: "development",
 	entry: {
 		excersise: {
-			import: "./app/views/js/Excersises/excersise1.js",
+			import: "./app/views/js/Exercises/exercise1.js",
 		},
 		exercise2: {
 			import: "./app/views/js/Excersises/exercise2.js"

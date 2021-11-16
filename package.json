@@ -67,6 +67,7 @@
 		"express": "^4.17.1",
 		"interactjs": "^1.10.11",
 		"jquery": "^3.6.0",
+		"jquery.rateit": "^1.1.5",
 		"jsconfig.json": "^2.2.0",
 		"jsonwebtoken": "^8.5.1",
 		"lottie-web": "^5.8.1",
