@@ -2,14 +2,14 @@ import anime from "animejs";
 import "@lottiefiles/lottie-player";
 import { library, icon } from "@fortawesome/fontawesome-svg-core";
 import {
-	faQuestionCircle,
-	faVolumeUp,
-	faTimes,
-    faMicrophone,
-	faPlay,
-	faStar,
+  faQuestionCircle,
+  faVolumeUp,
+  faTimes,
+  faMicrophone,
+  faPlay,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/exercise2.scss"; 
+import "../../assets/scss/layouts/exercises/exercise2.scss";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -19,26 +19,72 @@ library.add(faPlay);
 library.add(faStar);
 
 $(() => {
-	SetupHtmlDivs();
+  SetupHtmlDivs();
 
-	//Indsætning af ikon (krydset)
-	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
+  //Indsætning af ikon (krydset)
+  $(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
 
-	$(".microphone").append(icon({prefix: "fas", iconName: "microphone"}).html);
+  $(".microphone").append(icon({ prefix: "fas", iconName: "microphone" }).html);
 
-	$(".close svg").on("click", function () {
-		alert("Closing...");
-		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
-	});
+  $(".close svg").on("click", function () {
+    alert("Closing...");
+    //Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
+  });
 
-	ShowTutorialAgain();
+  ShowTutorialAgain();
 
-    $("#tutorialbutton").on("click",() => {
-        RemoveTutorial();
-        animationFromStack(`.card5`);
-		$(".translation").css("visibility", "visible");
-		$(".sentence").css("visibility", "visible");
-    });
+  $("#tutorialbutton").on("click", () => {
+    RemoveTutorial();
+    animationFromStack(`.card5`);
+    $(".translation").css("visibility", "visible");
+    $(".sentence").css("visibility", "visible");
+  });
+
+  //Lav seperat knap til afspil lydfil her eller nede i functionen?
+  $(".microphone").on("click", () => {
+    StartRecording();
+  });
+
+  $(".stars0").on({
+    mouseenter: function () {
+      $(".stars0").css("color", "yellow");
+    },
+    mouseleave: function () {
+      $(".stars0").css("color", "black");
+    },
+  });
+  $(".stars1").on({
+    mouseenter: function () {
+      $(".stars0, .stars1").css("color", "yellow");
+    },
+    mouseleave: function () {
+      $(".stars0, .stars1").css("color", "black");
+    },
+  });
+  $(".stars2").on({
+    mouseenter: function () {
+      $(".stars0, .stars1, .stars2").css("color", "yellow");
+    },
+    mouseleave: function () {
+      $(".stars0, .stars1, .stars2").css("color", "black");
+    },
+  });
+  $(".stars3").on({
+    mouseenter: function () {
+      $(".stars0, .stars1, .stars2, .stars3").css("color", "yellow");
+    },
+    mouseleave: function () {
+      $(".stars0, .stars1, .stars2, .stars3").css("color", "black");
+    },
+  });
+  $(".stars4").on({
+    mouseenter: function () {
+      $(".stars0, .stars1, .stars2, .stars3, .stars4").css("color", "yellow");
+    },
+    mouseleave: function () {
+      $(".stars0, .stars1, .stars2, .stars3, .stars4").css("color", "black");
+    },
+  });
 });
 
 /**
@@ -47,7 +93,7 @@ $(() => {
  * @returns pixeles based of rem units
  */
 function convertRemToPixels(rem) {
-	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 /**
  * Finds the center of the mainContent class baseed of the cardstack position
@@ -55,13 +101,13 @@ function convertRemToPixels(rem) {
  * @returns returns x and y of maincontents div center is in gloabal space
  */
 function findMaincontentCenter(card) {
-	let y = $(".mainContent").offset().top - convertRemToPixels(1);
-	let x = $(".mainContent").offset().left - convertRemToPixels(1);
-	x += $(".mainContent").width() / 2;
-	x -= $(card).width() / 2;
-	y += $(".mainContent").height() / 2;
-	y -= $(card).height() / 2;
-	return { x, y };
+  let y = $(".mainContent").offset().top - convertRemToPixels(1);
+  let x = $(".mainContent").offset().left - convertRemToPixels(1);
+  x += $(".mainContent").width() / 2;
+  x -= $(card).width() / 2;
+  y += $(".mainContent").height() / 2;
+  y -= $(card).height() / 2;
+  return { x, y };
 }
 
 const timeline = anime.timeline;
@@ -71,95 +117,95 @@ const timeline = anime.timeline;
  * @returns Returns a pormis for when animation is done
  */
 function animationFromStack(card) {
-	let maincontentCenter = findMaincontentCenter(card);
+  let maincontentCenter = findMaincontentCenter(card);
 
-	var t1 = anime.timeline({
-		targets: card,
-	});
+  var t1 = anime.timeline({
+    targets: card,
+  });
 
-	t1.add({
-		translateX: maincontentCenter.x,
-		translateY: maincontentCenter.y,
-		easing: "easeOutQuint",
-		duration: 1000,
-	})
-		.finished.then(() => {
-			$(card)
-				.css({
-					transform: "none",
-				})
-				.parent()
-				.appendTo(".word")
-				.css({
-					"grid-area": "wordDiv",
-				});
-			anime(
-				{
-					targets: card,
-					scale: [
-						{ value: 1 },
-						{ value: 1.2, duration: 400 },
-						{ value: 1, duration: 400 },
-					],
-					rotateX: { delay: 20, value: "+=180", duration: 500 },
-					easing: "easeInOutSine",
-					duration: 1200,
-				},
-				"-=200"
-			);
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+  t1.add({
+    translateX: maincontentCenter.x,
+    translateY: maincontentCenter.y,
+    easing: "easeOutQuint",
+    duration: 1000,
+  })
+    .finished.then(() => {
+      $(card)
+        .css({
+          transform: "none",
+        })
+        .parent()
+        .appendTo(".word")
+        .css({
+          "grid-area": "wordDiv",
+        });
+      anime(
+        {
+          targets: card,
+          scale: [
+            { value: 1 },
+            { value: 1.2, duration: 400 },
+            { value: 1, duration: 400 },
+          ],
+          rotateX: { delay: 20, value: "+=180", duration: 500 },
+          easing: "easeInOutSine",
+          duration: 1200,
+        },
+        "-=200"
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
-	return t1.finished;
+  return t1.finished;
 }
 
 /**
  * The basic setup for the html document.
  */
 function SetupHtmlDivs() {
-	MakeCardStack();
+  MakeCardStack();
 
-	MakeHelpIcon();
+  MakeHelpIcon();
 
-    MakeCardStackEng();
+  MakeCardStackEng();
 
-	SetupSentence();
+  SetupSentence();
 
-	setupRating();
+  setupRating();
 }
 
 /**
  * Makes and inserts the help icon
  */
 function MakeHelpIcon() {
-	let helpIcon = `<div class='helpIcon'>${
-		icon({ prefix: "fas", iconName: "question-circle" }).html
-	}</div>`;
-	$(".cardStack-Container").append(helpIcon);
+  let helpIcon = `<div class='helpIcon'>${
+    icon({ prefix: "fas", iconName: "question-circle" }).html
+  }</div>`;
+  $(".cardStack-Container").append(helpIcon);
 }
 
 /**
  * Viser tutorial igen ved klik på hjælp ikon
  */
 function ShowTutorialAgain() {
-	$(".helpIcon").on("click", function () {
-		$(".tutorial").css("visibility", "visible");
-		$("#tutorialbutton").css("visibility", "visible");
-		$("#drawcardContainer").css("visibility", "visible");
-		let curtain = `<div class="curtain"></div>`;
-		$("body").append(curtain);
-		$(".speaker").remove();
-	});
+  $(".helpIcon").on("click", function () {
+    $(".tutorial").css("visibility", "visible");
+    $("#tutorialbutton").css("visibility", "visible");
+    $("#drawcardContainer").css("visibility", "visible");
+    let curtain = `<div class="curtain"></div>`;
+    $("body").append(curtain);
+    $(".speaker").remove();
+  });
 }
 
 function RemoveTutorial() {
-	$(".tutorial").css("visibility", "hidden");
-	$("#tutorialbutton").css("visibility", "hidden");
-	$("#drawcardContainer").css("visibility", "visible");
-	$(".curtain").remove();
-	$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+  $(".tutorial").css("visibility", "hidden");
+  $("#tutorialbutton").css("visibility", "hidden");
+  $("#drawcardContainer").css("visibility", "visible");
+  $(".curtain").remove();
+  $(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
 }
 
 const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "spiser"];
@@ -167,42 +213,89 @@ const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "spiser"];
  * Setsup the cardstack dependend on how many cards there is
  */
 function MakeCardStack() {
-	let offset = 5;
-	ord.forEach((element, index) => {
-		let card = `
+  let offset = 5;
+  ord.forEach((element, index) => {
+    let card = `
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
                 <div class="front">Bagside af kort</div>
                 <div class="back">${element}</div>
             </div>
         </div>`;
-		$(".cardStack-Container").append(card);
-		let zlayer = $(".front").css("z-index");
-		$(`#card${index}`).css({
-			transform: `translateX(${offset}px)`,
-			"z-index": zlayer + index,
-		});
-		offset += 5;
-	}); 
-
+    $(".cardStack-Container").append(card);
+    let zlayer = $(".front").css("z-index");
+    $(`#card${index}`).css({
+      transform: `translateX(${offset}px)`,
+      "z-index": zlayer + index,
+    });
+    offset += 5;
+  });
 }
 
-const ordENG = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"]; 
+const ordENG = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 
 function MakeCardStackEng() {
-	let sentenceTranslated = `<p class="sentenceTranslated"><span class="focusWord" style="font-weight: bold;">${ordENG[0]}</span></p>`
-    $('.translation').append(sentenceTranslated);
-	$('.translation').prepend()
+  let sentenceTranslated = `<p class="sentenceTranslated"><span class="focusWord" style="font-weight: bold;">${ordENG[0]}</span></p>`;
+  $(".translation").append(sentenceTranslated);
+  $(".translation").prepend();
 }
 
 function SetupSentence() {
-	let sentence = `Jeg spiser et æble`
-	let word = "spiser";
-	const wordIndex = sentence.indexOf(word);
-	const firstPart = sentence.slice(0, wordIndex);
-	const secondPart = sentence.slice(wordIndex + word.length + 1);
-	let firstDiv = `<div class="firstPart">${firstPart}</div>`
-	let secondDiv = `<div class="secondPart">${secondPart}</div>`
-	let wordDiv = `<div class="word"></div>`
-	$(".sentence").append([firstDiv, wordDiv, secondDiv]);
+  let sentence = `Jeg spiser et æble`;
+  let word = "spiser";
+  const wordIndex = sentence.indexOf(word);
+  const firstPart = sentence.slice(0, wordIndex);
+  const secondPart = sentence.slice(wordIndex + word.length + 1);
+  let firstDiv = `<div class="firstPart">${firstPart}</div>`;
+  let secondDiv = `<div class="secondPart">${secondPart}</div>`;
+  let wordDiv = `<div class="word"></div>`;
+  $(".sentence").append([firstDiv, wordDiv, secondDiv]);
+}
+
+function StartRecording() {
+  navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+
+    const audioChunks = [];
+
+    mediaRecorder.addEventListener("dataavailable", (event) => {
+      audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener("stop", () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      console.log(audio);
+      $(".playRec").on("click", () => {
+        audio.play();
+      });
+    });
+
+    setTimeout(() => {
+      mediaRecorder.stop();
+      $(".microphone svg").remove();
+      let playrecording = `<div class="playRec"></div>`;
+      $(".play").append(playrecording);
+      $(".playRec").append(icon({ prefix: "fas", iconName: "play" }).html);
+
+      $(".stars4").on("click", () => {
+        alert("test");
+        $(".playRec").remove();
+        $(".microphone").append(
+          icon({ prefix: "fas", iconName: "microphone" }).html
+        );
+      });
+    }, 3000);
+  });
+}
+
+function setupRating() {
+  var i;
+  for (i = 0; i < 5; i++) {
+    let ratingStars = `<span class="star stars${i}"></span>`;
+    $(".rating").append(ratingStars);
+    $(`.stars${i}`).append(icon({ prefix: "fas", iconName: "star" }).html);
+  }
 }
