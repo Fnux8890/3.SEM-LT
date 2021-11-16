@@ -14,6 +14,7 @@ let position = { x: 0, y: 0 };
 const ord = [];
 let currentCard = "";
 let tutorial = "";
+let dropped = false;
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -167,51 +168,109 @@ function animationToCenter(card) {
 	});
 }
 
-function DropzoneCardInteract(div) {
-	interact(div).dropzone({
-		accept: ".card",
-		ondrop: function (event) {
-			AnimateToDropCenter(div);
-			console.log(
-				`your choice: ${$(div).text()} \ncorrectChoice: ${
-					ord[currentCard].answer
-				}\nProccesing`
-			);
-			(async () => {
-				return new Promise((resolve) => {
-					setTimeout(resolve, 1000);
-				});
-			})().then(() => {
-				if ($(div).text().trim(" ") === ord[currentCard].answer.trim(" ")) {
-					animateCorrectAnswer();
-				} else {
-					AnimateIncorrectAnswer();
-				}
-			});
-		},
-	});
-}
-
-function AnimateToDropCenter(div) {
-	let dropX = $(div).offset().left;
-	let dropY = $(div).offset().top;
-	console.log(`${dropX}`);
-	console.log(`${dropY}`);
-
-	let animateTo = { x: dropX, y: dropY };
-	var t1 = timeline({
-		targets: `.card${currentCard}`,
+function animateToDropzone(card, div) {
+	let { left, top } = $(card).offset();
+	let cardPos = { x: left, y: top };
+	left = $(div).offset().left;
+	top = $(div).offset().top;
+	let dropPos = { x: left, y: top };
+	let result = {
+		x: cardPos.x - dropPos.x - 20,
+		y: cardPos.y - dropPos.y - $(div).height() / 2 + 18,
+	};
+	position = result;
+	let { x, y } = position;
+	x = -x;
+	let animateTo = { x: x, y: y };
+	let t1 = timeline({
+		targets: card,
 	});
 
 	t1.add({
 		translateX: animateTo.x,
 		translateY: animateTo.y,
 		easing: "easeOutQuint",
-		duration: 1000,
+		duration: 800,
+	}).finished.then(() => {
+		$(`${card}`).css({
+			transform: "none",
+			transform: "rotateX(180deg)",
+		});
+		position = { x: 0, y: 0 };
+		$(div).css({
+			position: "relative",
+		});
+		$(card).appendTo(div).css({
+			position: "absolute",
+			top: "50px",
+			right: "0px",
+		});
 	});
 }
 
-function animateCorrectAnswer() {
+function DropzoneCardInteract(div) {
+	interact(div).dropzone({
+		accept: ".card",
+		ondrop: function (event) {
+			dropped = true;
+			changePostitionToDrop(div);
+			(async () => {
+				return new Promise((resolve) => {
+					setTimeout(resolve, 1000);
+				});
+			})().then(async () => {
+				if (
+					$(`${div} p`).text().trim(" ") === ord[currentCard].answer.trim(" ")
+				) {
+					AnimateCorrectAnswer();
+				} else {
+					AnimateIncorrectAnswer();
+				}
+				const delay = (ms) =>
+					new Promise((resolve) => {
+						setTimeout(resolve, ms);
+					});
+				await delay(2200);
+				animateCardOut(div);
+			});
+		},
+	});
+}
+
+function changePostitionToDrop(div) {
+	let card = `.card${currentCard}`;
+	animateToDropzone(card, div);
+}
+
+function animateCardOut(div) {
+	let card = `.card${currentCard}`;
+	let answerClass = $(div).attr("class");
+	let t1 = anime.timeline({ targets: card });
+	if (answerClass === "vokalA") {
+		t1.add({
+			translateX: -500,
+			easing: "easeOutQuint",
+			duration: 1000,
+		});
+	}
+	if (answerClass === "vokalB") {
+		t1.add({
+			translateX: 500,
+			easing: "easeOutQuint",
+			duration: 1000,
+		});
+	}
+	t1.finished.then(function () {
+		//TODO post answer to mongodb
+		$(card).remove();
+		dropped = false;
+		currentCard--;
+		card = `.card${currentCard}`;
+		FromStackAnimation(card);
+	});
+}
+
+function AnimateCorrectAnswer() {
 	let card = `.card${currentCard}`;
 	$(`${card} .front`).css({
 		"background-color": "green",
@@ -243,8 +302,12 @@ function animateCorrectAnswer() {
 		],
 		rotateX: { delay: 20, value: "+=180", duration: 500 },
 		easing: "easeInOutSine",
-		duration: 1000,
+		duration: 500,
 	}).finished.then(() => {
+		$(card).css({
+			"box-shadow":
+				"0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)",
+		});
 		correctAnimation.play();
 	});
 }
@@ -280,8 +343,12 @@ function AnimateIncorrectAnswer() {
 		],
 		rotateX: { delay: 20, value: "+=180", duration: 500 },
 		easing: "easeInOutSine",
-		duration: 1000,
+		duration: 500,
 	}).finished.then(() => {
+		$(card).css({
+			"box-shadow":
+				"0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)",
+		});
 		incorrectAnimation.play();
 	});
 }
@@ -360,7 +427,9 @@ function FromStackAnimation(card) {
 					},
 				})
 				.on("dragend", (event) => {
-					animationToCenter(card);
+					if (dropped === false) {
+						animationToCenter(card);
+					}
 					$(".vokalA, .vokalB").css({
 						opacity: 1,
 						"border-style": "none",

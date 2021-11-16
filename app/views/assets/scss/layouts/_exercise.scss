@@ -115,25 +115,6 @@
 		padding-bottom: 1rem;
 	}
 }
-.correct {
-	display: grid;
-	background-color: greenyellow;
-	place-items: center;
-
-	p:nth-child(1) {
-		border-bottom: none;
-		padding-bottom: 1rem;
-	}
-	button {
-		@include button;
-		&:hover {
-			scale: 1.1;
-		}
-		&:not(:hover) {
-			scale: 1;
-		}
-	}
-}
 
 .tutorialContainer {
 	display: grid;
