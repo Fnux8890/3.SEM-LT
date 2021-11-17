@@ -15,6 +15,7 @@ const ord = [];
 let currentCard = "";
 let tutorial = "";
 let dropped = false;
+let incorrectAnswers = 0;
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -312,6 +313,7 @@ function AnimateCorrectAnswer() {
 	});
 }
 function AnimateIncorrectAnswer() {
+	incorrectAnswers++;
 	let card = `.card${currentCard}`;
 	$(`${card} .front`).css({
 		"background-color": "red",
