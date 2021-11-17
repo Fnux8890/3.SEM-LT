@@ -1,15 +1,85 @@
-import { Router } from "express";
-import mongoose from "mongoose";
-import setModel from "../../models/setModel";
-import exercisesModel from "../../models/exercisesModel";
-import wordModel from "../../models/wordsModel";
+import { Router } from 'express';
+import express from 'express';
+import mongoose from 'mongoose';
+import setModel from '../../models/setModel';
+import exercisesModel from '../../models/exercisesModel';
+import wordModel from '../../models/wordsModel';
 const router = Router();
-const fs = require("fs");
-const async = require("async");
+const fs = require('fs');
+const async = require('async');
+const mongodb = require('mongodb');
 
-router.route("/ExerciseInformation").get(async (req, res) => {
+const binary = mongodb.Binary;
+const mongoClient = mongodb.MongoClient;
+
+router.post('/postRecording', (req, res) => {
+	let recording = {
+		name: req.body.name,
+		file: binary(req.files.uploadedFile.data),
+	};
+	insertRecording(recording, res);
+	console.log(recording);
+	res.end();
+});
+
+router.get('/getRecording', (req, res) => {
+	let wordName = {
+		name: req.body.name,
+	};
+	getRecording(wordName, res);
+});
+
+function insertRecording(recording, res) {
+	const url =
+		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
+	mongoClient.connect(url, (err, client) => {
+		if (err) {
+			return err;
+		} else {
+			let db = client.db('myFirstDatabase');
+			let collection = db.collection('words');
+
+			try {
+				//collection.insertOne(recording);
+				wordModel
+					.findOneAndUpdate(
+						{ word: recording.name },
+						{ soundfile: recording }
+					)
+					.exec();
+				console.log('inserted recording');
+			} catch (err) {
+				console.log(err.message);
+				console.log('err while inserting');
+			}
+		}
+	});
+}
+
+function getRecording(wordName, res) {
+	const url =
+		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
+	mongoClient.connect(url, (err, client) => {
+		if (err) {
+			return err;
+		} else {
+			try {
+				const word = wordModel.findOne({ word: wordName });
+				res.status(200).json(word);
+				console.log('got recording');
+			} catch (err) {
+				console.log(err.message);
+				console.log('err while getting');
+			}
+		}
+	});
+}
+
+router.route('/ExerciseInformation').get(async (req, res) => {
 	if (req.query.id === undefined) {
-		res.json({ error: "Id is not defined" });
+		res.json({ error: 'Id is not defined' });
 		return;
 	}
 	let exerciseObj = await getExerciseWithWords(req.query.id);
@@ -22,75 +92,75 @@ async function getExerciseWithWords(exerciseId) {
 	let result = await exercisesModel.aggregate([
 		{
 			$match: {
-				name: "Exercise 1",
+				name: 'Exercise 1',
 			},
 		},
 		{
 			$unwind: {
-				path: "$cards",
+				path: '$cards',
 			},
 		},
 		{
 			$addFields: {
 				cards: {
 					wordId: {
-						$toObjectId: "$cards.wordId",
+						$toObjectId: '$cards.wordId',
 					},
 				},
 			},
 		},
 		{
 			$lookup: {
-				from: "words",
-				localField: "cards.wordId",
-				foreignField: "_id",
-				as: "cards.word",
+				from: 'words',
+				localField: 'cards.wordId',
+				foreignField: '_id',
+				as: 'cards.word',
 			},
 		},
 		{
 			$unwind: {
-				path: "$cards.word",
+				path: '$cards.word',
 			},
 		},
 		{
 			$project: {
 				_id: 0,
-				name: "$name",
-				description: "$description",
-				subject: "$subject",
-				instructions: "$instructions",
-				answerOptions: "$answerOptions",
+				name: '$name',
+				description: '$description',
+				subject: '$subject',
+				instructions: '$instructions',
+				answerOptions: '$answerOptions',
 				cards: {
-					answer: "$cards.answer",
-					word: "$cards.word.word",
-					translation: "$cards.word.translation",
-					soundFile: "$cards.word.soundfile",
+					answer: '$cards.answer',
+					word: '$cards.word.word',
+					translation: '$cards.word.translation',
+					soundFile: '$cards.word.soundfile',
 				},
 			},
 		},
 		{
 			$group: {
 				_id: {
-					name: "$name",
-					description: "$description",
-					instructions: "$instructions",
-					subject: "$subject",
-					answerOptions: "$answerOptions",
+					name: '$name',
+					description: '$description',
+					instructions: '$instructions',
+					subject: '$subject',
+					answerOptions: '$answerOptions',
 				},
 				cards: {
-					$addToSet: "$cards",
+					$addToSet: '$cards',
 				},
 			},
 		},
 		{
 			$project: {
 				_id: 0,
-				name: "$_id.name",
-				description: "$_id.description",
-				subject: "$_id.subject",
-				instructions: "$_id.instructions",
-				answerOptions: "$_id.answerOptions",
-				cards: "$cards",
+				name: '$_id.name',
+				description: '$_id.description',
+				subject: '$_id.subject',
+				instructions: '$_id.instructions',
+				answerOptions: '$_id.answerOptions',
+				cards: '$cards',
 			},
 		},
 	]);

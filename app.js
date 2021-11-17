@@ -3,6 +3,8 @@ import connectDB from './app/db/connect';
 import { join } from 'path';
 import cors from 'cors';
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
+
 // custom middlewares
 import { insertNavbar } from '@middleware/insertNavbar';
 // import routes
@@ -26,6 +28,7 @@ app.use(express.json()); //Kan se JSON payloads fra front-end
 app.use(express.urlencoded({ extended: false })); //Kan se String/text payloads fra front-end
 app.use('/page/*', insertNavbar);
 app.use(cookieParser());
+app.use(fileUpload());
 
 //routes
 app.get('/', (req, res) => {

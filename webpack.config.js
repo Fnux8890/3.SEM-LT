@@ -9,14 +9,13 @@ module.exports = {
 		exercise: {
 			import: './app/views/js/Exercises/exercise1.js',
 		},
-		main: [
-			path.resolve(__dirname, './app/views/js/login/login.js'),
-			path.resolve(__dirname, './app/views/js/Navbar/navbar.js'),
-		],
-		createAccount: [
-			path.resolve(__dirname, './app/views/js/login/createAccount.js'),
-		],
-		modules: [path.resolve(__dirname, './app/views/js/cards.js')],
+		navbar: path.resolve(__dirname, './app/views/js/Navbar/navbar.js'),
+		login: path.resolve(__dirname, './app/views/js/login/login.js'),
+		createAccount: path.resolve(
+			__dirname,
+			'./app/views/js/login/createAccount.js'
+		),
+		modules: path.resolve(__dirname, './app/views/js/cards.js'),
 	},
 	output: {
 		filename: '[name].js',

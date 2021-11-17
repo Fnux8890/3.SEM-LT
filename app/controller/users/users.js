@@ -33,7 +33,20 @@ const createUser = async (req, res) => {
 								username: req.body.username,
 								password: hash,
 							});
-							res.status(200).json({ newuser });
+							const token = sign(
+								{
+									username: newuser.username,
+									userID: newuser._id,
+								},
+								process.env.JWT_KEY,
+								{
+									expiresIn: '1h',
+								}
+							);
+							res.cookie('jwt', token);
+							return res
+								.status(200)
+								.json({ message: newuser, token: token });
 						}
 					});
 				}
