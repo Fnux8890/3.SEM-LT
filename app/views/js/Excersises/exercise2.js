@@ -18,33 +18,39 @@ library.add(faMicrophone);
 library.add(faPlay);
 library.add(faStar);
 
-$(() => {
-  SetupHtmlDivs();
+const cards = [];
+let currentCard = "";
+let tutorial = '';
 
+$(() => {
+  $.getJSON("http://localhost:3000/Build/ExerciseWordAndSentences", (data)=>{
+        data.cards.forEach(function (card) {
+          cards.push(card);
+        });
+        cards.sort(() => {
+          Math.random() > 0.5 ? 1 : -1;
+        });
+        SetupHtmlDivs(data);
+  });
+  
   //Indsætning af ikon (krydset)
   $(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
-
-  $(".microphone").append(icon({ prefix: "fas", iconName: "microphone" }).html);
 
   $(".close svg").on("click", function () {
     alert("Closing...");
     //Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
   });
 
-  ShowTutorialAgain();
 
-  $("#tutorialbutton").on("click", () => {
-    RemoveTutorial();
-    animationFromStack(`.card5`);
-    $(".translation").css("visibility", "visible");
-    $(".sentence").css("visibility", "visible");
-  });
-
-  //Lav seperat knap til afspil lydfil her eller nede i functionen?
-  $(".microphone").on("click", () => {
+  //Lav seperat knap til afspil lydfil her eller nede i funktionen?
+  $("body").on("click", ".recordIcon", () => {
     StartRecording();
   });
 
+  startRating();
+});
+
+function startRating() {
   $(".stars0").on({
     mouseenter: function () {
       $(".stars0").css("color", "yellow");
@@ -85,7 +91,21 @@ $(() => {
       $(".stars0, .stars1, .stars2, .stars3, .stars4").css("color", "black");
     },
   });
-});
+}
+
+function tutorialButtonOnClick() {
+  $("#tutorialbutton").on("click", async () => {
+    let card = `.card${currentCard}`;
+    tutorial = await RemoveTutorial();
+    const delay = (ms) => new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+    await delay(200);
+    animationFromStack(card);
+    $(".translation").css("visibility", "visible");
+    $(".sentence").css("visibility", "visible");
+  });
+}
 
 /**
  * Convertes from int to rem
@@ -164,8 +184,10 @@ function animationFromStack(card) {
 /**
  * The basic setup for the html document.
  */
-function SetupHtmlDivs() {
+function SetupHtmlDivs(data) {
   MakeCardStack();
+
+  populateTutorial(data);
 
   MakeHelpIcon();
 
@@ -174,6 +196,11 @@ function SetupHtmlDivs() {
   SetupSentence();
 
   setupRating();
+
+  appendMicrophone();
+
+  tutorialButtonOnClick();
+  ShowTutorialAgain();
 }
 
 /**
@@ -191,35 +218,43 @@ function MakeHelpIcon() {
  */
 function ShowTutorialAgain() {
   $(".helpIcon").on("click", function () {
-    $(".tutorial").css("visibility", "visible");
-    $("#tutorialbutton").css("visibility", "visible");
-    $("#drawcardContainer").css("visibility", "visible");
-    let curtain = `<div class="curtain"></div>`;
-    $("body").append(curtain);
+    $(".mainContent")
+			.append(`<div class='curtain'></div>`)
+			.append(`<div class='tutorial'></div>`);
+		$(".tutorial").append(tutorial);
+		$(".speaker").remove();
+		$(".curtain").on("click", () => {
+			RemoveTutorial();
+		});
     $(".speaker").remove();
+    $("#tutorialbutton").on("click", async () => {
+      tutorial = await RemoveTutorial();
+    });
   });
 }
 
 function RemoveTutorial() {
-  $(".tutorial").css("visibility", "hidden");
-  $("#tutorialbutton").css("visibility", "hidden");
-  $("#drawcardContainer").css("visibility", "visible");
-  $(".curtain").remove();
-  $(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+  return new Promise((resolve, reject) => {
+    let html = $(".tutorial").html();
+    $(".tutorial").remove();
+		$("#tutorialbutton").remove();
+		$(".curtain").remove();
+		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+    resolve(html)
+  })
 }
 
-const ord = ["ord1", "ord2", "ord3", "ord4", "ord5", "spiser"];
 /**
  * Setsup the cardstack dependend on how many cards there is
  */
 function MakeCardStack() {
   let offset = 5;
-  ord.forEach((element, index) => {
+  cards.forEach((element, index) => {
     let card = `
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
                 <div class="front">Bagside af kort</div>
-                <div class="back">${element}</div>
+                <div class="back">${element.word}</div>
             </div>
         </div>`;
     $(".cardStack-Container").append(card);
@@ -230,19 +265,23 @@ function MakeCardStack() {
     });
     offset += 5;
   });
+  currentCard = cards.length - 1;
 }
-
-const ordENG = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
 
 function MakeCardStackEng() {
-  let sentenceTranslated = `<p class="sentenceTranslated"><span class="focusWord" style="font-weight: bold;">${ordENG[0]}</span></p>`;
+  let engSentence = cards[currentCard].translation_sentence;
+  let focusWord = cards[currentCard].translation_word;
+  const wordIndex = engSentence.indexOf(focusWord);
+  const firstPart = engSentence.slice(0, wordIndex);
+  const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
+  let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
   $(".translation").append(sentenceTranslated);
   $(".translation").prepend();
-}
+} 
 
 function SetupSentence() {
-  let sentence = `Jeg spiser et æble`;
-  let word = "spiser";
+  let sentence = cards[currentCard].sentence;
+  let word = cards[currentCard].word;
   const wordIndex = sentence.indexOf(word);
   const firstPart = sentence.slice(0, wordIndex);
   const secondPart = sentence.slice(wordIndex + word.length + 1);
@@ -275,17 +314,15 @@ function StartRecording() {
 
     setTimeout(() => {
       mediaRecorder.stop();
-      $(".microphone svg").remove();
-      let playrecording = `<div class="playRec"></div>`;
-      $(".play").append(playrecording);
-      $(".playRec").append(icon({ prefix: "fas", iconName: "play" }).html);
-
-      $(".stars4").on("click", () => {
+      $(".recordIcon").remove();
+      appendPlaybutton();
+      console.log("i setTimeout");
+      $(".stars0, .stars1, .stars2, .stars3, .stars4").one("click", () => {
         alert("test");
         $(".playRec").remove();
-        $(".microphone").append(
-          icon({ prefix: "fas", iconName: "microphone" }).html
-        );
+        appendMicrophone();
+        console.log("clicked stars");
+        mediaRecorder = null;
       });
     }, 3000);
   });
@@ -298,4 +335,23 @@ function setupRating() {
     $(".rating").append(ratingStars);
     $(`.stars${i}`).append(icon({ prefix: "fas", iconName: "star" }).html);
   }
+}
+
+function appendMicrophone() {
+  let recordDiv = "<div class='recordIcon'></div>"
+  $(".microphone").append(recordDiv);
+  $(".recordIcon").append(icon({ prefix: "fas", iconName: "microphone" }).html);
+}
+
+function appendPlaybutton() {
+  let playrecording = `<div class="playRec"></div>`;
+  $(".play").append(playrecording);
+  $(".playRec").append(icon({ prefix: "fas", iconName: "play" }).html);
+}
+
+function populateTutorial(data) {
+  let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
+	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
+	$("#eng").html(eng);
+	$("#dan").html(dan);
 }

@@ -88,7 +88,7 @@ module.exports = {
 		},
 	},
 	plugins: [
-		new SourceMapDevToolPlugin({ filename: "[file].map" }),
+		//new SourceMapDevToolPlugin({ filename: "[file].map" }),
 		new ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",
@@ -99,5 +99,5 @@ module.exports = {
 			chunkFilename: "[id].css",
 		}),
 	],
-	devtool: "source-map",
+	//devtool: "source-map",
 };

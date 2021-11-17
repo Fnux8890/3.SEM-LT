@@ -75,7 +75,99 @@ router.route("/Exercise").get(async (req, res) => {
         if (err) console.error(err);
         console.log(result);
     });*/
-
 })
+
+    async function getExerciseSentences() {
+        let result = await exercisesModel.aggregate([
+            {
+              '$match': {
+                'name': 'Exercise 2'
+              }
+            }, {
+              '$unwind': {
+                'path': '$cards'
+              }
+            }, {
+              '$addFields': {
+                'cards': {
+                  'wordId': {
+                    '$toObjectId': '$cards.wordId'
+                  }, 
+                  'sentenceId': {
+                    '$toObjectId': '$cards.sentenceId'
+                  }
+                }
+              }
+            }, {
+              '$lookup': {
+                'from': 'words', 
+                'localField': 'cards.wordId', 
+                'foreignField': '_id', 
+                'as': 'cards.word'
+              }
+            }, {
+              '$lookup': {
+                'from': 'sentences', 
+                'localField': 'cards.sentenceId', 
+                'foreignField': '_id', 
+                'as': 'cards.sentence'
+              }
+            }, {
+              '$unwind': {
+                'path': '$cards.word'
+              }
+            }, {
+              '$unwind': {
+                'path': '$cards.sentence'
+              }
+            }, {
+              '$project': {
+                '_id': 0, 
+                'name': '$name', 
+                'description': '$description', 
+                'subject': '$subject', 
+                'instructions': '$instructions', 
+                'cards': {
+                  'word': '$cards.word.word', 
+                  'translation_word': '$cards.word.translation', 
+                  'soundFile_word': '$cards.word.soundfile', 
+                  'sentence': '$cards.sentence.sentence', 
+                  'translation_sentence': '$cards.sentence.translation', 
+                  'soundfile_sentence': '$cards.sentence.soundfile'
+                }
+              }
+            }, {
+              '$group': {
+                '_id': {
+                  'name': '$name', 
+                  'description': '$description', 
+                  'instructions': '$instructions', 
+                  'subject': '$subject', 
+                  'answerOptions': '$answerOptions'
+                }, 
+                'cards': {
+                  '$addToSet': '$cards'
+                }
+              }
+            }, {
+              '$project': {
+                '_id': 0, 
+                'name': '$_id.name', 
+                'description': '$_id.description', 
+                'subject': '$_id.subject', 
+                'instructions': '$_id.instructions', 
+                'answerOptions': '$_id.answerOptions', 
+                'cards': '$cards'
+              }
+            }
+          ]);
+          return result[0];
+    }
+
+router.route("/ExerciseWordAndSentences").get(async (req, res) => {
+    let sentenceQuery = await getExerciseSentences();
+    // res.send(sentenceQuery);
+    res.json(sentenceQuery);
+});
 
 export default router
