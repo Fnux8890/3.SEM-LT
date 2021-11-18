@@ -14,6 +14,13 @@ html
       br
       input(type='file' name='uploadedFile')
       br
+      input(type='submit' value='Upload File')
+
+    form(action='/build/postSentence' method='POST' enctype='multipart/form-data')
+      br
+      input(type='text' name='name' placeholder='File Name..' autocomplete='off')
+      br
+      input(type='file' name='uploadedFile')
       br
       input(type='submit' value='Upload File')
     
