@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import setModel from '../../models/setModel';
 import exercisesModel from '../../models/exercisesModel';
 import wordModel from '../../models/wordsModel';
+import sentenceModel from '../../models/sentenceModel';
 const router = Router();
 const fs = require('fs');
 const async = require('async');
@@ -19,6 +20,16 @@ router.post('/postRecording', (req, res) => {
 	};
 	insertRecording(recording, res);
 	console.log(recording);
+	res.end();
+});
+
+router.post('/postSentence', (req, res) => {
+	let sentence = {
+		name: req.body.name,
+		file: binary(req.files.uploadedFile.data),
+	};
+	insertSentence(sentence, res);
+	console.log(sentence);
 	res.end();
 });
 
@@ -43,6 +54,30 @@ function insertRecording(recording, res) {
 					.findOneAndUpdate(
 						{ word: recording.name },
 						{ soundfile: recording }
+					)
+					.exec();
+				console.log('inserted recording');
+			} catch (err) {
+				console.log(err.message);
+				console.log('err while inserting');
+			}
+		}
+	});
+}
+
+function insertSentence(sentence, res) {
+	const url =
+		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
+	mongoClient.connect(url, (err, client) => {
+		if (err) {
+			return err;
+		} else {
+			try {
+				sentenceModel
+					.findOneAndUpdate(
+						{ sentence: sentence.name },
+						{ soundfile: sentence }
 					)
 					.exec();
 				console.log('inserted recording');
