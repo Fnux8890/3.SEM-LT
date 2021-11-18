@@ -24,8 +24,9 @@ router.post('/postRecording', (req, res) => {
 
 router.get('/getRecording', (req, res) => {
 	let wordName = {
-		name: req.body.name,
+		name: req.query.wordname,
 	};
+	console.log(wordName);
 	getRecording(wordName, res);
 });
 
@@ -37,11 +38,7 @@ function insertRecording(recording, res) {
 		if (err) {
 			return err;
 		} else {
-			let db = client.db('myFirstDatabase');
-			let collection = db.collection('words');
-
 			try {
-				//collection.insertOne(recording);
 				wordModel
 					.findOneAndUpdate(
 						{ word: recording.name },
@@ -60,14 +57,44 @@ function insertRecording(recording, res) {
 function getRecording(wordName, res) {
 	const url =
 		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-
+	console.log(wordName);
 	mongoClient.connect(url, (err, client) => {
 		if (err) {
 			return err;
 		} else {
 			try {
-				const word = wordModel.findOne({ word: wordName });
-				res.status(200).json(word);
+				wordModel
+					.findOne(
+						{ word: wordName.name },
+						function (err, foundWord) {
+							if (err) {
+								console.log('err in finding word', err);
+							} else {
+								console.log('found word ', foundWord);
+								let soundfiles =
+									foundWord.soundfile[0].file.buffer;
+								console.log('soundfiles ', soundfiles);
+								fs.writeFileSync(
+									'word.mp3',
+									soundfiles,
+									err => {
+										if (err) {
+											console.log(
+												'error in writefile',
+												err
+											);
+										} else {
+											console.log(
+												'file written succesfully'
+											);
+										}
+									}
+								);
+							}
+						}
+					)
+					.exec();
+				//res.status(200).json(recording);
 				console.log('got recording');
 			} catch (err) {
 				console.log(err.message);
