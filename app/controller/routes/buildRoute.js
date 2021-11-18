@@ -1,4 +1,6 @@
-import { Router } from "express";
+import {
+	Router
+} from "express";
 import mongoose from "mongoose";
 import setModel from "../../models/setModel";
 import exercisesModel from "../../models/exercisesModel";
@@ -8,8 +10,11 @@ const fs = require("fs");
 const async = require("async");
 
 router.route("/ExerciseInformation").get(async (req, res) => {
+	console.log("get info");
 	if (req.query.id === undefined) {
-		res.json({ error: "Id is not defined" });
+		res.json({
+			error: "Id is not defined"
+		});
 		return;
 	}
 	let exerciseObj = await getExerciseWithWords(req.query.id);
@@ -19,8 +24,7 @@ router.route("/ExerciseInformation").get(async (req, res) => {
 export default router;
 
 async function getExerciseWithWords(exerciseId) {
-	let result = await exercisesModel.aggregate([
-		{
+	let result = await exercisesModel.aggregate([{
 			$match: {
 				name: `Exercise ${exerciseId}`,
 			},

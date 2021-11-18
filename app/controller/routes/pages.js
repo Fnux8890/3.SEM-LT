@@ -12,9 +12,9 @@ import {
 import {
 	checkPrimeSync
 } from "crypto";
-// import {
-// 	mongoClient
-// } from "mongodb";
+import {
+	mongoClient
+} from "mongodb";
 
 router.route("/login").get((req, res) => {
 	res.render("./Login/login");

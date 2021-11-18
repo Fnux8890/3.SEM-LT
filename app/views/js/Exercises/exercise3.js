@@ -10,45 +10,15 @@ import {
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/scss/layouts/exercises/exercise3.scss";
-//import "../../css/exercise3.scss";
+import {
+	ajax
+} from "jquery";
+
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
 
 $(() => {
-	//const words = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-	//const answerOptions = ["ord1", "ord2", "ord3", "ord4", "ord5", "ord6"];
-	// const words = [{
-	// 		word: "ord1",
-	// 		translation: "word1",
-	// 		soundfile: ["s1", "s2", "s3"],
-	// 	},
-	// 	{
-	// 		word: "ord2",
-	// 		translation: "word2",
-	// 		soundfile: ["s1", "s2", "s3"],
-	// 	},
-	// 	{
-	// 		word: "ord3",
-	// 		translation: "word3",
-	// 		soundfile: ["s1", "s2", "s3"],
-	// 	},
-	// 	{
-	// 		word: "ord4",
-	// 		translation: "word4",
-	// 		soundfile: ["s1", "s2", "s3"],
-	// 	},
-	// 	{
-	// 		word: "ord5",
-	// 		translation: "word5",
-	// 		soundfile: ["s1", "s2", "s3"],
-	// 	},
-	// 	{
-	// 		word: "ord6",
-	// 		translation: "word6",
-	// 		soundfile: ["s1", "s2", "s3"],
-	// 	},
-	// ];
 	const words = [];
 	let cardIndex;
 
@@ -83,6 +53,7 @@ $(() => {
 
 	$(document).on("click", ".mainContent .cardcontainer", function () {
 		console.log(`card was clicked`);
+		RemoveCardBack($(".mainContent .cardcontainer").attr("id"));
 
 		let word = GetWord($(this).attr("id"));
 		let soundfile =
@@ -106,6 +77,7 @@ $(() => {
 			console.log(
 				`CORRECT - word: ${mainWord.translation} == answerOption: ${clickedWord}`
 			);
+			animationTurnCard(`#card${GetIndex(mainId)}`);
 			colorChange.add({
 					targets: this,
 					background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
@@ -113,9 +85,11 @@ $(() => {
 						$(e.target).removeAttr("style");
 					},
 				},
-				0
-			);
-			animateOutOfFrame(`#card${GetIndex(mainId)}`);
+				20
+			).finished.then(() => {
+				//GØR KORT BORDER GRØN?
+			})
+
 		} else {
 			console.log("FALSE - play false-sound");
 			colorChange.add({
@@ -138,7 +112,15 @@ $(() => {
 		newCard();
 	});
 
+	$(document).on("click", ".helpIcon", function () {
+		ShowTutorial();
+	});
 
+	$(document).on("click", ".close", function () {
+		console.log("Close");
+		//$.post("/page/exercise1");
+		window.location.href = "http://localhost:3000/page/index"
+	});
 
 	function endExercise() {
 		//$.get("/page/")
@@ -232,19 +214,21 @@ $(() => {
 	function animateOutOfFrame(card) {
 		var t1 = timeline({
 			targets: card,
+			direction: "normal",
 		});
 		let x = -($("body").width() / 2);
 		x -= $(card).width();
 		t1.add({
+			delay: 500,
 			translateX: x,
 			easing: "easeOutQuint",
 			duration: 1000,
-		});
+		}, 500);
 		t1.finished.then(function () {
 			$(card).parent().remove();
 			console.log("card removed");
 			newCard();
-		});
+		}, 1000);
 
 		return t1.finished;
 	}
@@ -308,6 +292,57 @@ $(() => {
 
 		return t1.finished;
 	}
+
+
+	/**
+	 * Animates card turn
+	 * @param {String} card The target .card div/class
+	 * @returns Returns a pormis for when animation is done
+	 */
+	function animationTurnCard(card) {
+		RemoveCardBack();
+		console.log("animateTurnCard: " + card);
+		var t1 = anime.timeline({
+			targets: card,
+			easing: "linear",
+			direction: "normal",
+		}).finished.then(function () {
+			anime({
+					targets: card,
+					scale: [{
+							value: 1,
+						},
+						{
+							value: 1.2,
+							duration: 400,
+						},
+						{
+							value: 1,
+							duration: 400,
+						},
+					],
+					rotateX: {
+						delay: 20,
+						value: "-=180",
+						duration: 500,
+					},
+					easing: "easeInOutSine",
+					duration: 1200,
+				},
+				"-=200"
+			).finished.then(() => {
+				$(card).css({
+					transform: 'none'
+				});
+				animateOutOfFrame(card);
+			});
+		}, 200);
+
+
+
+		return t1.finished;
+	}
+
 	/**
 	 * Finds the center of the mainContent class baseed of the cardstack position
 	 * @param {String} card The target card div/class
@@ -336,46 +371,37 @@ $(() => {
 		);
 	}
 
+
 	//----SetUp----
-
-	function RemoveTutorial() {
-		$(".tutorial").css({
-			visibility: "hidden",
-			display: "none",
-		});
-		$(".curtain").css({
-			visibility: "hidden",
-			display: "none",
-		});
-	}
-
-	function SetUpTutorial(data) {
-		let dkTutorial = data.instructions.instructionsDK;
-		let engTutorial = data.instructions.instructionsENG;
-		$(".tutorial").prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
-	}
 
 	/**
 	 * The basic setup for the html document.
 	 */
 	function SetUpHtmlDivs(data) {
 		SetUpTutorial(data);
+		MakeSpeakerIcon();
 		MakeCardStack();
 		MakeHelpIcon();
+		MakeCloseIcon();
 	}
-
 	/**
 	 * Makes and inserts the help icon
 	 */
 	function MakeHelpIcon() {
 		let helpIcon = `<div class='helpIcon'>${icon(faQuestionCircle).html}</div>`;
-
-		//let helpIcon = `<div class='helpIcon'>i</div>`;
-		$(".cardStack-Container").append(helpIcon);
-
-		console.log("made help icon");
+		$(".mainContent").before(helpIcon);
+	}
+	/**
+	 * Makes and inserts the close icon
+	 */
+	function MakeCloseIcon() {
+		let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
+		$(".answerZone").after(closeIcon);
 	}
 
+	function MakeSpeakerIcon() {
+		$(".speaker").append(icon(faVolumeUp).html);
+	}
 	/**
 	 * Setsup the cardstack dependend on how many cards there is
 	 */
@@ -386,8 +412,8 @@ $(() => {
 			let card = `
             <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
                 <div class="card card${index}" id='card${index}'>
-                    <div class="front">${icon(faVolumeUp).html}</div>
-                    <div class="back">${element.word}</div>
+                    <div class="back">${icon(faVolumeUp).html}</div>
+					<div class="front cardBack">${element.word}</div>
                 </div>
             </div>`;
 			$(".cardStack-Container").append(card);
@@ -400,4 +426,48 @@ $(() => {
 		});
 		console.log("made cardstack");
 	}
+
+	/**
+	 * Fjerner .cardBack class fra det nuværende kort, så bagsiden igen viser ordet
+	 */
+	function RemoveCardBack() {
+		let id = `${$(".mainContent .cardcontainer").attr("id")} .front`;
+		$(`#${id}`).removeClass("front cardBack").addClass("front");
+	}
+
+
+	function SetUpTutorial(data) {
+		let dkTutorial = data.instructions.instructionsDK;
+		let engTutorial = data.instructions.instructionsENG;
+		$(".tutorial").prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
+	}
+
+	function ShowTutorial() {
+		$(".tutorial").css({
+			visibility: "visible",
+			display: "grid"
+		});
+		$(".curtain").css({
+			visibility: "visible",
+			display: "grid"
+		});
+		$(".speaker").css({
+			visibility: "visible"
+		})
+	}
+
+	function RemoveTutorial() {
+		$(".tutorial").css({
+			visibility: "hidden",
+			display: "none",
+		});
+		$(".curtain").css({
+			visibility: "hidden",
+			display: "none",
+		});
+		$(".speaker").css({
+			visibility: "hidden"
+		})
+	}
+
 });
