@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const requireAuth = (req, res, next) => {
-	console.log('hej ' + req.cookies);
+	console.log('cookies ' + req.cookies);
 	const token = req.cookies.jwt;
 	console.log(token);
 
@@ -9,14 +9,14 @@ const requireAuth = (req, res, next) => {
 		jwt.verify(token, process.env.JWT_KEY, (err, decodedToken) => {
 			if (err) {
 				console.log(err.message);
-				res.redirect('/login');
+				res.redirect('/page/login');
 			} else {
 				console.log(decodedToken);
 				next();
 			}
 		});
 	} else {
-		res.redirect('/login');
+		res.redirect('/page/login');
 	}
 };
 

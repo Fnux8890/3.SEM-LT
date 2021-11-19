@@ -1,10 +1,10 @@
-const {Word} = require('../ExerciseModule');
+const { Word } = require('../ExerciseModule');
 //Bruges kun i Exercise2
 class FocusWordSentence {
-    constructor(sentence, focusWord){
-        this.sentence = sentence; //Word()
-        this.focusWord = focusWord; //Word()
-    }
+	constructor(sentence, focusWord) {
+		this.sentence = sentence; //Word()
+		this.focusWord = focusWord; //Word()
+	}
 }
 
-module.exports = {'FocusWordSentence': FocusWordSentence};
+module.exports = { FocusWordSentence: FocusWordSentence };

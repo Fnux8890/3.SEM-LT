@@ -30,4 +30,8 @@ router.get('/module-overview', requireAuth, (req, res) => {
 	res.render('module-overview');
 });
 
+router.get('/insert-recording', (req, res) => {
+	res.render('insert-recording');
+});
+
 export default router;
