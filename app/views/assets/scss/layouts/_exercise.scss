@@ -155,6 +155,10 @@
   bottom: 0;
   left: 0;
   right: 0;
+  p {
+    color: white;
+    z-index: 11;
+  }
 }
 .close {
   grid-area: close;
@@ -180,4 +184,22 @@
 .speaker {
   grid-area: speaker;
   cursor: pointer;
+  font-size: 50px;
+}
+
+.endNote {
+  text-align: center;
+  border-style: solid;
+  border-radius: 10px;
+  justify-content: center;
+  background-color: white;
+  visibility: visible;
+  z-index: 12;
+  grid-area: Main;
+  @include fontMediaQuery;
+  p {
+    padding: 50px;
+    text-align: left;
+    @include fontMediaQuery;
+  }
 }

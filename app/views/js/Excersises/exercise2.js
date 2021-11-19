@@ -20,19 +20,21 @@ library.add(faStar);
 
 const cards = [];
 let currentCard = "";
-let tutorial = '';
+let tutorial = "";
+let ratingdone = false;
 
 $(() => {
-  $.getJSON("http://localhost:3000/Build/ExerciseWordAndSentences", (data)=>{
-        data.cards.forEach(function (card) {
-          cards.push(card);
-        });
-        cards.sort(() => {
-          Math.random() > 0.5 ? 1 : -1;
-        });
-        SetupHtmlDivs(data);
+  $.getJSON("http://localhost:3000/Build/ExerciseWordAndSentences", (data) => {
+    data.cards.forEach(function (card) {
+      cards.push(card);
+    });
+    cards.sort(() => {
+      Math.random() > 0.5 ? 1 : -1;
+    });
+    SetupHtmlDivs(data);
+    startRating();
   });
-  
+
   //Indsætning af ikon (krydset)
   $(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
 
@@ -41,13 +43,10 @@ $(() => {
     //Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
   });
 
-
   //Lav seperat knap til afspil lydfil her eller nede i funktionen?
   $("body").on("click", ".recordIcon", () => {
     StartRecording();
   });
-
-  startRating();
 });
 
 function startRating() {
@@ -97,9 +96,10 @@ function tutorialButtonOnClick() {
   $("#tutorialbutton").on("click", async () => {
     let card = `.card${currentCard}`;
     tutorial = await RemoveTutorial();
-    const delay = (ms) => new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
+    const delay = (ms) =>
+      new Promise((resolve) => {
+        setTimeout(resolve, ms);
+      });
     await delay(200);
     animationFromStack(card);
     $(".translation").css("visibility", "visible");
@@ -219,13 +219,13 @@ function MakeHelpIcon() {
 function ShowTutorialAgain() {
   $(".helpIcon").on("click", function () {
     $(".mainContent")
-			.append(`<div class='curtain'></div>`)
-			.append(`<div class='tutorial'></div>`);
-		$(".tutorial").append(tutorial);
-		$(".speaker").remove();
-		$(".curtain").on("click", () => {
-			RemoveTutorial();
-		});
+      .append(`<div class='curtain'></div>`)
+      .append(`<div class='tutorial'></div>`);
+    $(".tutorial").append(tutorial);
+    $(".speaker").remove();
+    $(".curtain").on("click", () => {
+      RemoveTutorial();
+    });
     $(".speaker").remove();
     $("#tutorialbutton").on("click", async () => {
       tutorial = await RemoveTutorial();
@@ -237,11 +237,11 @@ function RemoveTutorial() {
   return new Promise((resolve, reject) => {
     let html = $(".tutorial").html();
     $(".tutorial").remove();
-		$("#tutorialbutton").remove();
-		$(".curtain").remove();
-		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
-    resolve(html)
-  })
+    $("#tutorialbutton").remove();
+    $(".curtain").remove();
+    $(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+    resolve(html);
+  });
 }
 
 /**
@@ -276,8 +276,18 @@ function MakeCardStackEng() {
   const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
   let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
   $(".translation").append(sentenceTranslated);
-  $(".translation").prepend();
-} 
+}
+
+function changeTranslation() {
+  let engSentence = cards[currentCard].translation_sentence;
+  let focusWord = cards[currentCard].translation_word;
+  const wordIndex = engSentence.indexOf(focusWord);
+  const firstPart = engSentence.slice(0, wordIndex);
+  const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
+  let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
+  $(".sentenceTranslated").html(sentenceTranslated);
+  console.log("Changing translation");
+}
 
 function SetupSentence() {
   let sentence = cards[currentCard].sentence;
@@ -291,16 +301,35 @@ function SetupSentence() {
   $(".sentence").append([firstDiv, wordDiv, secondDiv]);
 }
 
+function changeSentence() {
+  let sentence = cards[currentCard].sentence;
+  let word = cards[currentCard].word;
+  const wordIndex = sentence.indexOf(word);
+  const firstPart = sentence.slice(0, wordIndex);
+  const secondPart = sentence.slice(wordIndex + word.length + 1);
+  let firstDiv = `<div class="firstPart">${firstPart}</div>`;
+  let secondDiv = `<div class="secondPart">${secondPart}</div>`;
+  let wordDiv = `<div class="word"></div>`;
+  $(".sentence").html([firstDiv, wordDiv, secondDiv]);
+  console.log("Changing sentence");
+}
+
 function StartRecording() {
+  $(".recordIcon").remove();
+  let recordingNow = `<div class="recordingNow"></div>`;
+  $(".microphone").append(recordingNow);
+  $(".recordingNow").append(
+    icon({ prefix: "fas", iconName: "microphone" }).html
+  );
   navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-    const mediaRecorder = new MediaRecorder(stream);
+    let mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.start();
 
     const audioChunks = [];
 
-    mediaRecorder.addEventListener("dataavailable", (event) => {
-      audioChunks.push(event.data);
-    });
+    mediaRecorder.ondataavailable = function (e) {
+      audioChunks.push(e.data);
+    };
 
     mediaRecorder.addEventListener("stop", () => {
       const audioBlob = new Blob(audioChunks);
@@ -314,15 +343,23 @@ function StartRecording() {
 
     setTimeout(() => {
       mediaRecorder.stop();
-      $(".recordIcon").remove();
+      $(".recordingNow").remove();
       appendPlaybutton();
-      console.log("i setTimeout");
       $(".stars0, .stars1, .stars2, .stars3, .stars4").one("click", () => {
-        alert("test");
         $(".playRec").remove();
-        appendMicrophone();
         console.log("clicked stars");
         mediaRecorder = null;
+        //Gem stjernerne og træk næste kort.
+        let divexists = $(".recordIcon");
+        if (divexists.length < 1) {
+          appendMicrophone();
+          animateCardOut(`.cardcontainer${currentCard}`);
+        }
+        console.log(currentCard);
+        if(currentCard === 0) {
+          endScreen();
+          console.log("finished");
+        }
       });
     }, 3000);
   });
@@ -338,7 +375,7 @@ function setupRating() {
 }
 
 function appendMicrophone() {
-  let recordDiv = "<div class='recordIcon'></div>"
+  let recordDiv = "<div class='recordIcon'></div>";
   $(".microphone").append(recordDiv);
   $(".recordIcon").append(icon({ prefix: "fas", iconName: "microphone" }).html);
 }
@@ -351,7 +388,38 @@ function appendPlaybutton() {
 
 function populateTutorial(data) {
   let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
-	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
-	$("#eng").html(eng);
-	$("#dan").html(dan);
+  let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
+  $("#eng").html(eng);
+  $("#dan").html(dan);
+}
+
+function animateCardOut() {
+  console.log("removing card");
+  let card = `.card${currentCard}`;
+  let t1 = anime.timeline({ targets: card });
+  t1.add({
+    translateX: -1000,
+    easing: "easeOutQuint",
+    duration: 1000,
+  });
+  t1.finished.then(function () {
+    //TODO post answer to mongodb
+    $(card).remove();
+    ratingdone = false;
+    currentCard--;
+    card = `.card${currentCard}`;
+    animationFromStack(card);
+    changeSentence();
+    changeTranslation();
+  });
+}
+
+function endScreen() {
+  console.log("Finished exercise");
+  let curtainexists = $(".curtain");
+  if(curtainexists.length < 1) {
+    $(".speaker, .sentence, .translation, .close, .RecordAndRate, .cardStack").remove();
+    $(".mainContent").append(`<div class='curtain'></div>`).append(`<div class="endNote">You win</div>`);
+    $(".endNote").append(`<p class="endText">You did great!</p>`);
+  }
 }

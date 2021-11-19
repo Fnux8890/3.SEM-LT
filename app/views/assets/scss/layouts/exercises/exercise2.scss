@@ -46,6 +46,7 @@
   display: grid;
   grid-area: Main;
   grid-template-columns: repeat(3, minmax(206px, 1fr));
+  grid-template-rows: 200px;
   grid-template-areas: "sentenceFirst wordDiv sentenceLast";
   color: black;
   border-style: solid;
@@ -70,24 +71,42 @@
   }
 }
 
-.record {
+.RecordAndRate {
+  top: -100px;
+  position: relative;
   grid-area: vokaler;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(3, auto);
+  place-items: center;
   place-self: center;
-  font-size: calc(15px + 2vw);
-  svg {
-    visibility: visible;
+  .rating {
+    place-self: start center;
+    margin-bottom: 30px;
   }
-}
+  .record {
+    place-self: center;
+    font-size: calc(15px + 2vw);
+    cursor: pointer;
+  }
 
-.rating {
-  grid-area: vokaler;
-  place-self: start center;
-}
+  .microphone {
+    font-size: 50px;
+  }
 
-.microphone {
-  visibility: visible;
-}
+  .playRec {
+    font-size: 50px;
+  }
 
-.play {
-  visibility: hidden;
+  .star {
+    font-size: 30px;
+  }
+
+  p {
+    text-align: center;
+  }
+
+  .recordingNow {
+    color: red;
+  }
 }
