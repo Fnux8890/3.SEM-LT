@@ -10,9 +10,6 @@ import {
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/scss/layouts/exercises/exercise3.scss";
-import {
-	ajax
-} from "jquery";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -53,9 +50,7 @@ $(() => {
 
 	$(document).on("click", ".mainContent .cardcontainer", function () {
 		console.log(`card was clicked`);
-		RemoveCardBack($(".mainContent .cardcontainer").attr("id"));
-
-		let word = GetWord($(this).attr("id"));
+		let word = GetWord();
 		let soundfile =
 			word.soundFile[Math.floor(Math.random() * word.soundFile.length)];
 
@@ -63,8 +58,7 @@ $(() => {
 	});
 
 	$(document).on("click", ".answerOption", function (e) {
-		let mainId = $(".mainContent .cardcontainer").attr("id");
-		let mainWord = GetWord(mainId);
+		let mainWord = GetWord();
 
 		let clickedWord = $(this).text().trim();
 
@@ -77,7 +71,7 @@ $(() => {
 			console.log(
 				`CORRECT - word: ${mainWord.translation} == answerOption: ${clickedWord}`
 			);
-			animationTurnCard(`#card${GetIndex(mainId)}`);
+			animationTurnCard(`#card${GetIndex()}`);
 			colorChange.add({
 					targets: this,
 					background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
@@ -105,6 +99,7 @@ $(() => {
 		colorChange.finished.then(() => {
 			$(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
 		});
+
 	});
 
 	$("#tutorialButton").on("click", () => {
@@ -117,15 +112,8 @@ $(() => {
 	});
 
 	$(document).on("click", ".close", function () {
-		console.log("Close");
-		//$.post("/page/exercise1");
 		window.location.href = "http://localhost:3000/page/index"
 	});
-
-	function endExercise() {
-		//$.get("/page/")
-	}
-
 
 	function newCard() {
 		if ($(".mainContent .cardcontainer").length != 0) {
@@ -154,6 +142,7 @@ $(() => {
 		}
 
 		MakeAnswerOptions(answerOptions);
+		animateAnswerOptionsIn();
 		animationFromStack(`#card${cardIndex}`);
 	}
 
@@ -170,9 +159,6 @@ $(() => {
                     <p>${element.translation}</p>
                 </div>`;
 			$(".answerZone").append(answerOption);
-			$(`.ansOpt${index}`).css({
-				// transform: `translateY(${offset}px)`,
-			});
 		});
 	}
 
@@ -188,17 +174,21 @@ $(() => {
 	}
 
 	/**
-	 * Get the word object that matches the card-div
-	 * @param {String} id - id of the card
-	 * @returns the word object that matches the index of the id
+	 * 
+	 * @returns the word object that matches the main card index
 	 */
-	function GetWord(id) {
-		return words[GetIndex(id)];
+	function GetWord() {
+		return words[GetIndex()];
 	}
 
-	function GetIndex(id) {
+	/**
+	 * 
+	 * @returns index of the main card
+	 */
+	function GetIndex() {
+		let mainId = $(".mainContent .cardcontainer").attr("id");
 		let regex = /[0-9]+$/;
-		let cardIndex = id.match(regex);
+		let cardIndex = mainId.match(regex);
 
 		return cardIndex;
 	}
@@ -207,9 +197,43 @@ $(() => {
 
 	const timeline = anime.timeline;
 	/**
+	 * Animates the answerOptions in sync with the animationFromStack function
+	 * @returns Returns a promis for when animation is done
+	 */
+	function animateAnswerOptionsIn() {
+		let target = ".answerOption";
+		var t1 = timeline({
+			targets: target,
+			direction: "normal",
+		});
+		t1.add({
+			delay: 500,
+			easing: "easeInOutSine",
+			duration: 1200,
+			scale: [{
+					value: 1,
+				},
+				{
+					value: 1.2,
+					duration: 400,
+				},
+				{
+					value: 1,
+					duration: 400,
+				},
+			],
+
+		}, 500);
+		t1.finished.then(function () {
+
+		}, 0);
+
+		return t1.finished;
+	}
+	/**
 	 * Used to animate the card out of view - then calls newCard()
-	 * @param {String} card The target card div/class
-	 * @returns Returns a pormis for when animation is done
+	 * @param {String} card The target .card div/class
+	 * @returns Returns a promis for when animation is done
 	 */
 	function animateOutOfFrame(card) {
 		var t1 = timeline({
@@ -232,11 +256,58 @@ $(() => {
 
 		return t1.finished;
 	}
+	/**
+	 * Animates card turn, then call animateOutOfFrame
+	 * @param {String} card The target .card div/class
+	 * @returns Returns a promis for when animation is done
+	 */
+	function animationTurnCard(card) {
+		RemoveCardBack();
+		console.log("animateTurnCard: " + card);
+		var t1 = anime.timeline({
+			targets: card,
+			easing: "linear",
+			direction: "normal",
+		}).finished.then(function () {
+			anime({
+					targets: card,
+					scale: [{
+							value: 1,
+						},
+						{
+							value: 1.2,
+							duration: 400,
+						},
+						{
+							value: 1,
+							duration: 400,
+						},
+					],
+					rotateX: {
+						delay: 20,
+						value: "-=180",
+						duration: 500,
+					},
+					easing: "easeInOutSine",
+					duration: 1200,
+				},
+				"-=200"
+			).finished.then(() => {
+				$(card).css({
+					transform: 'none'
+				});
+				animateOutOfFrame(card);
+			});
+		}, 200);
 
+
+
+		return t1.finished;
+	}
 	/**
 	 * Animates from cardStack
-	 * @param {String} card The target card div/class
-	 * @returns Returns a pormis for when animation is done
+	 * @param {String} card The target .card div/class
+	 * @returns Returns a promis for when animation is done
 	 */
 	function animationFromStack(card) {
 		let maincontentCenter = findMaincontentCenter(card);
@@ -292,57 +363,6 @@ $(() => {
 
 		return t1.finished;
 	}
-
-
-	/**
-	 * Animates card turn
-	 * @param {String} card The target .card div/class
-	 * @returns Returns a pormis for when animation is done
-	 */
-	function animationTurnCard(card) {
-		RemoveCardBack();
-		console.log("animateTurnCard: " + card);
-		var t1 = anime.timeline({
-			targets: card,
-			easing: "linear",
-			direction: "normal",
-		}).finished.then(function () {
-			anime({
-					targets: card,
-					scale: [{
-							value: 1,
-						},
-						{
-							value: 1.2,
-							duration: 400,
-						},
-						{
-							value: 1,
-							duration: 400,
-						},
-					],
-					rotateX: {
-						delay: 20,
-						value: "-=180",
-						duration: 500,
-					},
-					easing: "easeInOutSine",
-					duration: 1200,
-				},
-				"-=200"
-			).finished.then(() => {
-				$(card).css({
-					transform: 'none'
-				});
-				animateOutOfFrame(card);
-			});
-		}, 200);
-
-
-
-		return t1.finished;
-	}
-
 	/**
 	 * Finds the center of the mainContent class baseed of the cardstack position
 	 * @param {String} card The target card div/class

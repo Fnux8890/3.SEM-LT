@@ -39,12 +39,14 @@ body {
 .answerZone {
 	grid-area: answerOption;
 	display: grid;
-	//grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
 	grid-template-columns: 50% 50%;
 	grid-auto-rows: auto;
 	place-items: center;
 	z-index: 0;
 	padding-bottom: 15px;
+
+	overflow: hidden;
 }
 .answerOption {
 	height: 65px;
@@ -61,7 +63,7 @@ body {
 	z-index: 1;
 	cursor: pointer;
 
-	background-color: rgb(48, 151, 115);
+	background-color: $primaryColor;
 	opacity: 1;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
