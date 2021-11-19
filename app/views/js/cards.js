@@ -1,24 +1,24 @@
-import '../css/modules.scss';
+import "../assets/scss/layouts/modules.scss";
 
 $(() => {
-	$('div.details').on('click', function () {
-		$(this).toggleClass('clicked').css('transition-duration', '0.8s');
-		$('ul li .details').not('.clicked').toggleClass('.notSelected');
+	$("div.details").on("click", function () {
+		$(this).toggleClass("clicked").css("transition-duration", "0.8s");
+		$("ul li .details").not(".clicked").toggleClass(".notSelected");
 	});
 
-	$('div#basic1').on('click', function () {
-		const div = document.getElementById('exercise1');
+	$("div#basic1").on("click", function () {
+		const div = document.getElementById("exercise1");
 
-		$(this).toggleClass('slideRight');
-		$('.smallcard').toggleClass('show');
-		$('#basic2').toggleClass('hide');
+		$(this).toggleClass("slideRight");
+		$(".smallcard").toggleClass("show");
+		$("#basic2").toggleClass("hide");
 
-		$(div).addClass('hide');
-		$('.notselected').css('pointer-events', 'auto');
+		$(div).addClass("hide");
+		$(".notselected").css("pointer-events", "auto");
 	});
 
-	$('div#set1').one('click', function () {
-		$(this).css('transform', 'translate(5.5%, 15%) scale(1.1)');
+	$("div#set1").one("click", function () {
+		$(this).css("transform", "translate(5.5%, 15%) scale(1.1)");
 		$(this).after(`
 		<div id="exercise1" class="hide">
 		<div class="dashed-circle exercise1">Exercise 1</div>
@@ -45,11 +45,11 @@ $(() => {
 		`);
 	});
 
-	$('div#set1').on('click', function () {
-		console.log('clicked');
-		$('#exercise1').toggleClass('hide');
-		$('.exercise1').on('click', function () {
-			window.open('http://localhost:3000/page/exercise1', '_parent');
+	$("div#set1").on("click", function () {
+		console.log("clicked");
+		$("#exercise1").toggleClass("hide");
+		$(".exercise1").on("click", function () {
+			window.open("http://localhost:3000/page/exercise1", "_parent");
 		});
 	});
 });
