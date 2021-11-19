@@ -16,6 +16,7 @@ let currentCard = "";
 let tutorial = "";
 let dropped = false;
 let incorrectAnswers = 0;
+const timeline = anime.timeline;
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -76,7 +77,6 @@ function findMaincontentCenter(card) {
 	return { x, y };
 }
 
-const timeline = anime.timeline;
 /**
  * Animates from cardStack
  * @param {String} card The target card div/class
@@ -262,10 +262,15 @@ function animateCardOut(div) {
 		});
 	}
 	t1.finished.then(function () {
-		//TODO post answer to mongodb
+		$.ajax({
+			url: "",
+			type: "POST",
+			data: {},
+		});
 		$(card).remove();
 		dropped = false;
 		currentCard--;
+		ord.pop();
 		card = `.card${currentCard}`;
 		FromStackAnimation(card);
 	});
@@ -408,6 +413,8 @@ function CardDraggable() {
 }
 
 function FromStackAnimation(card) {
+	console.table(ord);
+	if (ord.length === 0) ExerciseComplete();
 	animationFromStack(card)
 		.then(() => {
 			interact(card)
@@ -441,6 +448,11 @@ function FromStackAnimation(card) {
 		.catch((error) => {
 			console.log(error.message);
 		});
+}
+
+function ExerciseComplete() {
+	alert("you'r fucking done mate");
+	window.location.href = "/page/login";
 }
 
 /**

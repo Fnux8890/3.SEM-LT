@@ -16,10 +16,11 @@ module.exports = {
 		createAccount: [
 			path.resolve(__dirname, "./app/views/js/login/createAccount.js"),
 		],
+		error: path.resolve(__dirname, "./app/views/js/error.js"),
 	},
 	output: {
 		filename: "[name].js",
-		path: path.resolve(__dirname, "app/views/dist"),
+		path: path.resolve(__dirname, "app/views/dist/js"),
 		clean: true,
 	},
 	module: {
@@ -109,16 +110,16 @@ module.exports = {
 		minimize: false,
 	},
 	plugins: [
-		new SourceMapDevToolPlugin({ filename: "[file].map" }),
+		//new SourceMapDevToolPlugin({ filename: "[file].map" }),
 		new ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",
 			"window.jQuery": "jquery",
 		}),
 		new MiniCssExtractPlugin({
-			filename: "css/[name].css",
+			filename: "../css/[name].css",
 			chunkFilename: "[id].css",
 		}),
 	],
-	devtool: "source-map",
+	//devtool: "source-map",
 };

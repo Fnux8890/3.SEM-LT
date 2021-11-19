@@ -15,7 +15,7 @@
             "@models": "./app/models",
             "@public": "./app/views/",
             "@distCss": "./app/views/dist/css",
-            "@publicCss": "./app/views/css"
+            "@publicCss": "./app/views/assets/scss"
           }
         }],
         ["@babel/plugin-syntax-dynamic-import"]
