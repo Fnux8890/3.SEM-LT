@@ -41,6 +41,14 @@ router.get('/getRecording', (req, res) => {
 	getRecording(wordName, res);
 });
 
+router.get('/getSentence', (req, res) => {
+	let sentenceName = {
+		name: req.query.sentencename,
+	};
+	console.log(sentenceName);
+	getSentence(sentenceName, res);
+});
+
 function insertRecording(recording, res) {
 	const url =
 		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -108,6 +116,56 @@ function getRecording(wordName, res) {
 								console.log('found word ', foundWord);
 								let soundfiles =
 									foundWord.soundfile[0].file.buffer;
+								console.log('soundfiles ', soundfiles);
+								fs.writeFileSync(
+									'word.mp3',
+									soundfiles,
+									err => {
+										if (err) {
+											console.log(
+												'error in writefile',
+												err
+											);
+										} else {
+											console.log(
+												'file written succesfully'
+											);
+										}
+									}
+								);
+							}
+						}
+					)
+					.exec();
+				//res.status(200).json(recording);
+				console.log('got recording');
+			} catch (err) {
+				console.log(err.message);
+				console.log('err while getting');
+			}
+		}
+	});
+}
+
+function getSentence(sentenceName, res) {
+	const url =
+		'mongodb+srv://Sebastian:warrcraft1@cluster0.op3ym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+	console.log(sentenceName);
+	mongoClient.connect(url, (err, client) => {
+		if (err) {
+			return err;
+		} else {
+			try {
+				sentenceModel
+					.findOne(
+						{ sentence: sentenceName.name },
+						function (err, foundSentence) {
+							if (err) {
+								console.log('err in finding word', err);
+							} else {
+								console.log('found sentence ', foundSentence);
+								let soundfiles =
+									foundSentence.soundfile[0].file.buffer;
 								console.log('soundfiles ', soundfiles);
 								fs.writeFileSync(
 									'word.mp3',
