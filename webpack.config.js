@@ -1,23 +1,26 @@
-const path = require('path');
-const { SourceMapDevToolPlugin, ProvidePlugin } = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const path = require("path");
+const { SourceMapDevToolPlugin, ProvidePlugin } = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
-	target: 'node',
-	mode: 'development',
+	target: "node",
+	mode: "development",
 	entry: {
-		exercise: {
-			import: './app/views/js/Exercises/exercise1.js',
+		exercise1: path.resolve(__dirname, "./app/views/js/Exercises/exercise1.js"),
+		navbar: path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
+		login: {
+			import: path.resolve(__dirname, "./app/views/js/login/login.js"),
 		},
-		navbar: path.resolve(__dirname, './app/views/js/Navbar/navbar.js'),
-		login: path.resolve(__dirname, './app/views/js/login/login.js'),
-		createAccount: path.resolve(
+		createAccount: {
+			import: path.resolve(__dirname, "app/views/js/login/createAccount.js"),
+		},
 		error: path.resolve(__dirname, "./app/views/js/error.js"),
-		modules: path.resolve(__dirname, './app/views/js/cards.js'),
+		modules: path.resolve(__dirname, "./app/views/js/moduelOverview.js"),
 	},
 	output: {
 		filename: "[name].js",
 		path: path.resolve(__dirname, "app/views/dist/js"),
+		publicPath: "../",
 		clean: true,
 	},
 	module: {
@@ -28,55 +31,69 @@ module.exports = {
 					{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							publicPath: '../',
+							publicPath: "/dist/js/",
 						},
 					},
 					{
-						loader: 'css-loader',
+						loader: "css-loader",
 						options: {
 							url: true,
+							sourceMap: true,
 						},
 					},
-					'sass-loader',
-					'postcss-loader',
+					"postcss-loader",
+					{
+						loader: "resolve-url-loader",
+						options: {
+							sourceMap: true,
+						},
+					},
+					{
+						loader: "sass-loader",
+						options: {
+							sourceMap: true,
+						},
+					},
 				],
 			},
 			{
 				test: /\.m?js$/,
 				exclude: /(node_modules|bower_components)/,
 				use: {
-					loader: 'babel-loader',
+					loader: "babel-loader",
 					options: {
-						presets: ['@babel/preset-env'],
+						presets: ["@babel/preset-env"],
 					},
 				},
 			},
 			{
 				test: /\.js$/,
-				enforce: 'pre',
-				use: ['source-map-loader'],
+				enforce: "pre",
+				use: ["source-map-loader"],
 			},
 			{
 				test: /\.(s[ac]|c)ss$/i,
-				enforce: 'pre',
-				use: ['source-map-loader'],
+				enforce: "pre",
+				use: ["source-map-loader"],
 			},
 			// {
 			// 	test: /\.(svg|png|jpe?g|gif)$/,
 			// 	use: {
-			// 		loader: "file-loader",
-			// 		options: {
-			// 			name: "[name].[ext]",
-			// 			outputPath: "img",
-			// 			public: "../",
-			// 		},
+			// 		loader: "url-loader",
 			// 	},
 			// },
+			{
+				test: /\.(svg|png|jpe?g|gif)$/,
+				type: "asset/resource",
+				// options: {
+				// 	name: "[name].[ext]",
+				// },
+			},
 		],
 	},
 	optimization: {
 		splitChunks: {
-			chunks: 'async',
+			chunks: "async",
 			minSize: 20000,
 			minRemainingSize: 0,
 			minChunks: 1,
@@ -95,9 +112,9 @@ module.exports = {
 					reuseExistingChunk: true,
 				},
 				styles: {
-					name: 'styles',
-					type: 'css/mini-extract',
-					chunks: 'all',
+					name: "styles",
+					type: "css/mini-extract",
+					chunks: "all",
 					minChunks: 2,
 					enforce: true,
 				},
@@ -109,9 +126,9 @@ module.exports = {
 	plugins: [
 		//new SourceMapDevToolPlugin({ filename: "[file].map" }),
 		new ProvidePlugin({
-			$: 'jquery',
-			jQuery: 'jquery',
-			'window.jQuery': 'jquery',
+			$: "jquery",
+			jQuery: "jquery",
+			"window.jQuery": "jquery",
 		}),
 		new MiniCssExtractPlugin({
 			filename: "../css/[name].css",

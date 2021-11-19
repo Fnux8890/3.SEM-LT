@@ -7,7 +7,8 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "nodemon  --exec babel-node --delay 0.8 app",
-		"test": "node script1.js"
+		"test": "node script1.js",
+		"stat": "webpack --profile --json > stats.json"
 	},
 	"repository": {
 		"type": "git",
@@ -83,6 +84,7 @@
 		"babel-loader": "^8.2.3",
 		"css-loader": "^6.5.0",
 		"css-minimizer-webpack-plugin": "^3.1.2",
+		"css-url-relative-plugin": "^1.1.0",
 		"file-loader": "^6.2.0",
 		"mini-css-extract-plugin": "^2.4.3",
 		"nodemon": "^2.0.13",
@@ -90,6 +92,7 @@
 		"postcss": "^8.3.11",
 		"postcss-loader": "^6.2.0",
 		"postcss-preset-env": "^6.7.0",
+		"resolve-url-loader": "^4.0.0",
 		"sass": "^1.43.4",
 		"sass-loader": "^12.3.0",
 		"style-loader": "^3.3.1",
