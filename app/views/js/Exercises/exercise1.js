@@ -7,14 +7,16 @@ import {
 	faTimes,
 	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../css/exercise1.scss";
+import "../../assets/scss/layouts/exercises/exercise1.scss";
 import lottie from "lottie-web/build/player/lottie";
 
 let position = { x: 0, y: 0 };
 const ord = [];
 let currentCard = "";
 let tutorial = "";
-let anim = "";
+let dropped = false;
+let incorrectAnswers = 0;
+const timeline = anime.timeline;
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -75,7 +77,6 @@ function findMaincontentCenter(card) {
 	return { x, y };
 }
 
-const timeline = anime.timeline;
 /**
  * Animates from cardStack
  * @param {String} card The target card div/class
@@ -105,31 +106,40 @@ async function animationFromStack(card) {
 				.css({
 					"grid-area": "Main",
 					"border-radius": "10px",
+				})
+				.children(card)
+				.css({
 					"box-shadow":
-						"0 6px 6px rgba(0, 0, 0, 0.23), 0 10px 20px rgba(0, 0, 0, 0.19)",
+						"6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)",
 				});
-			let cardFlip = anime.timeline({
-				targets: card,
-			});
-			cardFlip.add(
-				{
-					scale: [
-						{ value: 1 },
-						{ value: 1.2, duration: 400 },
-						{ value: 1, duration: 400 },
-					],
-					rotateX: { delay: 20, value: "+=180", duration: 500 },
-					easing: "easeInOutSine",
-					duration: 1200,
-				},
-				"-=200"
-			);
-			return cardFlip.finished;
+
+			return cardFlip(card);
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 }
+
+function cardFlip(card) {
+	let cardFlip = anime.timeline({
+		targets: card,
+	});
+	cardFlip.add(
+		{
+			scale: [
+				{ value: 1 },
+				{ value: 1.2, duration: 400 },
+				{ value: 1, duration: 400 },
+			],
+			rotateX: { delay: 20, value: "+=180", duration: 500 },
+			easing: "easeInOutSine",
+			duration: 1200,
+		},
+		"-=200"
+	);
+	return cardFlip.finished;
+}
+
 /**
  * Used to animate back to where the card was draged from.
  * @param {String} card The target card div/class
@@ -148,67 +158,207 @@ function animationToCenter(card) {
 		translateY: animateTo.y,
 		easing: "easeOutQuint",
 		duration: 1000,
-	});
-
-	t1.finished.then(() => {
+	}).finished.then(() => {
 		$(`${card}`).css({
 			transform: "none",
 			transform: "rotateX(180deg)",
 		});
+		position = { x: 0, y: 0 };
+
+		return t1.finished;
+	});
+}
+
+function animateToDropzone(card, div) {
+	let { left, top } = $(card).offset();
+	let cardPos = { x: left, y: top };
+	left = $(div).offset().left;
+	top = $(div).offset().top;
+	let dropPos = { x: left, y: top };
+	let result = {
+		x: cardPos.x - dropPos.x - 20,
+		y: cardPos.y - dropPos.y - $(div).height() / 2 + 18,
+	};
+	position = result;
+	let { x, y } = position;
+	x = -x;
+	let animateTo = { x: x, y: y };
+	let t1 = timeline({
+		targets: card,
 	});
 
-	position = { x: 0, y: 0 };
-
-	return t1.finished;
+	t1.add({
+		translateX: animateTo.x,
+		translateY: animateTo.y,
+		easing: "easeOutQuint",
+		duration: 800,
+	}).finished.then(() => {
+		$(`${card}`).css({
+			transform: "none",
+			transform: "rotateX(180deg)",
+		});
+		position = { x: 0, y: 0 };
+		$(div).css({
+			position: "relative",
+		});
+		$(card).appendTo(div).css({
+			position: "absolute",
+			top: "50px",
+			right: "0px",
+		});
+	});
 }
 
 function DropzoneCardInteract(div) {
 	interact(div).dropzone({
 		accept: ".card",
 		ondrop: function (event) {
-			console.log(
-				`your choice: ${$(div).text()} \ncorrectChoice: ${
-					ord[currentCard].answer
-				}\nProccesing`
-			);
+			dropped = true;
+			changePostitionToDrop(div);
 			(async () => {
 				return new Promise((resolve) => {
 					setTimeout(resolve, 1000);
 				});
-			})().then(() => {
-				if ($(div).text().trim(" ") === ord[currentCard].answer.trim(" ")) {
-					animateCorrectAnswer();
+			})().then(async () => {
+				if (
+					$(`${div} p`).text().trim(" ") === ord[currentCard].answer.trim(" ")
+				) {
+					AnimateCorrectAnswer();
 				} else {
 					AnimateIncorrectAnswer();
 				}
+				const delay = (ms) =>
+					new Promise((resolve) => {
+						setTimeout(resolve, ms);
+					});
+				await delay(2200);
+				animateCardOut(div);
 			});
 		},
 	});
 }
 
-function animateCorrectAnswer() {
-	anim = lottie.loadAnimation({
-		container: document.getElementById("animation"), // the dom element that will contain the animation
-		renderer: "svg",
-		loop: false,
-		autoplay: false,
-		path: "https://assets2.lottiefiles.com/packages/lf20_rovf9gzu.json", // the path to the animation json
-	});
-	$("#animation").css({ "z-index": "11" });
-	$(".mainContent")
-		.append(`<div class='curtain'></div>`)
-		.append(`<div class='tutorial'></div>`);
-	$(".tutorial").addClass("correct").html(`
-			<p>Congratulations your answer was correct!</p>
-			<button id="nextCard">Continue</button>
-	`);
-	$(".speaker").remove();
-	anim.play();
-	$(".correct > button").on("click", () => {
-		RemoveTutorial();
+function changePostitionToDrop(div) {
+	let card = `.card${currentCard}`;
+	animateToDropzone(card, div);
+}
+
+function animateCardOut(div) {
+	let card = `.card${currentCard}`;
+	let answerClass = $(div).attr("class");
+	let t1 = anime.timeline({ targets: card });
+	if (answerClass === "vokalA") {
+		t1.add({
+			translateX: -500,
+			easing: "easeOutQuint",
+			duration: 1000,
+		});
+	}
+	if (answerClass === "vokalB") {
+		t1.add({
+			translateX: 500,
+			easing: "easeOutQuint",
+			duration: 1000,
+		});
+	}
+	t1.finished.then(function () {
+		$.ajax({
+			url: "",
+			type: "POST",
+			data: {},
+		});
+		$(card).remove();
+		dropped = false;
+		currentCard--;
+		ord.pop();
+		card = `.card${currentCard}`;
+		FromStackAnimation(card);
 	});
 }
-function AnimateIncorrectAnswer() {}
+
+function AnimateCorrectAnswer() {
+	let card = `.card${currentCard}`;
+	$(`${card} .front`).css({
+		"background-color": "green",
+	});
+	$(`${card}`).css({
+		transform: "none",
+		transform: "rotateX(180deg)",
+	});
+	$(`${card} .front`).html(`
+	<span id='correct'></span>
+	`);
+	$("#correct").css({
+		width: "100px",
+	});
+	let correctAnimation = lottie.loadAnimation({
+		container: document.getElementById("correct"),
+		renderer: "svg",
+		loop: false,
+		autoPlay: false,
+		path: "https://assets3.lottiefiles.com/packages/lf20_6LimOm.json",
+	});
+	correctAnimation.autoplay = false;
+	anime({
+		targets: card,
+		scale: [
+			{ value: 1 },
+			{ value: 1.2, duration: 400 },
+			{ value: 1, duration: 400 },
+		],
+		rotateX: { delay: 20, value: "+=180", duration: 500 },
+		easing: "easeInOutSine",
+		duration: 500,
+	}).finished.then(() => {
+		$(card).css({
+			"box-shadow":
+				"0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)",
+		});
+		correctAnimation.play();
+	});
+}
+function AnimateIncorrectAnswer() {
+	incorrectAnswers++;
+	let card = `.card${currentCard}`;
+	$(`${card} .front`).css({
+		"background-color": "red",
+	});
+	$(`${card}`).css({
+		transform: "none",
+		transform: "rotateX(180deg)",
+	});
+	$(`${card} .front`).html(`
+	<span id='incorrect'></span>
+	`);
+	$("#incorrect").css({
+		width: "100px",
+	});
+	let incorrectAnimation = lottie.loadAnimation({
+		container: document.getElementById("incorrect"),
+		renderer: "svg",
+		loop: false,
+		autoPlay: false,
+		path: "https://assets5.lottiefiles.com/temp/lf20_yYJhpG.json",
+	});
+	incorrectAnimation.autoplay = false;
+	anime({
+		targets: card,
+		scale: [
+			{ value: 1 },
+			{ value: 1.2, duration: 400 },
+			{ value: 1, duration: 400 },
+		],
+		rotateX: { delay: 20, value: "+=180", duration: 500 },
+		easing: "easeInOutSine",
+		duration: 500,
+	}).finished.then(() => {
+		$(card).css({
+			"box-shadow":
+				"0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)",
+		});
+		incorrectAnimation.play();
+	});
+}
 
 /**
  * The basic setup for the html document.
@@ -263,6 +413,8 @@ function CardDraggable() {
 }
 
 function FromStackAnimation(card) {
+	console.table(ord);
+	if (ord.length === 0) ExerciseComplete();
 	animationFromStack(card)
 		.then(() => {
 			interact(card)
@@ -284,7 +436,9 @@ function FromStackAnimation(card) {
 					},
 				})
 				.on("dragend", (event) => {
-					animationToCenter(card);
+					if (dropped === false) {
+						animationToCenter(card);
+					}
 					$(".vokalA, .vokalB").css({
 						opacity: 1,
 						"border-style": "none",
@@ -294,6 +448,11 @@ function FromStackAnimation(card) {
 		.catch((error) => {
 			console.log(error.message);
 		});
+}
+
+function ExerciseComplete() {
+	alert("you'r fucking done mate");
+	window.location.href = "/page/login";
 }
 
 /**

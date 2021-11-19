@@ -1,19 +1,7 @@
-body {
-	margin: 0;
-	background-color: burlywood;
-}
-
+@use "../abstracts" as *;
+@use "../components" as *;
 .container {
-	display: grid;
-	gap: 1rem;
-	grid-template-areas:
-		"stack . drawcard . close"
-		". mainContent mainContent mainContent ."
-		"vokaler vokaler vokaler vokaler vokaler";
-	/*
-	grid-template-columns: repeat(5, minmax(240px, 1fr));*/
-	grid-auto-rows: auto 300px auto;
-	height: 100vh;
+	@include container;
 }
 
 .cardStack {
@@ -38,13 +26,14 @@ body {
 }
 
 .card {
-	width: 200px;
-	height: 100px;
+	width: $card-width;
+	height: $card-height;
 	background-color: transparent;
 	border-radius: 10px;
 	transform-style: preserve-3d;
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	box-shadow: $card-boxShadow;
 }
+
 .front,
 .back {
 	display: flex;
@@ -59,6 +48,7 @@ body {
 	z-index: 10;
 	font-size: 1.3vw;
 }
+
 .front {
 	color: #fff;
 	background: #2196f3;
@@ -74,12 +64,7 @@ body {
 	background: white;
 	font-size: 2rem;
 }
-#drawcardContainer {
-	grid-area: drawcard;
-	margin-top: 1rem;
-	justify-self: center;
-	visibility: hidden;
-}
+
 .vokal {
 	grid-area: vokaler;
 	display: grid;
@@ -98,49 +83,14 @@ body {
 	border-style: none;
 	border-radius: 10px;
 	padding: 40px 55px;
-}
-
-.vokalA p,
-.vokalB p {
-	padding: 0;
-	margin: 0;
+	p {
+		padding: 0;
+		margin: 0;
+	}
 }
 
 .vokalA p {
 	padding: 0 17px;
-}
-
-@mixin button {
-	padding: 20px;
-	margin-right: 1rem;
-	border-radius: 2px;
-	place-self: center end;
-	font-weight: 5em;
-	line-height: 1;
-	cursor: pointer;
-	filter: drop-shadow(0 2px 8px rgba(#275efe, 0.32));
-	margin-bottom: 1em;
-	background: #275efe;
-	border-radius: 24px;
-	transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
-	border: none;
-	outline: none;
-	color: white;
-	@include fontMediaQuery;
-
-	svg {
-		padding-left: 10px;
-		margin-bottom: 2px;
-	}
-}
-
-@mixin fontMediaQuery {
-	@media (max-width: 599px) {
-		font-size: 1em;
-	}
-	@media (min-width: 1201px) {
-		font-size: 1.3vw;
-	}
 }
 
 .tutorial {
@@ -163,62 +113,6 @@ body {
 	p:nth-child(1) {
 		border-bottom: solid 1px;
 		padding-bottom: 1rem;
-	}
-
-	#tutorialbutton {
-		@include button;
-		&:hover {
-			cursor: -webkit-pointer;
-			scale: 1.1;
-			svg {
-				transform: rotate(-45deg);
-				animation: svgRotateEnter 0.2s;
-			}
-		}
-		&:not(:hover) {
-			scale: 1;
-			svg {
-				transform: rotate(0deg);
-				animation: svgRotateLeave 0.2s;
-			}
-		}
-	}
-}
-
-@keyframes svgRotateEnter {
-	0% {
-		transform: rotate(0);
-	}
-	100% {
-		transform: rotate(-45deg);
-	}
-}
-
-@keyframes svgRotateLeave {
-	0% {
-		transform: rotate(-45deg);
-	}
-	100% {
-		transform: rotate(0deg);
-	}
-}
-.correct {
-	display: grid;
-	background-color: greenyellow;
-	place-items: center;
-
-	p:nth-child(1) {
-		border-bottom: none;
-		padding-bottom: 1rem;
-	}
-	button {
-		@include button;
-		&:hover {
-			scale: 1.1;
-		}
-		&:not(:hover) {
-			scale: 1;
-		}
 	}
 }
 
@@ -265,13 +159,7 @@ body {
 	cursor: pointer;
 }
 .speaker {
+	font-size: calc(15px + 2vw);
 	grid-area: speaker;
 	cursor: pointer;
-}
-
-#animation {
-	position: absolute;
-	grid-area: drawcard;
-	width: 100%;
-	height: 100%;
 }

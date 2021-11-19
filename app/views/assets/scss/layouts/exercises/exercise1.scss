@@ -1,0 +1,40 @@
+@use "../../main.scss" as *;
+@use "../exercise" as *;
+@use "../../abstracts/" as *;
+
+#tutorialbutton {
+	@include button-WithGlyp;
+	&:hover {
+		cursor: -webkit-pointer;
+		scale: 1.1;
+		svg {
+			transform: rotate(-45deg);
+			animation: svgRotateEnter 0.2s;
+		}
+	}
+	&:not(:hover) {
+		scale: 1;
+		svg {
+			transform: rotate(0deg);
+			animation: svgRotateLeave 0.2s;
+		}
+	}
+}
+
+@keyframes svgRotateEnter {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(-45deg);
+	}
+}
+
+@keyframes svgRotateLeave {
+	0% {
+		transform: rotate(-45deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}

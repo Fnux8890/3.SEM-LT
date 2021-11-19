@@ -1,6 +1,5 @@
-import { default as axios } from 'axios';
-import { data } from 'jquery';
-import '../../css/login.scss';
+import { default as axios } from "axios";
+import "../../assets/scss/layouts/login.scss";
 $(() => {
 	const element = document.getElementById('usernameerror');
 
