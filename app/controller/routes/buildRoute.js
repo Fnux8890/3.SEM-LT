@@ -73,20 +73,11 @@ function insertSentence(sentence, res) {
 	});
 }
 
-// * example on making mp3 from binary
-// fs.writeFileSync("word.mp3", soundfiles, (err) => {
-// 	if (err) {
-// 		console.log("error in writefile", err);
-// 	} else {
-// 		console.log("file written succesfully");
-// 	}
-// });
-
-async function getExerciseWithWords(exerciseId) {
+async function getExerciseWithWords(id) {
 	let result = await exercisesModel.aggregate([
 		{
 			$match: {
-				name: "Exercise 1",
+				name: `Exercise ${id}`,
 			},
 		},
 		{
@@ -99,6 +90,9 @@ async function getExerciseWithWords(exerciseId) {
 				cards: {
 					wordId: {
 						$toObjectId: "$cards.wordId",
+					},
+					sentenceId: {
+						$toObjectId: "$cards.sentenceId",
 					},
 				},
 			},
@@ -117,6 +111,11 @@ async function getExerciseWithWords(exerciseId) {
 			},
 		},
 		{
+			$unwind: {
+				path: "$cards.word.soundfile",
+			},
+		},
+		{
 			$project: {
 				_id: 0,
 				name: "$name",
@@ -125,10 +124,13 @@ async function getExerciseWithWords(exerciseId) {
 				instructions: "$instructions",
 				answerOptions: "$answerOptions",
 				cards: {
-					answer: "$cards.answer",
 					word: "$cards.word.word",
-					translation: "$cards.word.translation",
-					soundFile: "$cards.word.soundfile",
+					translation_word: "$cards.word.translation",
+					soundfile_word: "$cards.word.soundfile.file",
+					answer: "$cards.answer",
+					sentence: "$cards.sentence.sentence",
+					translation_sentence: "$cards.sentence.translation",
+					soundfile_sentence: "$cards.sentence.soundfile.file",
 				},
 			},
 		},
@@ -158,8 +160,7 @@ async function getExerciseWithWords(exerciseId) {
 			},
 		},
 	]);
-	result = result[0];
-	return result;
+	return result[0];
 }
 
 async function getExerciseSentences() {
@@ -213,6 +214,16 @@ async function getExerciseSentences() {
 			},
 		},
 		{
+			$unwind: {
+				path: "$cards.word.soundfile",
+			},
+		},
+		{
+			$unwind: {
+				path: "$cards.sentence.soundfile",
+			},
+		},
+		{
 			$project: {
 				_id: 0,
 				name: "$name",
@@ -222,10 +233,10 @@ async function getExerciseSentences() {
 				cards: {
 					word: "$cards.word.word",
 					translation_word: "$cards.word.translation",
-					soundFile_word: "$cards.word.soundfile",
+					soundfile_word: "$cards.word.soundfile.file",
 					sentence: "$cards.sentence.sentence",
 					translation_sentence: "$cards.sentence.translation",
-					soundfile_sentence: "$cards.sentence.soundfile",
+					soundfile_sentence: "$cards.sentence.soundfile.file",
 				},
 			},
 		},
@@ -258,18 +269,17 @@ async function getExerciseSentences() {
 	return result[0];
 }
 
-router.route("/ExerciseInformation").get(async (req, res) => {
+router.route("/ExerciseWords").get(async (req, res) => {
 	if (req.query.id === undefined) {
-		res.json({ error: "Id is not defined" });
+		res.json({ error: "No id given" });
 		return;
 	}
 	let exerciseObj = await getExerciseWithWords(req.query.id);
 	res.json(exerciseObj);
 });
 
-router.route("/ExerciseWordAndSentences").get(async (req, res) => {
+router.route("/ExerciseWordsAndSentences").get(async (req, res) => {
 	let sentenceQuery = await getExerciseSentences();
-	// res.send(sentenceQuery);
 	res.json(sentenceQuery);
 });
 

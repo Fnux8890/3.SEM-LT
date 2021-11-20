@@ -8,10 +8,11 @@ import {
 	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/scss/layouts/exercises/exercise1.scss";
+import { default as audioPlayer } from "../CustomModules/audioPlayer";
 import lottie from "lottie-web/build/player/lottie";
 
 let position = { x: 0, y: 0 };
-const ord = [];
+const cards = [];
 let currentCard = "";
 let tutorial = "";
 let dropped = false;
@@ -25,13 +26,13 @@ library.add(faThumbsUp);
 
 $(() => {
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseInformation?id=1`,
+		url: `http://localhost:3000/Build/ExerciseWords?id=1`,
 		type: "GET",
 		success: function (data) {
 			data.cards.forEach((object) => {
-				ord.push(object);
+				cards.push(object);
 			});
-			ord.sort(() => {
+			cards.sort(() => {
 				Math.random() > 0.5 ? 1 : -1;
 			});
 			SetupHtmlDivs(data);
@@ -51,6 +52,10 @@ $(() => {
 	$(".close svg").on("click", function () {
 		alert("Closing...");
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
+	});
+
+	$(".speaker").on("click", () => {
+		audioPlayer.playWord(cards[currentCard]);
 	});
 });
 
@@ -137,6 +142,7 @@ function cardFlip(card) {
 		},
 		"-=200"
 	);
+	audioPlayer.playWord(cards[currentCard]);
 	return cardFlip.finished;
 }
 
@@ -177,7 +183,7 @@ function animateToDropzone(card, div) {
 	let dropPos = { x: left, y: top };
 	let result = {
 		x: cardPos.x - dropPos.x - 20,
-		y: cardPos.y - dropPos.y - $(div).height() / 2 + 18,
+		y: cardPos.y - dropPos.y - $(div).height() / 2 + 16,
 	};
 	position = result;
 	let { x, y } = position;
@@ -191,7 +197,7 @@ function animateToDropzone(card, div) {
 		translateX: animateTo.x,
 		translateY: animateTo.y,
 		easing: "easeOutQuint",
-		duration: 800,
+		duration: 700,
 	}).finished.then(() => {
 		$(`${card}`).css({
 			transform: "none",
@@ -221,7 +227,7 @@ function DropzoneCardInteract(div) {
 				});
 			})().then(async () => {
 				if (
-					$(`${div} p`).text().trim(" ") === ord[currentCard].answer.trim(" ")
+					$(`${div} p`).text().trim(" ") === cards[currentCard].answer.trim(" ")
 				) {
 					AnimateCorrectAnswer();
 				} else {
@@ -249,14 +255,14 @@ function animateCardOut(div) {
 	let t1 = anime.timeline({ targets: card });
 	if (answerClass === "vokalA") {
 		t1.add({
-			translateX: -500,
+			translateX: -800,
 			easing: "easeOutQuint",
 			duration: 1000,
 		});
 	}
 	if (answerClass === "vokalB") {
 		t1.add({
-			translateX: 500,
+			translateX: 800,
 			easing: "easeOutQuint",
 			duration: 1000,
 		});
@@ -270,7 +276,7 @@ function animateCardOut(div) {
 		$(card).remove();
 		dropped = false;
 		currentCard--;
-		ord.pop();
+		cards.pop();
 		card = `.card${currentCard}`;
 		FromStackAnimation(card);
 	});
@@ -413,15 +419,15 @@ function CardDraggable() {
 }
 
 function FromStackAnimation(card) {
-	console.table(ord);
-	if (ord.length === 0) ExerciseComplete();
+	console.table(cards);
+	if (cards.length === 0) ExerciseComplete();
 	animationFromStack(card)
 		.then(() => {
 			interact(card)
 				.draggable({
 					listeners: {
 						start(event) {
-							console.log(ord[currentCard].answer);
+							console.log(cards[currentCard].answer);
 							$(".vokalA, .vokalB").css({
 								opacity: 0.5,
 								"border-style": "dashed",
@@ -488,7 +494,7 @@ function RemoveTutorial() {
  */
 function MakeCardStack() {
 	let offset = 5;
-	ord.forEach((element, index) => {
+	cards.forEach((element, index) => {
 		let card = `
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
@@ -504,5 +510,5 @@ function MakeCardStack() {
 		});
 		offset += 5;
 	});
-	currentCard = ord.length - 1;
+	currentCard = cards.length - 1;
 }
