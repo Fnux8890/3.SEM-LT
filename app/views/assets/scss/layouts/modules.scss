@@ -1,6 +1,7 @@
 @use "../main.scss" as *;
 body {
 	background-color: green;
+	overflow-x: hidden;
 }
 
 ul li {

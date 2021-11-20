@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
+import { verify } from "jsonwebtoken";
 
-const requireAuth = (req, res, next) => {
+export const requireAuth = (req, res, next) => {
 	const token = req.cookies.jwt;
 
 	if (token) {
-		jwt.verify(token, process.env.JWT_KEY, (err, decodedToken) => {
+		verify(token, process.env.JWT_KEY, (err, decodedToken) => {
 			if (err) {
 				res.redirect("/page/login");
 			} else {
@@ -15,5 +15,3 @@ const requireAuth = (req, res, next) => {
 		res.redirect("/page/login");
 	}
 };
-
-module.exports = { requireAuth };

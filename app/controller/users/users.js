@@ -1,7 +1,7 @@
-import myModel from '../../models/usersModel';
+import myModel from "../../models/usersModel";
 
-import { hash as _hash, compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { hash as _hash, compare } from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
 	try {
@@ -17,10 +17,10 @@ const createUser = async (req, res) => {
 		await myModel
 			.find({ username: req.body.username })
 			.exec()
-			.then(user => {
+			.then((user) => {
 				if (user.length >= 1) {
 					return res.status(409).json({
-						message: 'name already exists',
+						message: "name already exists",
 					});
 				} else {
 					_hash(req.body.password, 10, (err, hash) => {
@@ -40,13 +40,11 @@ const createUser = async (req, res) => {
 								},
 								process.env.JWT_KEY,
 								{
-									expiresIn: '1h',
+									expiresIn: "1h",
 								}
 							);
-							res.cookie('jwt', token);
-							return res
-								.status(200)
-								.json({ message: newuser, token: token });
+							res.cookie("jwt", token);
+							return res.status(200).json({ message: newuser, token: token });
 						}
 					});
 				}
@@ -103,16 +101,16 @@ const loginUser = async (req, res, next) => {
 		myModel
 			.find({ username: req.body.username })
 			.exec()
-			.then(user => {
+			.then((user) => {
 				if (user.length < 1) {
 					return res.status(401).json({
-						message: 'Auth failed',
+						message: "Auth failed",
 					});
 				}
 				compare(req.body.password, user[0].password, (err, result) => {
 					if (err) {
 						return res.status(401).json({
-							message: 'Auth failed',
+							message: "Auth failed",
 						});
 					}
 					if (result) {
@@ -123,18 +121,17 @@ const loginUser = async (req, res, next) => {
 							},
 							process.env.JWT_KEY,
 							{
-								expiresIn: '1h',
+								expiresIn: "1h",
 							}
 						);
-						console.log(token);
-						res.cookie('jwt', token);
+						res.cookie("jwt", token);
 						return res.status(200).json({
-							message: 'Auth succesful',
+							message: "Auth succesful",
 							token: token,
 						});
 					}
 					res.status(401).json({
-						message: 'Auth failed',
+						message: "Auth failed",
 					});
 				});
 			});

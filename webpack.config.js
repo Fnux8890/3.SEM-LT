@@ -7,12 +7,10 @@ module.exports = {
 	mode: "development",
 	entry: {
 		exercise1: path.resolve(__dirname, "./app/views/js/Exercises/exercise1.js"),
+		exercise2: path.resolve(__dirname, "./app/views/js/Exercises/exercise2.js"),
 		navbar: path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
 		login: {
 			import: path.resolve(__dirname, "./app/views/js/login/login.js"),
-		},
-		exercise2: {
-			import: "./app/views/js/Excersises/exercise2.js"
 		},
 		createAccount: {
 			import: path.resolve(__dirname, "app/views/js/login/createAccount.js"),
