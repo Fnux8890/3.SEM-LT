@@ -1,9 +1,6 @@
+@use "../main.scss" as *;
 body {
 	background-color: green;
-}
-
-#container {
-	z-index: -50000000;
 }
 
 ul li {
@@ -105,19 +102,20 @@ h1 {
 	top: 30%;
 }
 
-ul {
+.cardDeck {
+	padding-left: 0;
 	display: grid;
-	gap: 50px;
+	grid-gap: 50px;
 	margin-top: 100px;
 	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: 800px 500px 100px;
+	grid-template-rows: repeat(2, 500px);
 }
-li {
+.cardItem {
 	transform: skewY(0);
-	padding-top: 150%;
 	z-index: 1;
 	transition-property: z-index;
 	transition-duration: 0.3s;
+	display: grid;
 }
 
 div.smallcard {
@@ -171,11 +169,10 @@ div.smallcard {
 }
 
 .details {
-	margin-left: 150px;
-	position: absolute;
+	place-self: center;
 	z-index: 2;
-	width: 50%;
-	height: 50%;
+	width: 270px;
+	height: 400px;
 	top: 0;
 	background-color: #c4c5c5;
 	border-radius: 2vw;

@@ -22,7 +22,7 @@ router.post("/postRecording", (req, res) => {
 	console.log(recording);
 	res.end();
 });
-
+// ? Not surtain what this does
 router.post("/postSentence", (req, res) => {
 	let sentence = {
 		name: req.body.name,
