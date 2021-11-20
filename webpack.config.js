@@ -11,6 +11,9 @@ module.exports = {
 		login: {
 			import: path.resolve(__dirname, "./app/views/js/login/login.js"),
 		},
+		exercise2: {
+			import: "./app/views/js/Excersises/exercise2.js"
+		},
 		createAccount: {
 			import: path.resolve(__dirname, "app/views/js/login/createAccount.js"),
 		},

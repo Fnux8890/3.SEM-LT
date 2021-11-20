@@ -164,3 +164,24 @@
 	grid-area: speaker;
 	cursor: pointer;
 }
+
+.endNote {
+  text-align: center;
+  border-style: solid;
+  border-radius: 10px;
+  justify-content: center;
+  background-color: white;
+  visibility: visible;
+  z-index: 12;
+  grid-area: Main;
+  @include fontMediaQuery;
+  p {
+    padding: 50px;
+    text-align: left;
+    @include fontMediaQuery;
+  }
+}
+  p {
+    color: white;
+    z-index: 11;
+  }
