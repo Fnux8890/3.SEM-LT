@@ -8,6 +8,7 @@ import {
 	faMicrophone,
 	faPlay,
 	faStar,
+	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/scss/layouts/exercises/exercise2.scss";
 
@@ -17,6 +18,7 @@ library.add(faTimes);
 library.add(faMicrophone);
 library.add(faPlay);
 library.add(faStar);
+library.add(faThumbsUp);
 
 const cards = [];
 let currentCard = "";
@@ -38,6 +40,10 @@ $(() => {
 	//Indsætning af ikon (krydset)
 	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
 
+	$("#tutorialbutton").append(
+		icon({ prefix: "fas", iconName: "thumbs-up" }).html
+	);
+
 	$(".close svg").on("click", function () {
 		alert("Closing...");
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
@@ -47,6 +53,13 @@ $(() => {
 	$("body").on("click", ".recordIcon", () => {
 		StartRecording();
 	});
+
+	$(".speaker").on("click", () => {
+		const audioBlob  = b64toBlob(cards[currentCard].soundFile_word[0].file);
+		const audioUrl = URL.createObjectURL(audioBlob);
+		const audio = new Audio(audioUrl);
+		audio.play();
+	})
 });
 
 function startRating() {
@@ -101,7 +114,9 @@ function tutorialButtonOnClick() {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
-		animationFromStack(card);
+		console.table(cards);
+		//console.log(cards[currentCard].soundFile_word[0].file);
+		animationFromStack(card)
 		$(".translation").css("visibility", "visible");
 		$(".sentence").css("visibility", "visible");
 	});
@@ -173,6 +188,7 @@ function animationFromStack(card) {
 				},
 				"-=200"
 			);
+			playSentence();
 		})
 		.catch((err) => {
 			console.log(err);
@@ -336,6 +352,7 @@ function StartRecording() {
 			const audioUrl = URL.createObjectURL(audioBlob);
 			const audio = new Audio(audioUrl);
 			console.log(audio);
+			console.table(audioChunks);
 			$(".playRec").on("click", () => {
 				audio.play();
 			});
@@ -426,4 +443,31 @@ function endScreen() {
 			.append(`<div class="endNote">You win</div>`);
 		$(".endNote").append(`<p class="endText">You did great!</p>`);
 	}
+}
+
+function b64toBlob(b64Data, contentType='', sliceSize=512) {
+	const byteCharacters = atob(b64Data);
+	const byteArrays = [];
+  
+	for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+	  const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+	  const byteNumbers = new Array(slice.length);
+	  for (let i = 0; i < slice.length; i++) {
+		byteNumbers[i] = slice.charCodeAt(i);
+	  }
+  
+	  const byteArray = new Uint8Array(byteNumbers);
+	  byteArrays.push(byteArray);
+	}
+  
+	const blob = new Blob(byteArrays, {type: contentType});
+	return blob;
+  }
+
+function playSentence() {
+	const audioBlob  = b64toBlob(cards[currentCard].soundfile_sentence[0].file);
+	const audioUrl = URL.createObjectURL(audioBlob);
+	const audio = new Audio(audioUrl);
+	audio.play();
 }

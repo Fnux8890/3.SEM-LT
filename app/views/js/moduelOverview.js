@@ -51,5 +51,8 @@ $(() => {
 		$(".exercise1").on("click", function () {
 			window.open("http://localhost:3000/page/exercise1", "_parent");
 		});
+		$(".exercise2").on("click", function () {
+			window.open("http://localhost:3000/page/exercise2", "_parent");
+		});
 	});
 });
