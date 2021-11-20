@@ -10,6 +10,7 @@ import {
 	faStar,
 	faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { default as audioPlayer } from "../CustomModules/audioPlayer";
 import "../../assets/scss/layouts/exercises/exercise2.scss";
 
 library.add(faQuestionCircle);
@@ -26,7 +27,7 @@ let tutorial = "";
 let ratingdone = false;
 
 $(() => {
-	$.getJSON("http://localhost:3000/Build/ExerciseWordAndSentences", (data) => {
+	$.getJSON("http://localhost:3000/Build/ExerciseWordsAndSentences", (data) => {
 		data.cards.forEach(function (card) {
 			cards.push(card);
 		});
@@ -55,11 +56,8 @@ $(() => {
 	});
 
 	$(".speaker").on("click", () => {
-		const audioBlob  = b64toBlob(cards[currentCard].soundFile_word[0].file);
-		const audioUrl = URL.createObjectURL(audioBlob);
-		const audio = new Audio(audioUrl);
-		audio.play();
-	})
+		audioPlayer.playWord(cards[currentCard]);
+	});
 });
 
 function startRating() {
@@ -106,7 +104,7 @@ function startRating() {
 }
 
 function tutorialButtonOnClick() {
-	$("#tutorialbutton").on("click", async () => {
+	$("#tutorialbutton").on("click", async (event) => {
 		let card = `.card${currentCard}`;
 		tutorial = await RemoveTutorial();
 		const delay = (ms) =>
@@ -116,7 +114,7 @@ function tutorialButtonOnClick() {
 		await delay(200);
 		console.table(cards);
 		//console.log(cards[currentCard].soundFile_word[0].file);
-		animationFromStack(card)
+		animationFromStack(card, event);
 		$(".translation").css("visibility", "visible");
 		$(".sentence").css("visibility", "visible");
 	});
@@ -151,7 +149,7 @@ const timeline = anime.timeline;
  * @param {String} card The target card div/class
  * @returns Returns a pormis for when animation is done
  */
-function animationFromStack(card) {
+function animationFromStack(card, event) {
 	let maincontentCenter = findMaincontentCenter(card);
 
 	var t1 = anime.timeline({
@@ -188,7 +186,7 @@ function animationFromStack(card) {
 				},
 				"-=200"
 			);
-			playSentence();
+			audioPlayer.playSentence(cards[currentCard]);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -443,31 +441,4 @@ function endScreen() {
 			.append(`<div class="endNote">You win</div>`);
 		$(".endNote").append(`<p class="endText">You did great!</p>`);
 	}
-}
-
-function b64toBlob(b64Data, contentType='', sliceSize=512) {
-	const byteCharacters = atob(b64Data);
-	const byteArrays = [];
-  
-	for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-	  const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
-	  const byteNumbers = new Array(slice.length);
-	  for (let i = 0; i < slice.length; i++) {
-		byteNumbers[i] = slice.charCodeAt(i);
-	  }
-  
-	  const byteArray = new Uint8Array(byteNumbers);
-	  byteArrays.push(byteArray);
-	}
-  
-	const blob = new Blob(byteArrays, {type: contentType});
-	return blob;
-  }
-
-function playSentence() {
-	const audioBlob  = b64toBlob(cards[currentCard].soundfile_sentence[0].file);
-	const audioUrl = URL.createObjectURL(audioBlob);
-	const audio = new Audio(audioUrl);
-	audio.play();
 }
