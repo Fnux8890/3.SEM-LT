@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { default as audioPlayer } from "../CustomModules/audioPlayer";
 import "../../assets/scss/layouts/exercises/exercise2.scss";
+import { cardFlip } from "../CustomModules/cardFlip";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -22,6 +23,7 @@ library.add(faStar);
 library.add(faThumbsUp);
 
 const cards = [];
+let currentCardnum = "";
 let currentCard = "";
 let tutorial = "";
 let ratingdone = false;
@@ -56,7 +58,7 @@ $(() => {
 	});
 
 	$(".speaker").on("click", () => {
-		audioPlayer.playWord(cards[currentCard]);
+		audioPlayer.playWord(cards[currentCardnum]);
 	});
 });
 
@@ -105,7 +107,7 @@ function startRating() {
 
 function tutorialButtonOnClick() {
 	$("#tutorialbutton").on("click", async (event) => {
-		let card = `.card${currentCard}`;
+		let card = `.card${currentCardnum}`;
 		tutorial = await RemoveTutorial();
 		const delay = (ms) =>
 			new Promise((resolve) => {
@@ -172,21 +174,7 @@ function animationFromStack(card, event) {
 				.css({
 					"grid-area": "wordDiv",
 				});
-			anime(
-				{
-					targets: card,
-					scale: [
-						{ value: 1 },
-						{ value: 1.2, duration: 400 },
-						{ value: 1, duration: 400 },
-					],
-					rotateX: { delay: 20, value: "+=180", duration: 500 },
-					easing: "easeInOutSine",
-					duration: 1200,
-				},
-				"-=200"
-			);
-			audioPlayer.playSentence(cards[currentCard]);
+			cardFlip(card, currentCard);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -279,12 +267,13 @@ function MakeCardStack() {
 		});
 		offset += 5;
 	});
-	currentCard = cards.length - 1;
+	currentCardnum = cards.length - 1;
+	currentCard = cards[currentCardnum];
 }
 
 function MakeCardStackEng() {
-	let engSentence = cards[currentCard].translation_sentence;
-	let focusWord = cards[currentCard].translation_word;
+	let engSentence = cards[currentCardnum].translation_sentence;
+	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
 	const firstPart = engSentence.slice(0, wordIndex);
 	const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
@@ -293,8 +282,8 @@ function MakeCardStackEng() {
 }
 
 function changeTranslation() {
-	let engSentence = cards[currentCard].translation_sentence;
-	let focusWord = cards[currentCard].translation_word;
+	let engSentence = cards[currentCardnum].translation_sentence;
+	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
 	const firstPart = engSentence.slice(0, wordIndex);
 	const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
@@ -304,8 +293,8 @@ function changeTranslation() {
 }
 
 function SetupSentence() {
-	let sentence = cards[currentCard].sentence;
-	let word = cards[currentCard].word;
+	let sentence = cards[currentCardnum].sentence;
+	let word = cards[currentCardnum].word;
 	const wordIndex = sentence.indexOf(word);
 	const firstPart = sentence.slice(0, wordIndex);
 	const secondPart = sentence.slice(wordIndex + word.length + 1);
@@ -316,8 +305,8 @@ function SetupSentence() {
 }
 
 function changeSentence() {
-	let sentence = cards[currentCard].sentence;
-	let word = cards[currentCard].word;
+	let sentence = cards[currentCardnum].sentence;
+	let word = cards[currentCardnum].word;
 	const wordIndex = sentence.indexOf(word);
 	const firstPart = sentence.slice(0, wordIndex);
 	const secondPart = sentence.slice(wordIndex + word.length + 1);
@@ -368,10 +357,10 @@ function StartRecording() {
 				let divexists = $(".recordIcon");
 				if (divexists.length < 1) {
 					appendMicrophone();
-					animateCardOut(`.cardcontainer${currentCard}`);
+					animateCardOut(`.cardcontainer${currentCardnum}`);
 				}
-				console.log(currentCard);
-				if (currentCard === 0) {
+				console.log(currentCardnum);
+				if (currentCardnum === 0) {
 					endScreen();
 					console.log("finished");
 				}
@@ -410,7 +399,7 @@ function populateTutorial(data) {
 
 function animateCardOut() {
 	console.log("removing card");
-	let card = `.card${currentCard}`;
+	let card = `.card${currentCardnum}`;
 	let t1 = anime.timeline({ targets: card });
 	t1.add({
 		translateX: -1000,
@@ -421,8 +410,8 @@ function animateCardOut() {
 		//TODO post answer to mongodb
 		$(card).remove();
 		ratingdone = false;
-		currentCard--;
-		card = `.card${currentCard}`;
+		currentCardnum--;
+		card = `.card${currentCardnum}`;
 		animationFromStack(card);
 		changeSentence();
 		changeTranslation();

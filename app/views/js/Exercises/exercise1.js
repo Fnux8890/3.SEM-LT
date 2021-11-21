@@ -10,9 +10,11 @@ import {
 import "../../assets/scss/layouts/exercises/exercise1.scss";
 import { default as audioPlayer } from "../CustomModules/audioPlayer";
 import lottie from "lottie-web/build/player/lottie";
+import { cardFlip } from "../CustomModules/cardFlip";
 
 let position = { x: 0, y: 0 };
 const cards = [];
+let currentCardnum = "";
 let currentCard = "";
 let tutorial = "";
 let dropped = false;
@@ -55,7 +57,7 @@ $(() => {
 	});
 
 	$(".speaker").on("click", () => {
-		audioPlayer.playWord(cards[currentCard]);
+		audioPlayer.playWord(cards[currentCardnum]);
 	});
 });
 
@@ -118,32 +120,11 @@ async function animationFromStack(card) {
 						"6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)",
 				});
 
-			return cardFlip(card);
+			return cardFlip(card, currentCard);
 		})
 		.catch((err) => {
 			console.log(err);
 		});
-}
-
-function cardFlip(card) {
-	let cardFlip = anime.timeline({
-		targets: card,
-	});
-	cardFlip.add(
-		{
-			scale: [
-				{ value: 1 },
-				{ value: 1.2, duration: 400 },
-				{ value: 1, duration: 400 },
-			],
-			rotateX: { delay: 20, value: "+=180", duration: 500 },
-			easing: "easeInOutSine",
-			duration: 1200,
-		},
-		"-=200"
-	);
-	audioPlayer.playWord(cards[currentCard]);
-	return cardFlip.finished;
 }
 
 /**
@@ -227,7 +208,8 @@ function DropzoneCardInteract(div) {
 				});
 			})().then(async () => {
 				if (
-					$(`${div} p`).text().trim(" ") === cards[currentCard].answer.trim(" ")
+					$(`${div} p`).text().trim(" ") ===
+					cards[currentCardnum].answer.trim(" ")
 				) {
 					AnimateCorrectAnswer();
 				} else {
@@ -245,12 +227,12 @@ function DropzoneCardInteract(div) {
 }
 
 function changePostitionToDrop(div) {
-	let card = `.card${currentCard}`;
+	let card = `.card${currentCardnum}`;
 	animateToDropzone(card, div);
 }
 
 function animateCardOut(div) {
-	let card = `.card${currentCard}`;
+	let card = `.card${currentCardnum}`;
 	let answerClass = $(div).attr("class");
 	let t1 = anime.timeline({ targets: card });
 	if (answerClass === "vokalA") {
@@ -275,15 +257,16 @@ function animateCardOut(div) {
 		});
 		$(card).remove();
 		dropped = false;
-		currentCard--;
+		currentCardnum--;
+		currentCard = cards[currentCardnum];
 		cards.pop();
-		card = `.card${currentCard}`;
+		card = `.card${currentCardnum}`;
 		FromStackAnimation(card);
 	});
 }
 
 function AnimateCorrectAnswer() {
-	let card = `.card${currentCard}`;
+	let card = `.card${currentCardnum}`;
 	$(`${card} .front`).css({
 		"background-color": "green",
 	});
@@ -325,7 +308,7 @@ function AnimateCorrectAnswer() {
 }
 function AnimateIncorrectAnswer() {
 	incorrectAnswers++;
-	let card = `.card${currentCard}`;
+	let card = `.card${currentCardnum}`;
 	$(`${card} .front`).css({
 		"background-color": "red",
 	});
@@ -404,7 +387,7 @@ function MakeHelpIcon() {
  *
  */
 function CardDraggable() {
-	let card = `.card${currentCard}`;
+	let card = `.card${currentCardnum}`;
 	$("#tutorialbutton").on("click", async () => {
 		tutorial = await RemoveTutorial();
 		const delay = (ms) =>
@@ -419,7 +402,6 @@ function CardDraggable() {
 }
 
 function FromStackAnimation(card) {
-	console.table(cards);
 	if (cards.length === 0) ExerciseComplete();
 	animationFromStack(card)
 		.then(() => {
@@ -427,7 +409,7 @@ function FromStackAnimation(card) {
 				.draggable({
 					listeners: {
 						start(event) {
-							console.log(cards[currentCard].answer);
+							console.log(cards[currentCardnum].answer);
 							$(".vokalA, .vokalB").css({
 								opacity: 0.5,
 								"border-style": "dashed",
@@ -510,5 +492,6 @@ function MakeCardStack() {
 		});
 		offset += 5;
 	});
-	currentCard = cards.length - 1;
+	currentCardnum = cards.length - 1;
+	currentCard = cards[currentCardnum];
 }

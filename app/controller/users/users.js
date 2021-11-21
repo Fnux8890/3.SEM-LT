@@ -140,6 +140,15 @@ const loginUser = async (req, res, next) => {
 	}
 };
 
+const postAnswer = async (req, res, next) => {
+	try {
+		//TODO find ud af hvordan man smider ting op på brugeren som er logget ind
+		myModel.findOneAndUpdate({ username: "tester5000" });
+	} catch (error) {
+		res.status(500).json({ msg: error });
+	}
+};
+
 export default {
 	getAllUsers,
 	createUser,
