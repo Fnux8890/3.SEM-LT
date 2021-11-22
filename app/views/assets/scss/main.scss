@@ -1,9 +1,23 @@
 @use "./abstracts" as *;
 body {
 	margin: 0;
-	background: $backgroundGradient;
+	background-color: $backgroundColor;
 }
 
 button {
 	cursor: pointer;
 }
+
+//Skal være først (af font-family)
+div {
+	font-family: $standardFont;
+}
+
+h1, h2 {
+	font-family: $headingFont; 
+}
+
+h3, h4, h5 {
+    font-family: $lesserHeadingFont
+}
+

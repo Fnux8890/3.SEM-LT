@@ -1,6 +1,21 @@
-import { Router } from "express";
+import {
+	Router
+} from "express";
 const router = Router();
 import { requireAuth } from "../middleware/user-auth";
+
+//
+import express from "express";
+import connectDB from "../../db/connect";
+import {
+	ObjectId
+} from "mongodb";
+import {
+	checkPrimeSync
+} from "crypto";
+import {
+	mongoClient
+} from "mongodb";
 
 router.route("/login").get((req, res) => {
 	res.render("./Login/login");
@@ -23,7 +38,7 @@ router.get("/exercise2", requireAuth, (req, res) => {
 });
 
 router.get("/exercise3", requireAuth, (req, res) => {
-	res.render("./Exercises/exercise1");
+	res.render("./Exercises/exercise3");
 });
 
 router.get("/module-overview", requireAuth, (req, res) => {

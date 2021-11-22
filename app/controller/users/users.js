@@ -1,7 +1,12 @@
 import myModel from "../../models/usersModel";
 
-import { hash as _hash, compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import {
+  hash as _hash,
+  compare
+} from "bcrypt";
+import {
+  sign
+} from "jsonwebtoken";
 
 const getAllUsers = async (req, res) => {
 	try {
