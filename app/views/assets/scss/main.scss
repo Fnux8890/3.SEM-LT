@@ -1,7 +1,7 @@
 @use "./abstracts" as *;
 body {
 	margin: 0;
-	background-color: $backgroundColor;
+	background-color: $lightGreenCyan;
 }
 
 button {
@@ -13,11 +13,13 @@ div {
 	font-family: $standardFont;
 }
 
-h1, h2 {
-	font-family: $headingFont; 
+h1,
+h2 {
+	font-family: $headingFont;
 }
 
-h3, h4, h5 {
-    font-family: $lesserHeadingFont
+h3,
+h4,
+h5 {
+	font-family: $lesserHeadingFont;
 }
-

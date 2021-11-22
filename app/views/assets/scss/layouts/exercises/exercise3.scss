@@ -1,33 +1,27 @@
 @use "../exercise" as *;
 @use "../../abstracts" as *;
-
-body {
-	margin: 0;
-	background-color: $lightGreenCyan;
-}
 .container {
 	display: grid;
 	gap: 1rem;
 	grid-template-areas:
 		"stack . drawcard . close"
 		". mainContent mainContent mainContent ."
-		"answerOption answerOption answerOption answerOption answerOption"; 
-	
+		"answerOption answerOption answerOption answerOption answerOption";
+
 	grid-auto-rows: auto 300px auto;
 	height: 100vh;
 }
-.helpIcon{
+.helpIcon {
 	top: -50px;
 	left: 10px;
 }
-.closeIcon{
+.closeIcon {
 	grid-area: close;
 	display: grid;
 	place-items: start end;
 	margin-top: 1.5rem;
 	margin-right: 2rem;
 	cursor: pointer;
-	
 }
 .tutorial {
 	width: 400px;
@@ -77,24 +71,23 @@ body {
 	margin: 0;
 }
 
-.back{
+.back {
 	color: #fff;
 	background: $thirdColor;
 }
-.front{
+.front {
 	color: $thirdColor;
 	background: #fff;
 }
-.cardBack{
+.cardBack {
 	color: $thirdColor;
 	background: $thirdColor;
 	border-color: white;
 }
-.speaker{
+.speaker {
 	z-index: 12;
 }
 
-.mainContent .cardcontainer{
+.mainContent .cardcontainer {
 	cursor: pointer;
 }
-

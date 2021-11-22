@@ -175,6 +175,7 @@ function animationFromStack(card, event) {
 					"grid-area": "wordDiv",
 				});
 			cardFlip(card, currentCard);
+			audioPlayer.playSentence(currentCard);
 		})
 		.catch((err) => {
 			console.log(err);

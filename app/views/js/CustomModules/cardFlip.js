@@ -17,6 +17,5 @@ export function cardFlip(card, currentCard) {
 		},
 		"-=200"
 	);
-	audioPlayer.playWord(currentCard);
 	return cardFlip.finished;
 }

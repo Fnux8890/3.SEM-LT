@@ -10,6 +10,7 @@ import {
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/scss/layouts/exercises/exercise3.scss";
+import { default as audioPlayer } from "../CustomModules/audioPlayer";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -20,7 +21,7 @@ $(() => {
 	let cardIndex;
 
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseInformation?id=1`,
+		url: `http://localhost:3000/Build/ExerciseWords?id=1`,
 		type: "GET",
 		success: function (data) {
 			data.cards.forEach((object) => {
@@ -32,7 +33,7 @@ $(() => {
 		},
 	});
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseInformation?id=3`,
+		url: `http://localhost:3000/Build/ExerciseWords?id=3`,
 		type: "GET",
 		success: function (data) {
 			data.cards.forEach((object) => {
@@ -52,8 +53,10 @@ $(() => {
 		console.log(`card was clicked`);
 		let word = GetWord();
 		let soundfile =
-			word.soundFile[Math.floor(Math.random() * word.soundFile.length)];
-
+			word.soundfile_word[
+				Math.floor(Math.random() * word.soundfile_word.length)
+			];
+		audioPlayer.playWord(word);
 		console.log("Play: " + soundfile);
 	});
 
@@ -67,26 +70,29 @@ $(() => {
 			direction: "normal",
 		});
 
-		if (mainWord.translation == clickedWord) {
+		if (mainWord.translation_word == clickedWord) {
 			console.log(
-				`CORRECT - word: ${mainWord.translation} == answerOption: ${clickedWord}`
+				`CORRECT - word: ${mainWord.translation_word} == answerOption: ${clickedWord}`
 			);
 			animationTurnCard(`#card${GetIndex()}`);
-			colorChange.add({
-					targets: this,
-					background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
-					complete: function (anim) {
-						$(e.target).removeAttr("style");
+			colorChange
+				.add(
+					{
+						targets: this,
+						background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
+						complete: function (anim) {
+							$(e.target).removeAttr("style");
+						},
 					},
-				},
-				20
-			).finished.then(() => {
-				//GØR KORT BORDER GRØN?
-			})
-
+					20
+				)
+				.finished.then(() => {
+					//GØR KORT BORDER GRØN?
+				});
 		} else {
 			console.log("FALSE - play false-sound");
-			colorChange.add({
+			colorChange.add(
+				{
 					targets: this,
 					background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
 					complete: function (anim) {
@@ -99,10 +105,9 @@ $(() => {
 		colorChange.finished.then(() => {
 			$(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
 		});
-
 	});
 
-	$("#tutorialButton").on("click", () => {
+	$("#tutorialbutton").on("click", () => {
 		RemoveTutorial();
 		newCard();
 	});
@@ -112,12 +117,14 @@ $(() => {
 	});
 
 	$(document).on("click", ".close", function () {
-		window.location.href = "http://localhost:3000/page/index"
+		window.location.href = "http://localhost:3000/page/index";
 	});
 
 	function newCard() {
 		if ($(".mainContent .cardcontainer").length != 0) {
-			console.log("Error - card not gone yet: " + $(".mainContent .cardcontainer").length);
+			console.log(
+				"Error - card not gone yet: " + $(".mainContent .cardcontainer").length
+			);
 			return;
 		}
 		if (cardIndex == 0) {
@@ -156,7 +163,7 @@ $(() => {
 		answerArray.forEach((element, index) => {
 			let answerOption = `
                 <div class="answerOption ansOpt${index}">
-                    <p>${element.translation}</p>
+                    <p>${element.translation_word}</p>
                 </div>`;
 			$(".answerZone").append(answerOption);
 		});
@@ -174,7 +181,7 @@ $(() => {
 	}
 
 	/**
-	 * 
+	 *
 	 * @returns the word object that matches the main card index
 	 */
 	function GetWord() {
@@ -182,7 +189,7 @@ $(() => {
 	}
 
 	/**
-	 * 
+	 *
 	 * @returns index of the main card
 	 */
 	function GetIndex() {
@@ -206,27 +213,28 @@ $(() => {
 			targets: target,
 			direction: "normal",
 		});
-		t1.add({
-			delay: 500,
-			easing: "easeInOutSine",
-			duration: 1200,
-			scale: [{
-					value: 1,
-				},
-				{
-					value: 1.2,
-					duration: 400,
-				},
-				{
-					value: 1,
-					duration: 400,
-				},
-			],
-
-		}, 500);
-		t1.finished.then(function () {
-
-		}, 0);
+		t1.add(
+			{
+				delay: 500,
+				easing: "easeInOutSine",
+				duration: 1200,
+				scale: [
+					{
+						value: 1,
+					},
+					{
+						value: 1.2,
+						duration: 400,
+					},
+					{
+						value: 1,
+						duration: 400,
+					},
+				],
+			},
+			500
+		);
+		t1.finished.then(function () {}, 0);
 
 		return t1.finished;
 	}
@@ -242,12 +250,15 @@ $(() => {
 		});
 		let x = -($("body").width() / 2);
 		x -= $(card).width();
-		t1.add({
-			delay: 500,
-			translateX: x,
-			easing: "easeOutQuint",
-			duration: 1000,
-		}, 500);
+		t1.add(
+			{
+				delay: 500,
+				translateX: x,
+				easing: "easeOutQuint",
+				duration: 1000,
+			},
+			500
+		);
 		t1.finished.then(function () {
 			$(card).parent().remove();
 			console.log("card removed");
@@ -264,43 +275,45 @@ $(() => {
 	function animationTurnCard(card) {
 		RemoveCardBack();
 		console.log("animateTurnCard: " + card);
-		var t1 = anime.timeline({
-			targets: card,
-			easing: "linear",
-			direction: "normal",
-		}).finished.then(function () {
-			anime({
-					targets: card,
-					scale: [{
-							value: 1,
+		var t1 = anime
+			.timeline({
+				targets: card,
+				easing: "linear",
+				direction: "normal",
+			})
+			.finished.then(function () {
+				anime(
+					{
+						targets: card,
+						scale: [
+							{
+								value: 1,
+							},
+							{
+								value: 1.2,
+								duration: 400,
+							},
+							{
+								value: 1,
+								duration: 400,
+							},
+						],
+						rotateX: {
+							delay: 20,
+							value: "-=180",
+							duration: 500,
 						},
-						{
-							value: 1.2,
-							duration: 400,
-						},
-						{
-							value: 1,
-							duration: 400,
-						},
-					],
-					rotateX: {
-						delay: 20,
-						value: "-=180",
-						duration: 500,
+						easing: "easeInOutSine",
+						duration: 1200,
 					},
-					easing: "easeInOutSine",
-					duration: 1200,
-				},
-				"-=200"
-			).finished.then(() => {
-				$(card).css({
-					transform: 'none'
+					"-=200"
+				).finished.then(() => {
+					$(card).css({
+						transform: "none",
+					});
+					animateOutOfFrame(card);
 				});
-				animateOutOfFrame(card);
-			});
-		}, 200);
-
-
+			}, 200);
 
 		return t1.finished;
 	}
@@ -317,11 +330,11 @@ $(() => {
 		});
 
 		t1.add({
-				translateX: maincontentCenter.x,
-				translateY: maincontentCenter.y,
-				easing: "easeOutQuint",
-				duration: 1000,
-			})
+			translateX: maincontentCenter.x,
+			translateY: maincontentCenter.y,
+			easing: "easeOutQuint",
+			duration: 1000,
+		})
 			.finished.then(() => {
 				$(card)
 					.css({
@@ -332,9 +345,11 @@ $(() => {
 					.css({
 						"grid-area": "Main",
 					});
-				anime({
+				anime(
+					{
 						targets: card,
-						scale: [{
+						scale: [
+							{
 								value: 1,
 							},
 							{
@@ -390,7 +405,6 @@ $(() => {
 			rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
 		);
 	}
-
 
 	//----SetUp----
 
@@ -455,7 +469,6 @@ $(() => {
 		$(`#${id}`).removeClass("front cardBack").addClass("front");
 	}
 
-
 	function SetUpTutorial(data) {
 		let dkTutorial = data.instructions.instructionsDK;
 		let engTutorial = data.instructions.instructionsENG;
@@ -465,15 +478,15 @@ $(() => {
 	function ShowTutorial() {
 		$(".tutorial").css({
 			visibility: "visible",
-			display: "grid"
+			display: "grid",
 		});
 		$(".curtain").css({
 			visibility: "visible",
-			display: "grid"
+			display: "grid",
 		});
 		$(".speaker").css({
-			visibility: "visible"
-		})
+			visibility: "visible",
+		});
 	}
 
 	function RemoveTutorial() {
@@ -486,8 +499,7 @@ $(() => {
 			display: "none",
 		});
 		$(".speaker").css({
-			visibility: "hidden"
-		})
+			visibility: "hidden",
+		});
 	}
-
 });

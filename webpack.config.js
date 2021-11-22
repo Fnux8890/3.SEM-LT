@@ -8,7 +8,7 @@ module.exports = {
 	entry: {
 		exercise1: path.resolve(__dirname, "./app/views/js/Exercises/exercise1.js"),
 		exercise2: path.resolve(__dirname, "./app/views/js/Exercises/exercise2.js"),
-        exercise3: path.resolve(__dirname, "./app/views/js/Exercises/exercise3.js"),
+		exercise3: path.resolve(__dirname, "./app/views/js/Exercises/exercise3.js"),
 		navbar: path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
 		login: path.resolve(__dirname, "./app/views/js/login/login.js"),
 		createAccount: path.resolve(

@@ -119,8 +119,9 @@ async function animationFromStack(card) {
 					"box-shadow":
 						"6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)",
 				});
-
-			return cardFlip(card, currentCard);
+			cardFlip(card, currentCard);
+			audioPlayer.playWord(currentCard);
+			return t1.finished;
 		})
 		.catch((err) => {
 			console.log(err);
