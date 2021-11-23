@@ -21,7 +21,7 @@ $(() => {
 	let cardIndex;
 
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseWords?id=1`,
+		url: `/Build/ExerciseWords?id=1`,
 		type: "GET",
 		success: function (data) {
 			data.cards.forEach((object) => {

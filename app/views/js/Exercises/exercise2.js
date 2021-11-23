@@ -29,7 +29,7 @@ let tutorial = "";
 let ratingdone = false;
 
 $(() => {
-	$.getJSON("http://localhost:3000/Build/ExerciseWordsAndSentences", (data) => {
+	$.getJSON("/Build/ExerciseWordsAndSentences", (data) => {
 		data.cards.forEach(function (card) {
 			cards.push(card);
 		});
