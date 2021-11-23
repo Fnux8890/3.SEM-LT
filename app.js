@@ -19,7 +19,7 @@ const app = express();
 
 //Load view enigne
 
-const directoryPath = join(__dirname, "./app");
+const directoryPath = join(__dirname, "./app/views");
 //passsing directoryPath and callback function
 fs.readdir(directoryPath, function (err, files) {
 	//handling error
@@ -33,7 +33,7 @@ fs.readdir(directoryPath, function (err, files) {
 	});
 });
 
-app.set("views", join(__dirname, "views", "pages"));
+app.set("views", join(__dirname, "./app/views"));
 app.set("view engine", "pug");
 
 //middleware
