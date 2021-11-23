@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"start": "babel-node app",
+		"start": "node ./build/app.js",
 		"start-dev": "nodemon  --exec babel-node --delay 0.8 app",
 		"test": "node script1.js",
 		"stat": "webpack --profile --json > stats.json"
