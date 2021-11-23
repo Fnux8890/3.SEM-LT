@@ -7,8 +7,8 @@
     "module": "es2015",
     "baseUrl": "src",
     "paths": {
-      "@middleware/*":["server/app/controller/middleware/*"],
-      "@public": ["server/app/views/*"]
+      "@middleware/*":["app/controller/middleware/*"],
+      "@public": ["./app/views/*"]
     }
   },
   "exclude": [

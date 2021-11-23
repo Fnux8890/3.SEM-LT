@@ -1,5 +1,5 @@
 import anime from "animejs";
-import { default as audioPlayer } from "./audioPlayer";
+import { default as audioPlayer } from "../CustomModules/audioPlayer";
 export function cardFlip(card, currentCard) {
 	let cardFlip = anime.timeline({
 		targets: card,
