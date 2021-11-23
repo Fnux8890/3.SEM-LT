@@ -4,7 +4,14 @@
 	"description": "This is a semsester project for 3. semester on learning technology on SDU",
 	"private": true,
 	"scripts": {
+<<<<<<< HEAD
 		"build": "webpack",
+=======
+		"clean": "rm -rf build && mkdir build",
+		"webpack-build": "webpack",
+		"build-server": "babel -d ./build ./server -s",
+		"build": "npm run clean && npm run webpack-build && npm run build-server",
+>>>>>>> parent of 10a43a1... heroku #0.1.11
 		"watch": "webpack --watch",
 		"start": "node ./build/app.js",
 <<<<<<< HEAD
