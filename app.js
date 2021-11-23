@@ -18,21 +18,6 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 //Load view enigne
-
-const directoryPath = join(__dirname, "./app/views/pages");
-//passsing directoryPath and callback function
-fs.readdir(directoryPath, function (err, files) {
-	//handling error
-	if (err) {
-		return console.log("Unable to scan directory: " + err);
-	}
-	//listing all files using forEach
-	files.forEach(function (file) {
-		// Do whatever you want to do with the file
-		console.log(file);
-	});
-});
-
 app.set("views", join(__dirname, "./app/views/pages"));
 app.set("view engine", "pug");
 
