@@ -7,7 +7,11 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "node ./build/app.js",
+<<<<<<< HEAD
 		"start-dev": "nodemon  --exec babel-node --delay 0.8 app",
+=======
+		"start-dev": "nodemon  --exec babel-node --delay 0.8 ./server/app",
+>>>>>>> parent of 8604d44... heroku #0.1.10
 		"test": "node script1.js",
 		"stat": "webpack --profile --json > stats.json"
 	},
