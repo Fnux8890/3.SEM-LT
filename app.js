@@ -13,7 +13,7 @@ import pageRoutes from "./app/controller/routes/pages";
 import buildRoute from "./app/controller/routes/buildRoute";
 
 //const declare
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 //Load view enigne
