@@ -7,6 +7,7 @@
 		"clean": "rm -rf build && mkdir build",
 		"webpack-build": "webpack",
 		"build-server": "babel -d ./build ./server -s",
+		"prestart": "ls",
 		"build": "npm run clean && npm run webpack-build && npm run build-server",
 		"watch": "webpack --watch",
 		"start": "node ./build/app.js",
