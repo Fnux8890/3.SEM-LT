@@ -99,33 +99,7 @@ $(() => {
 
 
 
-    /**
-     * Creates the answerOption divs, from the given array
-     * @param {Array<string>} answerArray - Array of the answer-options for the current question
-     */
-    function MakeAnswerOptions(answerArray) {
-        $(".answerOption").remove();
-        shuffleArray(answerArray);
-        answerArray.forEach((element, index) => {
-            let answerOption = `
-                <div class="answerOption ansOpt${index}">
-                    <p>${element}</p>
-                </div>`;
-            $(".answerZone").append(answerOption);
-        });
-    }
-    /**
-     * Creates the question div
-     * @param {string} questionTxt - the question, as a string
-     */
-    function MakeQuestion(questionTxt) {
-        $(".question").remove();
-        let question = `
-        <div class="question q${questionIndex}">
-            <p>${questionTxt}</p>
-        </div>`;
-        $(".answerZone").prepend(question);
-    }
+
 
     function newQuestion() {
         if ($(".mainContent .cardcontainer").length != 0) {
@@ -164,7 +138,33 @@ $(() => {
         //animateAnswerOptionsIn();
         //animationFromStack(`#card${questionIndex}`);
     }
-
+    /**
+     * Creates the answerOption divs, from the given array
+     * @param {Array<string>} answerArray - Array of the answer-options for the current question
+     */
+    function MakeAnswerOptions(answerArray) {
+        $(".answerOption").remove();
+        shuffleArray(answerArray);
+        answerArray.forEach((element, index) => {
+            let answerOption = `
+                <div class="answerOption ansOpt${index}">
+                    <p>${element}</p>
+                </div>`;
+            $(".answerZone").append(answerOption);
+        });
+    }
+    /**
+     * Creates the question div
+     * @param {string} questionTxt - the question, as a string
+     */
+    function MakeQuestion(questionTxt) {
+        $(".question").remove();
+        let question = `
+        <div class="question q${questionIndex}">
+            <p>${questionTxt}</p>
+        </div>`;
+        $(".answerZone").prepend(question);
+    }
 
     /**
      * OBS: Does not make new array - Shuffles the existing array
@@ -200,7 +200,6 @@ $(() => {
         let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
         $(".answerZone").after(closeIcon);
     }
-
 
     function SetUpTutorial(data) {
         let dkTutorial = data.instructions[0].instructionsDK;
