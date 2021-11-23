@@ -29,7 +29,7 @@ $(() => {
 
 			if (auth) {
 				console.log("login succesful");
-				window.location.assign("http://localhost:3000/page/module-overview");
+				window.location.href = "/page/module-overview";
 			} else {
 				loginError();
 			}
