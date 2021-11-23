@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 //Load view enigne
-console.log(join(__dirname, "app", "views", "pages"));
+console.log(join(__dirname, "views", "pages"));
 app.set("views", join(__dirname, "app", "views", "pages"));
 app.set("view engine", "pug");
 
