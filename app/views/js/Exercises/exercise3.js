@@ -10,7 +10,9 @@ import {
 	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/scss/layouts/exercises/exercise3.scss";
-import { default as audioPlayer } from "../CustomModules/audioPlayer";
+import {
+	default as audioPlayer
+} from "../CustomModules/audioPlayer";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -76,8 +78,7 @@ $(() => {
 			);
 			animationTurnCard(`#card${GetIndex()}`);
 			colorChange
-				.add(
-					{
+				.add({
 						targets: this,
 						background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
 						complete: function (anim) {
@@ -91,8 +92,7 @@ $(() => {
 				});
 		} else {
 			console.log("FALSE - play false-sound");
-			colorChange.add(
-				{
+			colorChange.add({
 					targets: this,
 					background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
 					complete: function (anim) {
@@ -213,13 +213,11 @@ $(() => {
 			targets: target,
 			direction: "normal",
 		});
-		t1.add(
-			{
+		t1.add({
 				delay: 500,
 				easing: "easeInOutSine",
 				duration: 1200,
-				scale: [
-					{
+				scale: [{
 						value: 1,
 					},
 					{
@@ -250,8 +248,7 @@ $(() => {
 		});
 		let x = -($("body").width() / 2);
 		x -= $(card).width();
-		t1.add(
-			{
+		t1.add({
 				delay: 500,
 				translateX: x,
 				easing: "easeOutQuint",
@@ -282,11 +279,9 @@ $(() => {
 				direction: "normal",
 			})
 			.finished.then(function () {
-				anime(
-					{
+				anime({
 						targets: card,
-						scale: [
-							{
+						scale: [{
 								value: 1,
 							},
 							{
@@ -330,11 +325,11 @@ $(() => {
 		});
 
 		t1.add({
-			translateX: maincontentCenter.x,
-			translateY: maincontentCenter.y,
-			easing: "easeOutQuint",
-			duration: 1000,
-		})
+				translateX: maincontentCenter.x,
+				translateY: maincontentCenter.y,
+				easing: "easeOutQuint",
+				duration: 1000,
+			})
 			.finished.then(() => {
 				$(card)
 					.css({
@@ -345,11 +340,9 @@ $(() => {
 					.css({
 						"grid-area": "Main",
 					});
-				anime(
-					{
+				anime({
 						targets: card,
-						scale: [
-							{
+						scale: [{
 								value: 1,
 							},
 							{

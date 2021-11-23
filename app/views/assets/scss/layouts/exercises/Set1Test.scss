@@ -1,2 +1,60 @@
 @use "../exercise" as *;
 @use "../../abstracts" as *;
+.container {
+	display: grid;
+	gap: 1rem;
+	grid-template-areas:
+		"stack . drawcard . close"
+		". mainContent mainContent mainContent ."
+		"answerOption answerOption answerOption answerOption answerOption";
+
+	grid-auto-rows: auto 300px auto;
+	height: 100vh;
+}
+
+
+
+.answerZone {
+	grid-area: answerOption;
+	display: grid;
+
+	grid-template-columns: 50% 50%;
+	grid-auto-rows: auto;
+	place-items: center;
+	z-index: 0;
+	padding-bottom: 15px;
+
+	overflow: hidden;
+}
+.answerOption, .question{
+	height: 65px;
+	width: 200px;
+
+	color: black;
+	text-align: center;
+	display: grid;
+	place-items: center;
+	border-style: none;
+	border-radius: 10px;
+	margin: 0px 5px 10px;
+
+	z-index: 1;
+	cursor: pointer;
+
+	background-color: $primaryColor;
+	opacity: 1;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.answerOption:hover {
+	background-color: $secundaryColor;
+	color: white;
+	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.19), 0 8px 8px rgba(0, 0, 0, 0.23);
+}
+.answerOption p {
+	padding: 0;
+	margin: 0;
+}
+
+.question{
+    background-color: $thirdColor;
+}
