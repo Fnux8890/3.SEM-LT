@@ -11,13 +11,28 @@ import { insertNavbar } from "@middleware/insertNavbar";
 import userRoutes from "./app/controller/routes/users";
 import pageRoutes from "./app/controller/routes/pages";
 import buildRoute from "./app/controller/routes/buildRoute";
+import fs from "fs";
 
 //const declare
 const port = process.env.PORT || 3000;
 const app = express();
 
 //Load view enigne
-console.log(join(__dirname, "views", "pages"));
+
+const directoryPath = join(__dirname, "views", "pages");
+//passsing directoryPath and callback function
+fs.readdir(directoryPath, function (err, files) {
+	//handling error
+	if (err) {
+		return console.log("Unable to scan directory: " + err);
+	}
+	//listing all files using forEach
+	files.forEach(function (file) {
+		// Do whatever you want to do with the file
+		console.log(file);
+	});
+});
+
 app.set("views", join(__dirname, "views", "pages"));
 app.set("view engine", "pug");
 
