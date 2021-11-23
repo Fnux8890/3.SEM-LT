@@ -18,12 +18,12 @@ const app = express();
 
 //Load view enigne
 console.log(join(__dirname, "views", "pages"));
-app.set("views", join(__dirname, "app", "views", "pages"));
+app.set("views", join(__dirname, "views", "pages"));
 app.set("view engine", "pug");
 
 //middleware
 app.options("*", cors());
-app.use(express.static(join(__dirname, "app", "views")));
+app.use(express.static(join(__dirname, "views")));
 app.use("scripts/", express.static("/node_modules/"));
 app.use(express.json()); //Kan se JSON payloads fra front-end
 app.use(express.urlencoded({ extended: false })); //Kan se String/text payloads fra front-end
