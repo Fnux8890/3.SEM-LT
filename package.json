@@ -11,6 +11,7 @@
 		"watch": "webpack --watch",
 		"start": "node ./build/app.js",
 		"start-dev": "nodemon  --exec babel-node --delay 0.8 ./server/app",
+		"start-build": "nodemon  --exec babel-node --delay 0.8 ./build/app",
 		"test": "node script1.js",
 		"stat": "webpack --profile --json > stats.json"
 	},
