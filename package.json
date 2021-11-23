@@ -58,6 +58,10 @@
 		"@lottiefiles/lottie-player": "^1.4.5",
 		"animejs": "^3.2.1",
 		"axios": "^0.22.0",
+<<<<<<< HEAD
+=======
+		"babel-cli": "^6.26.0",
+>>>>>>> parent of 3439d37... heroku
 		"babel-node": "0.0.1-security",
 		"babel-plugin-module-resolver": "^4.1.0",
 		"bcrypt": "^5.0.1",
