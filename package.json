@@ -5,6 +5,7 @@
 	"private": true,
 	"scripts": {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"build": "webpack",
 =======
 		"clean": "rm -rf build && mkdir build",
@@ -19,6 +20,17 @@
 =======
 		"start-dev": "nodemon  --exec babel-node --delay 0.8 ./server/app",
 >>>>>>> parent of 8604d44... heroku #0.1.10
+=======
+		"clean": "rm -rf build && mkdir build",
+		"webpack-build": "webpack",
+		"build-server": "babel -d ./build ./server -s",
+		"prestart": "ls",
+		"build": "npm run clean && npm run webpack-build && npm run build-server",
+		"watch": "webpack --watch",
+		"start": "node ./build/app.js",
+		"start-dev": "nodemon  --exec babel-node --delay 0.8 ./server/app",
+		"start-build": "nodemon  --exec babel-node --delay 0.8 ./build/app",
+>>>>>>> Dev-GatherAll
 		"test": "node script1.js",
 		"stat": "webpack --profile --json > stats.json"
 	},
@@ -70,10 +82,13 @@
 		"animejs": "^3.2.1",
 		"axios": "^0.22.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		"babel-cli": "^6.26.0",
 >>>>>>> parent of 3439d37... heroku
 		"babel-node": "0.0.1-security",
+=======
+>>>>>>> Dev-GatherAll
 		"babel-plugin-module-resolver": "^4.1.0",
 		"bcrypt": "^5.0.1",
 		"bodymovin": "^4.13.0",
@@ -101,6 +116,7 @@
 		"@babel/plugin-transform-runtime": "^7.15.8",
 		"@babel/preset-env": "^7.15.8",
 		"babel-loader": "^8.2.3",
+		"babel-node": "^0.0.1-security",
 		"css-loader": "^6.5.0",
 		"css-minimizer-webpack-plugin": "^3.1.2",
 		"css-url-relative-plugin": "^1.1.0",

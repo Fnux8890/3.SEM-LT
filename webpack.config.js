@@ -6,21 +6,30 @@ module.exports = {
 	target: "node",
 	mode: "development",
 	entry: {
-		exercise1: path.resolve(__dirname, "./app/views/js/Exercises/exercise1.js"),
-		exercise2: path.resolve(__dirname, "./app/views/js/Exercises/exercise2.js"),
-		exercise3: path.resolve(__dirname, "./app/views/js/Exercises/exercise3.js"),
-		navbar: path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
-		login: path.resolve(__dirname, "./app/views/js/login/login.js"),
+		exercise1: path.resolve(
+			__dirname,
+			"./server/app/views/js/Exercises/exercise1.js"
+		),
+		exercise2: path.resolve(
+			__dirname,
+			"./server/app/views/js/Exercises/exercise2.js"
+		),
+		exercise3: path.resolve(
+			__dirname,
+			"./server/app/views/js/Exercises/exercise3.js"
+		),
+		navbar: path.resolve(__dirname, "./server/app/views/js/Navbar/navbar.js"),
+		login: path.resolve(__dirname, "./server/app/views/js/login/login.js"),
 		createAccount: path.resolve(
 			__dirname,
-			"app/views/js/login/createAccount.js"
+			"./server/app/views/js/login/createAccount.js"
 		),
-		error: path.resolve(__dirname, "./app/views/js/error.js"),
-		modules: path.resolve(__dirname, "./app/views/js/moduleOverview.js"),
+		error: path.resolve(__dirname, "./server/app/views/js/error.js"),
+		modules: path.resolve(__dirname, "./server/app/views/js/moduleOverview.js"),
 	},
 	output: {
 		filename: "[name].js",
-		path: path.resolve(__dirname, "app/views/dist/js"),
+		path: path.resolve(__dirname, "./server/app/views/dist/js"),
 		publicPath: "../",
 		clean: true,
 	},
