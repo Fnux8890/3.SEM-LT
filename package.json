@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"start": "babel-node app",
+		"start": "babel-node app.js",
 		"start-dev": "nodemon  --exec babel-node --delay 0.8 app",
 		"test": "node script1.js",
 		"stat": "webpack --profile --json > stats.json"
@@ -58,6 +58,7 @@
 		"@lottiefiles/lottie-player": "^1.4.5",
 		"animejs": "^3.2.1",
 		"axios": "^0.22.0",
+		"babel-cli": "^6.26.0",
 		"babel-node": "0.0.1-security",
 		"babel-plugin-module-resolver": "^4.1.0",
 		"bcrypt": "^5.0.1",
