@@ -82,7 +82,7 @@ async function getExerciseWithWords(id) {
   let result = await exercisesModel.aggregate([
     {
       $match: {
-        name: `Exercise ${id}`,
+        name: "Exercise 1",
       },
     },
     {
@@ -116,11 +116,6 @@ async function getExerciseWithWords(id) {
       },
     },
     {
-      $unwind: {
-        path: "$cards.word.soundfile",
-      },
-    },
-    {
       $project: {
         _id: 0,
         name: "$name",
@@ -131,11 +126,11 @@ async function getExerciseWithWords(id) {
         cards: {
           word: "$cards.word.word",
           translation_word: "$cards.word.translation",
-          soundfile_word: "$cards.word.soundfile.file",
+          soundfile_word: "$cards.word.soundfile",
           answer: "$cards.answer",
           sentence: "$cards.sentence.sentence",
           translation_sentence: "$cards.sentence.translation",
-          soundfile_sentence: "$cards.sentence.soundfile.file",
+          soundfile_sentence: "$cards.sentence.soundfile",
         },
       },
     },
@@ -219,16 +214,6 @@ async function ExerciseSentences() {
       },
     },
     {
-      $unwind: {
-        path: "$cards.word.soundfile",
-      },
-    },
-    {
-      $unwind: {
-        path: "$cards.sentence.soundfile",
-      },
-    },
-    {
       $project: {
         _id: 0,
         name: "$name",
@@ -238,10 +223,10 @@ async function ExerciseSentences() {
         cards: {
           word: "$cards.word.word",
           translation_word: "$cards.word.translation",
-          soundfile_word: "$cards.word.soundfile.file",
+          soundfile_word: "$cards.word.soundfile",
           sentence: "$cards.sentence.sentence",
           translation_sentence: "$cards.sentence.translation",
-          soundfile_sentence: "$cards.sentence.soundfile.file",
+          soundfile_sentence: "$cards.sentence.soundfile",
         },
       },
     },
@@ -284,7 +269,7 @@ router.route("/ExerciseWords").get(async (req, res) => {
 });
 
 router.route("/ExerciseWordsAndSentences").get(async (req, res) => {
-  let sentenceQuery = await getExerciseSentences();
+  let sentenceQuery = await ExerciseSentences();
   res.json(sentenceQuery);
 });
 
