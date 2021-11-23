@@ -57,7 +57,7 @@ const start = () => {
 	try {
 		connectDB();
 		app.listen(
-			port,
+			process.env.PORT || 3000,
 			console.log(`server listening at: http://localhost:${port}`)
 		);
 	} catch (error) {
