@@ -11,11 +11,11 @@
         ["module-resolver", {
           "root": ["./"],
           "alias": {
-            "@middleware": "./server/app/controller/middleware",
-            "@models": "./server/app/models",
-            "@public": "./server/app/views/",
-            "@distCss": "./server/app/views/dist/css",
-            "@publicCss": "./server/app/views/assets/scss"
+            "@middleware": "./app/controller/middleware",
+            "@models": "./app/models",
+            "@public": "./app/views/",
+            "@distCss": "./app/views/dist/css",
+            "@publicCss": "./app/views/assets/scss"
           }
         }],
         ["@babel/plugin-syntax-dynamic-import"]
