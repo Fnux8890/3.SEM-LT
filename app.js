@@ -19,7 +19,7 @@ const app = express();
 
 //Load view enigne
 
-const directoryPath = join(__dirname, "./app/views");
+const directoryPath = join(__dirname, "./app/views/pages");
 //passsing directoryPath and callback function
 fs.readdir(directoryPath, function (err, files) {
 	//handling error
@@ -33,12 +33,12 @@ fs.readdir(directoryPath, function (err, files) {
 	});
 });
 
-app.set("views", join(__dirname, "./app/views"));
+app.set("views", join(__dirname, "./app/views/pages"));
 app.set("view engine", "pug");
 
 //middleware
 app.options("*", cors());
-app.use(express.static(join(__dirname, "views")));
+app.use(express.static(join(__dirname, "./app/views")));
 app.use("scripts/", express.static("/node_modules/"));
 app.use(express.json()); //Kan se JSON payloads fra front-end
 app.use(express.urlencoded({ extended: false })); //Kan se String/text payloads fra front-end
