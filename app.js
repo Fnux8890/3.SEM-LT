@@ -19,7 +19,7 @@ const app = express();
 
 //Load view enigne
 
-const directoryPath = join(__dirname);
+const directoryPath = join(__dirname, "./app");
 //passsing directoryPath and callback function
 fs.readdir(directoryPath, function (err, files) {
 	//handling error
