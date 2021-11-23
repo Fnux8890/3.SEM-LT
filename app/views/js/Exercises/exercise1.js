@@ -119,9 +119,7 @@ async function animationFromStack(card) {
 					"box-shadow":
 						"6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)",
 				});
-			cardFlip(card, currentCard);
-			audioPlayer.playWord(currentCard);
-			return t1.finished;
+			return cardFlip(card, currentCard);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -406,6 +404,7 @@ function FromStackAnimation(card) {
 	if (cards.length === 0) ExerciseComplete();
 	animationFromStack(card)
 		.then(() => {
+			audioPlayer.playWord(currentCard);
 			interact(card)
 				.draggable({
 					listeners: {
