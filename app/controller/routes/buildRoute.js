@@ -273,4 +273,9 @@ router.route("/ExerciseWordsAndSentences").get(async (req, res) => {
   res.json(sentenceQuery);
 });
 
+router.route("/GetQuestions").get(async (req, res) => {
+  let testData = await exercisesModel.find({ name: "TestName" }).exec();
+  res.json(testData);
+});
+
 export default router;

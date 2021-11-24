@@ -19,16 +19,16 @@ function b64toBlob(b64Data, contentType = "", sliceSize = 512) {
 }
 //cards[currentCard].soundfile_sentence
 export function playSentence(card) {
-  const audioBlob = b64toBlob(card.soundfile_sentence[0], "audio/mp3");
+  let rand = Math.floor(Math.random() * card.soundfile_sentence.length);
+  const audioBlob = b64toBlob(card.soundfile_sentence[rand], "audio/mp3");
   const audioUrl = URL.createObjectURL(audioBlob);
   const audio = new Audio(audioUrl);
   audio.play();
 }
 //cards[currentCard].soundfile_word
 export function playWord(card) {
-  console.table(card.soundfile_word);
-  console.log("test");
-  const audioBlob = b64toBlob(card.soundfile_word[0], "audio/mp3");
+  let rand = Math.floor(Math.random() * card.soundfile_word.length);
+  const audioBlob = b64toBlob(card.soundfile_word[rand], "audio/mp3");
   const audioUrl = URL.createObjectURL(audioBlob);
   const audio = new Audio(audioUrl);
   audio.play();
