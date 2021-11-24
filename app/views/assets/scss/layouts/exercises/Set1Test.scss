@@ -17,6 +17,11 @@
 	grid-template-areas: "video video q q";;
 }
 
+iframe{
+	grid-area: video;
+}
+
+
 .tutorial{
 	margin-left: 40px;
 	margin-right: 10px;

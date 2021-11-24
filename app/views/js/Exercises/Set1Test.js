@@ -38,7 +38,7 @@ $(() => {
             SetUpHtmlDivs(data[0]);
         },
     });
-
+    RemoveTutorial();
     $("#tutorialbutton").on("click", () => {
         RemoveTutorial();
         newQuestion();
@@ -219,6 +219,9 @@ $(() => {
         $(".speaker").css({
             visibility: "visible",
         });
+        $("iframe").css({
+            visibility: "hidden",
+        });
     }
 
     function RemoveTutorial() {
@@ -232,6 +235,9 @@ $(() => {
         });
         $(".speaker").css({
             visibility: "hidden",
+        });
+        $("iframe").css({
+            visibility: "visible",
         });
     }
 });
