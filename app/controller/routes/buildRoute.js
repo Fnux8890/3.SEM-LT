@@ -1,4 +1,6 @@
-import { Router } from "express";
+import {
+  Router
+} from "express";
 import mongoose from "mongoose";
 import setModel from "../../models/setModel";
 import exercisesModel from "../../models/exercisesModel";
@@ -40,10 +42,13 @@ function insertRecording(recording, res) {
     } else {
       try {
         wordModel
-          .findOneAndUpdate(
-            { word: recording.name },
-            { $push: { soundfile: recording.file } }
-          )
+          .findOneAndUpdate({
+            word: recording.name
+          }, {
+            $push: {
+              soundfile: recording.file
+            }
+          })
           .exec();
         console.log("inserted recording");
       } catch (err) {
@@ -64,10 +69,13 @@ function insertSentence(sentence, res) {
     } else {
       try {
         sentenceModel
-          .findOneAndUpdate(
-            { sentence: sentence.name },
-            { $push: { soundfile: sentence.file } }
-          )
+          .findOneAndUpdate({
+            sentence: sentence.name
+          }, {
+            $push: {
+              soundfile: sentence.file
+            }
+          })
           .exec();
         console.log("inserted recording");
       } catch (err) {
@@ -79,8 +87,7 @@ function insertSentence(sentence, res) {
 }
 
 async function getExerciseWithWords(id) {
-  let result = await exercisesModel.aggregate([
-    {
+  let result = await exercisesModel.aggregate([{
       $match: {
         name: "Exercise 1",
       },
@@ -164,8 +171,7 @@ async function getExerciseWithWords(id) {
 }
 
 async function ExerciseSentences() {
-  let result = await exercisesModel.aggregate([
-    {
+  let result = await exercisesModel.aggregate([{
       $match: {
         name: "Exercise 2",
       },
@@ -261,7 +267,9 @@ async function ExerciseSentences() {
 
 router.route("/ExerciseWords").get(async (req, res) => {
   if (req.query.id === undefined) {
-    res.json({ error: "No id given" });
+    res.json({
+      error: "No id given"
+    });
     return;
   }
   let exerciseObj = await getExerciseWithWords(req.query.id);
@@ -274,7 +282,9 @@ router.route("/ExerciseWordsAndSentences").get(async (req, res) => {
 });
 
 router.route("/GetQuestions").get(async (req, res) => {
-  let testData = await exercisesModel.find({ name: "TestName" }).exec();
+  let testData = await exercisesModel.find({
+    name: "TestName"
+  }).exec();
   res.json(testData);
 });
 
