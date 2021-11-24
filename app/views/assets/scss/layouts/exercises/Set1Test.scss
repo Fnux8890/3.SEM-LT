@@ -19,12 +19,15 @@
 
 iframe{
 	grid-area: video;
+	margin: 10px;
+	width: 50vw;
+	height: 28.125vw;
+
 }
 
 
 .tutorial{
-	margin-left: 40px;
-	margin-right: 10px;
+	margin: 0 30px;
 	grid-area: video;
 	grid-column-start: video;
     grid-column-end: q;
@@ -46,7 +49,7 @@ iframe{
 
 	overflow: hidden;
 }
-.answerOption, .question{
+.answerOption, .question, .checkBtn{
 	height: 65px;
 	width: 90%;
 
@@ -67,10 +70,18 @@ iframe{
 
 }
 
+.checkBtn{
+	background-color: $thirdColor;
+	width: 100%;
+	margin-top:20px;
+	min-width: 206px;
+}
+
 .question{
 	cursor: default;
 	width: 100%;
 	margin-bottom: 20px;
+	min-width: 206px;
 
 }
 .answerOption:hover {
@@ -87,3 +98,14 @@ iframe{
     background-color: $thirdColor;
 }
 
+.chosenAnswer{
+	background-color: $fifthColor;
+}
+
+.correct{
+	background-color: $fourthColor;
+}
+
+.false{
+	background-color: red;
+}

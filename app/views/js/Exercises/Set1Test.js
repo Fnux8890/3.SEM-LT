@@ -20,7 +20,7 @@ library.add(faTimes);
 
 $(() => {
     const questions = [];
-    let questionIndex = -1;
+    let questionIndex = 3;
 
     $.ajax({
         url: `http://localhost:3000/Build/GetQuestions`,
@@ -38,7 +38,7 @@ $(() => {
             SetUpHtmlDivs(data[0]);
         },
     });
-    RemoveTutorial();
+
     $("#tutorialbutton").on("click", () => {
         RemoveTutorial();
         newQuestion();
@@ -63,38 +63,76 @@ $(() => {
             direction: "normal",
         });
 
-        if (currentQuestion.a == clickedAnswer) {
-            console.log(
-                `CORRECT - question: ${currentQuestion.a} == answerOption: ${clickedAnswer}`
-            );
-            colorChange
-                .add({
+        if (questionIndex == 4) {
+
+            if ($(this).hasClass("chosenAnswer")) {
+                $(this).removeClass("chosenAnswer");
+            } else {
+                $(this).addClass("chosenAnswer");
+            }
+
+        } else {
+            if (currentQuestion.a == clickedAnswer) {
+                console.log(
+                    `CORRECT - question: ${currentQuestion.a} == answerOption: ${clickedAnswer}`
+                );
+                colorChange
+                    .add({
+                            targets: this,
+                            background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
+                            complete: function (anim) {
+                                $(e.target).removeAttr("style");
+                            },
+                        },
+                        20
+                    )
+                    .finished.then(() => {
+                        newQuestion();
+                    });
+            } else {
+                console.log("FALSE - play false-sound");
+                colorChange.add({
                         targets: this,
-                        background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
+                        background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
                         complete: function (anim) {
                             $(e.target).removeAttr("style");
                         },
                     },
-                    20
-                )
-                .finished.then(() => {
-                    newQuestion();
-                });
-        } else {
-            console.log("FALSE - play false-sound");
-            colorChange.add({
-                    targets: this,
-                    background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
-                    complete: function (anim) {
-                        $(e.target).removeAttr("style");
-                    },
-                },
-                0
-            );
+                    0
+                );
+            }
+            colorChange.finished.then(() => {
+                $(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
+            });
+
+
         }
-        colorChange.finished.then(() => {
-            $(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
-        });
+
+    });
+
+    $(document).on("click", ".checkBtn", function (e) {
+        console.log("Check");
+        let currentQuestion = questions[questionIndex];
+
+
+        $(".chosenAnswer").each(function (i, answer) {
+            if (currentQuestion.a.includes($(answer).text().trim())) {
+                console.log("yay" + $(answer).text());
+                $(answer).addClass("correct");
+            } else {
+                console.log("no" + $(answer).text());
+                console.log(currentQuestion.a);
+                $(answer).addClass("false");
+            }
+        })
+
+        // if (currentQuestion.a.includes($(".chosenAnswer").text)) {
+        //     console.log("yay" + $(".chosenAnswer").text());
+        // } else {
+        //     console.log("no" + $(".chosenAnswer").text());
+        //     console.log(currentQuestion.a);
+        // }
+
     });
 
 
@@ -134,7 +172,9 @@ $(() => {
 
         MakeAnswerOptions(answerOptions);
         MakeQuestion(currentQuestion.q)
-
+        if (questionIndex == 4) {
+            MakeCheckAnswerBtn();
+        }
         //animateAnswerOptionsIn();
         //animationFromStack(`#card${questionIndex}`);
     }
@@ -164,6 +204,14 @@ $(() => {
             <p>${questionTxt}</p>
         </div>`;
         $(".answerZone").prepend(question);
+    }
+
+    function MakeCheckAnswerBtn() {
+        let btn = `
+                <div class="checkBtn">
+                    <p>Check answer</p>
+                </div>`;
+        $(".answerZone").append(btn);
     }
 
     /**
@@ -198,13 +246,14 @@ $(() => {
      */
     function MakeCloseIcon() {
         let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
-        $(".answerZone").after(closeIcon);
+        $(".container").append(closeIcon);
     }
 
     function SetUpTutorial(data) {
         let dkTutorial = data.instructions[0].instructionsDK;
         let engTutorial = data.instructions[0].instructionsENG;
-        $(".tutorial").prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
+        $("#eng").html("<h3>English instructions</h3>" + engTutorial);
+        $("#dan").html("<h3>Danish instructions</h3>" + dkTutorial);
     }
 
     function ShowTutorial() {
