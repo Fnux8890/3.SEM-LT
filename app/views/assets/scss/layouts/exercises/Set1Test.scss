@@ -11,44 +11,9 @@
 	grid-auto-rows: auto 300px auto;
 	height: 100vh;
 }
-.helpIcon {
-	top: -50px;
-	left: 10px;
-}
-.closeIcon {
-	grid-area: close;
-	display: grid;
-	place-items: start end;
-	margin-top: 1.5rem;
-	margin-right: 2rem;
-	cursor: pointer;
-}
-.tutorial {
-	//width: 400px;
-	//height: 260px;
-	display: grid;
-	place-items: center;
-	//grid-area: mainContent;
-}
-.question{
-	height: 65px;
-	width: 200px;
 
-	color: black;
-	text-align: center;
-	display: grid;
-	place-items: center;
-	border-style: none;
-	border-radius: 10px;
-	margin: 0px 5px 10px;
 
-	z-index: 1;
-	cursor: pointer;
 
-	background-color: $primaryColor;
-	opacity: 1;
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
 .answerZone {
 	grid-area: answerOption;
 	display: grid;
@@ -61,7 +26,7 @@
 
 	overflow: hidden;
 }
-.answerOption {
+.answerOption, .question{
 	height: 65px;
 	width: 200px;
 
@@ -90,23 +55,6 @@
 	margin: 0;
 }
 
-.back {
-	color: #fff;
-	background: $thirdColor;
-}
-.front {
-	color: $thirdColor;
-	background: #fff;
-}
-.cardBack {
-	color: $thirdColor;
-	background: $thirdColor;
-	border-color: white;
-}
-.speaker {
-	z-index: 12;
-}
-
-.mainContent .cardcontainer {
-	cursor: pointer;
+.question{
+    background-color: $thirdColor;
 }
