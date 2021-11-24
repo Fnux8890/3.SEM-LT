@@ -1,6 +1,6 @@
-@use "../abstracts" as *;
-@use "../components" as *;
-@use "../main.scss";
+@use '../abstracts' as *;
+@use '../components' as *;
+@use '../main.scss';
 body {
 	overflow: hidden;
 }
@@ -25,7 +25,7 @@ body {
 	grid-area: mainContent;
 	display: grid;
 	place-items: center;
-	grid-template-areas: "speaker Main Main .";
+	grid-template-areas: 'speaker Main Main .';
 	grid-auto-rows: 100%;
 	grid-template-columns: 1fr repeat(2, minmax(100px, 1fr)) 1fr;
 }
@@ -84,10 +84,9 @@ body {
 	color: black;
 	text-align: center;
 	font-size: 120px;
-	opacity: 1;
-	border-style: none;
 	border-radius: 10px;
 	padding: 40px 55px;
+	border: 5px dashed rgba(0, 0, 0, 0.5);
 	p {
 		padding: 0;
 		margin: 0;
@@ -127,7 +126,7 @@ body {
 }
 
 #tutorialbutton {
-	visibility: "visible";
+	visibility: 'visible';
 	z-index: 11;
 
 	@include button-WithGlyp;

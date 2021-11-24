@@ -1,6 +1,6 @@
-import anime from "animejs";
-import "@lottiefiles/lottie-player";
-import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import anime from 'animejs';
+import '@lottiefiles/lottie-player';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import {
 	faQuestionCircle,
 	faVolumeUp,
@@ -9,10 +9,10 @@ import {
 	faPlay,
 	faStar,
 	faThumbsUp,
-} from "@fortawesome/free-solid-svg-icons";
-import { default as audioPlayer } from "../CustomModules/audioPlayer";
-import "../../assets/scss/layouts/exercises/exercise2.scss";
-import { cardFlip } from "../CustomModules/cardFlip";
+} from '@fortawesome/free-solid-svg-icons';
+import { default as audioPlayer } from '../CustomModules/audioPlayer';
+import '../../assets/scss/layouts/exercises/exercise2.scss';
+import { cardFlip } from '../CustomModules/cardFlip';
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -23,13 +23,13 @@ library.add(faStar);
 library.add(faThumbsUp);
 
 const cards = [];
-let currentCardnum = "";
-let currentCard = "";
-let tutorial = "";
+let currentCardnum = '';
+let currentCard = '';
+let tutorial = '';
 let ratingdone = false;
 
 $(() => {
-	$.getJSON("http://localhost:3000/Build/ExerciseWordsAndSentences", (data) => {
+	$.getJSON('http://localhost:3000/Build/ExerciseWordsAndSentences', (data) => {
 		data.cards.forEach(function (card) {
 			cards.push(card);
 		});
@@ -41,72 +41,72 @@ $(() => {
 	});
 
 	//Indsætning af ikon (krydset)
-	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
+	$('.close').append(icon({ prefix: 'fas', iconName: 'times' }).html);
 
-	$("#tutorialbutton").append(
-		icon({ prefix: "fas", iconName: "thumbs-up" }).html
+	$('#tutorialbutton').append(
+		icon({ prefix: 'fas', iconName: 'thumbs-up' }).html
 	);
 
-	$(".close svg").on("click", function () {
-		alert("Closing...");
+	$('.close svg').on('click', function () {
+		alert('Closing...');
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
 	});
 
 	//Lav seperat knap til afspil lydfil her eller nede i funktionen?
-	$("body").on("click", ".recordIcon", () => {
+	$('body').on('click', '.recordIcon', () => {
 		StartRecording();
 	});
 
-	$(".speaker").on("click", () => {
+	$('.speaker').on('click', () => {
 		audioPlayer.playWord(cards[currentCardnum]);
 	});
 });
 
 function startRating() {
-	$(".stars0").on({
+	$('.stars0').on({
 		mouseenter: function () {
-			$(".stars0").css("color", "yellow");
+			$('.stars0').css('color', 'yellow');
 		},
 		mouseleave: function () {
-			$(".stars0").css("color", "black");
+			$('.stars0').css('color', 'black');
 		},
 	});
-	$(".stars1").on({
+	$('.stars1').on({
 		mouseenter: function () {
-			$(".stars0, .stars1").css("color", "yellow");
+			$('.stars0, .stars1').css('color', 'yellow');
 		},
 		mouseleave: function () {
-			$(".stars0, .stars1").css("color", "black");
+			$('.stars0, .stars1').css('color', 'black');
 		},
 	});
-	$(".stars2").on({
+	$('.stars2').on({
 		mouseenter: function () {
-			$(".stars0, .stars1, .stars2").css("color", "yellow");
+			$('.stars0, .stars1, .stars2').css('color', 'yellow');
 		},
 		mouseleave: function () {
-			$(".stars0, .stars1, .stars2").css("color", "black");
+			$('.stars0, .stars1, .stars2').css('color', 'black');
 		},
 	});
-	$(".stars3").on({
+	$('.stars3').on({
 		mouseenter: function () {
-			$(".stars0, .stars1, .stars2, .stars3").css("color", "yellow");
+			$('.stars0, .stars1, .stars2, .stars3').css('color', 'yellow');
 		},
 		mouseleave: function () {
-			$(".stars0, .stars1, .stars2, .stars3").css("color", "black");
+			$('.stars0, .stars1, .stars2, .stars3').css('color', 'black');
 		},
 	});
-	$(".stars4").on({
+	$('.stars4').on({
 		mouseenter: function () {
-			$(".stars0, .stars1, .stars2, .stars3, .stars4").css("color", "yellow");
+			$('.stars0, .stars1, .stars2, .stars3, .stars4').css('color', 'yellow');
 		},
 		mouseleave: function () {
-			$(".stars0, .stars1, .stars2, .stars3, .stars4").css("color", "black");
+			$('.stars0, .stars1, .stars2, .stars3, .stars4').css('color', 'black');
 		},
 	});
 }
 
 function tutorialButtonOnClick() {
-	$("#tutorialbutton").on("click", async (event) => {
+	$('#tutorialbutton').on('click', async (event) => {
 		let card = `.card${currentCardnum}`;
 		tutorial = await RemoveTutorial();
 		const delay = (ms) =>
@@ -117,8 +117,8 @@ function tutorialButtonOnClick() {
 		console.table(cards);
 		//console.log(cards[currentCard].soundFile_word[0].file);
 		animationFromStack(card, event);
-		$(".translation").css("visibility", "visible");
-		$(".sentence").css("visibility", "visible");
+		$('.translation').css('visibility', 'visible');
+		$('.sentence').css('visibility', 'visible');
 	});
 }
 
@@ -136,11 +136,11 @@ function convertRemToPixels(rem) {
  * @returns returns x and y of maincontents div center is in gloabal space
  */
 function findMaincontentCenter(card) {
-	let y = $(".mainContent").offset().top - convertRemToPixels(1);
-	let x = $(".mainContent").offset().left - convertRemToPixels(1);
-	x += $(".mainContent").width() / 2;
+	let y = $('.mainContent').offset().top - convertRemToPixels(1);
+	let x = $('.mainContent').offset().left - convertRemToPixels(1);
+	x += $('.mainContent').width() / 2;
 	x -= $(card).width() / 2;
-	y += $(".mainContent").height() / 2;
+	y += $('.mainContent').height() / 2;
 	y -= $(card).height() / 2;
 	return { x, y };
 }
@@ -161,18 +161,18 @@ function animationFromStack(card, event) {
 	t1.add({
 		translateX: maincontentCenter.x,
 		translateY: maincontentCenter.y,
-		easing: "easeOutQuint",
+		easing: 'easeOutQuint',
 		duration: 1000,
 	})
 		.finished.then(() => {
 			$(card)
 				.css({
-					transform: "none",
+					transform: 'none',
 				})
 				.parent()
-				.appendTo(".word")
+				.appendTo('.word')
 				.css({
-					"grid-area": "wordDiv",
+					'grid-area': 'wordDiv',
 				});
 			cardFlip(card, currentCard);
 			audioPlayer.playSentence(currentCard);
@@ -211,26 +211,26 @@ function SetupHtmlDivs(data) {
  */
 function MakeHelpIcon() {
 	let helpIcon = `<div class='helpIcon'>${
-		icon({ prefix: "fas", iconName: "question-circle" }).html
+		icon({ prefix: 'fas', iconName: 'question-circle' }).html
 	}</div>`;
-	$(".cardStack-Container").append(helpIcon);
+	$('.cardStack-Container').append(helpIcon);
 }
 
 /**
  * Viser tutorial igen ved klik på hjælp ikon
  */
 function ShowTutorialAgain() {
-	$(".helpIcon").on("click", function () {
-		$(".mainContent")
+	$('.helpIcon').on('click', function () {
+		$('.mainContent')
 			.append(`<div class='curtain'></div>`)
 			.append(`<div class='tutorial'></div>`);
-		$(".tutorial").append(tutorial);
-		$(".speaker").remove();
-		$(".curtain").on("click", () => {
+		$('.tutorial').append(tutorial);
+		$('.speaker').remove();
+		$('.curtain').on('click', () => {
 			RemoveTutorial();
 		});
-		$(".speaker").remove();
-		$("#tutorialbutton").on("click", async () => {
+		$('.speaker').remove();
+		$('#tutorialbutton').on('click', async () => {
 			tutorial = await RemoveTutorial();
 		});
 	});
@@ -238,11 +238,11 @@ function ShowTutorialAgain() {
 
 function RemoveTutorial() {
 	return new Promise((resolve, reject) => {
-		let html = $(".tutorial").html();
-		$(".tutorial").remove();
-		$("#tutorialbutton").remove();
-		$(".curtain").remove();
-		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+		let html = $('.tutorial').html();
+		$('.tutorial').remove();
+		$('#tutorialbutton').remove();
+		$('.curtain').remove();
+		$('.speaker').append(icon({ prefix: 'fas', iconName: 'volume-up' }).html);
 		resolve(html);
 	});
 }
@@ -260,11 +260,11 @@ function MakeCardStack() {
                 <div class="back">${element.word}</div>
             </div>
         </div>`;
-		$(".cardStack-Container").append(card);
-		let zlayer = $(".front").css("z-index");
+		$('.cardStack-Container').append(card);
+		let zlayer = $('.front').css('z-index');
 		$(`#card${index}`).css({
 			transform: `translateX(${offset}px)`,
-			"z-index": zlayer + index,
+			'z-index': zlayer + index,
 		});
 		offset += 5;
 	});
@@ -279,7 +279,7 @@ function MakeCardStackEng() {
 	const firstPart = engSentence.slice(0, wordIndex);
 	const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
 	let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
-	$(".translation").append(sentenceTranslated);
+	$('.translation').append(sentenceTranslated);
 }
 
 function changeTranslation() {
@@ -289,8 +289,8 @@ function changeTranslation() {
 	const firstPart = engSentence.slice(0, wordIndex);
 	const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
 	let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
-	$(".sentenceTranslated").html(sentenceTranslated);
-	console.log("Changing translation");
+	$('.sentenceTranslated').html(sentenceTranslated);
+	console.log('Changing translation');
 }
 
 function SetupSentence() {
@@ -302,7 +302,7 @@ function SetupSentence() {
 	let firstDiv = `<div class="firstPart">${firstPart}</div>`;
 	let secondDiv = `<div class="secondPart">${secondPart}</div>`;
 	let wordDiv = `<div class="word"></div>`;
-	$(".sentence").append([firstDiv, wordDiv, secondDiv]);
+	$('.sentence').append([firstDiv, wordDiv, secondDiv]);
 }
 
 function changeSentence() {
@@ -314,16 +314,16 @@ function changeSentence() {
 	let firstDiv = `<div class="firstPart">${firstPart}</div>`;
 	let secondDiv = `<div class="secondPart">${secondPart}</div>`;
 	let wordDiv = `<div class="word"></div>`;
-	$(".sentence").html([firstDiv, wordDiv, secondDiv]);
-	console.log("Changing sentence");
+	$('.sentence').html([firstDiv, wordDiv, secondDiv]);
+	console.log('Changing sentence');
 }
 
 function StartRecording() {
-	$(".recordIcon").remove();
+	$('.recordIcon').remove();
 	let recordingNow = `<div class="recordingNow"></div>`;
-	$(".microphone").append(recordingNow);
-	$(".recordingNow").append(
-		icon({ prefix: "fas", iconName: "microphone" }).html
+	$('.microphone').append(recordingNow);
+	$('.recordingNow').append(
+		icon({ prefix: 'fas', iconName: 'microphone' }).html
 	);
 	navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
 		let mediaRecorder = new MediaRecorder(stream);
@@ -335,27 +335,27 @@ function StartRecording() {
 			audioChunks.push(e.data);
 		};
 
-		mediaRecorder.addEventListener("stop", () => {
-			const audioBlob = new Blob(audioChunks);
+		mediaRecorder.addEventListener('stop', () => {
+			const audioBlob = new Blob(audioChunks, 'audio/mp3');
 			const audioUrl = URL.createObjectURL(audioBlob);
 			const audio = new Audio(audioUrl);
 			console.log(audio);
 			console.table(audioChunks);
-			$(".playRec").on("click", () => {
+			$('.playRec').on('click', () => {
 				audio.play();
 			});
 		});
 
 		setTimeout(() => {
 			mediaRecorder.stop();
-			$(".recordingNow").remove();
+			$('.recordingNow').remove();
 			appendPlaybutton();
-			$(".stars0, .stars1, .stars2, .stars3, .stars4").one("click", () => {
-				$(".playRec").remove();
-				console.log("clicked stars");
+			$('.stars0, .stars1, .stars2, .stars3, .stars4').one('click', () => {
+				$('.playRec').remove();
+				console.log('clicked stars');
 				mediaRecorder = null;
 				//Gem stjernerne og træk næste kort.
-				let divexists = $(".recordIcon");
+				let divexists = $('.recordIcon');
 				if (divexists.length < 1) {
 					appendMicrophone();
 					animateCardOut(`.cardcontainer${currentCardnum}`);
@@ -363,7 +363,7 @@ function StartRecording() {
 				console.log(currentCardnum);
 				if (currentCardnum === 0) {
 					endScreen();
-					console.log("finished");
+					console.log('finished');
 				}
 			});
 		}, 3000);
@@ -374,37 +374,37 @@ function setupRating() {
 	var i;
 	for (i = 0; i < 5; i++) {
 		let ratingStars = `<span class="star stars${i}"></span>`;
-		$(".rating").append(ratingStars);
-		$(`.stars${i}`).append(icon({ prefix: "fas", iconName: "star" }).html);
+		$('.rating').append(ratingStars);
+		$(`.stars${i}`).append(icon({ prefix: 'fas', iconName: 'star' }).html);
 	}
 }
 
 function appendMicrophone() {
 	let recordDiv = "<div class='recordIcon'></div>";
-	$(".microphone").append(recordDiv);
-	$(".recordIcon").append(icon({ prefix: "fas", iconName: "microphone" }).html);
+	$('.microphone').append(recordDiv);
+	$('.recordIcon').append(icon({ prefix: 'fas', iconName: 'microphone' }).html);
 }
 
 function appendPlaybutton() {
 	let playrecording = `<div class="playRec"></div>`;
-	$(".play").append(playrecording);
-	$(".playRec").append(icon({ prefix: "fas", iconName: "play" }).html);
+	$('.play').append(playrecording);
+	$('.playRec').append(icon({ prefix: 'fas', iconName: 'play' }).html);
 }
 
 function populateTutorial(data) {
 	let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
 	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
-	$("#eng").html(eng);
-	$("#dan").html(dan);
+	$('#eng').html(eng);
+	$('#dan').html(dan);
 }
 
 function animateCardOut() {
-	console.log("removing card");
+	console.log('removing card');
 	let card = `.card${currentCardnum}`;
 	let t1 = anime.timeline({ targets: card });
 	t1.add({
 		translateX: -1000,
-		easing: "easeOutQuint",
+		easing: 'easeOutQuint',
 		duration: 1000,
 	});
 	t1.finished.then(function () {
@@ -420,15 +420,15 @@ function animateCardOut() {
 }
 
 function endScreen() {
-	console.log("Finished exercise");
-	let curtainexists = $(".curtain");
+	console.log('Finished exercise');
+	let curtainexists = $('.curtain');
 	if (curtainexists.length < 1) {
 		$(
-			".speaker, .sentence, .translation, .close, .RecordAndRate, .cardStack"
+			'.speaker, .sentence, .translation, .close, .RecordAndRate, .cardStack'
 		).remove();
-		$(".mainContent")
+		$('.mainContent')
 			.append(`<div class='curtain'></div>`)
 			.append(`<div class="endNote">You win</div>`);
-		$(".endNote").append(`<p class="endText">You did great!</p>`);
+		$('.endNote').append(`<p class="endText">You did great!</p>`);
 	}
 }
