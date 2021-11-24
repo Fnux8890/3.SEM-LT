@@ -1,14 +1,14 @@
-@use "../exercise" as *;
-@use "../../abstracts" as *;
+@use '../exercise' as *;
+@use '../../abstracts' as *;
 .container {
 	display: grid;
 	gap: 1rem;
 	grid-template-areas:
-		"stack . drawcard . close"
-		". mainContent mainContent mainContent ."
-		"answerOption answerOption answerOption answerOption answerOption";
-
+		'stack . drawcard . close'
+		'. mainContent mainContent mainContent .'
+		'answerOption answerOption answerOption answerOption answerOption';
 	grid-auto-rows: auto 300px auto;
+	grid-template-rows: auto 300px auto;
 	height: 100vh;
 }
 .helpIcon {
@@ -23,14 +23,14 @@
 	margin-right: 2rem;
 	cursor: pointer;
 }
-.tutorial {
-	//width: 400px;
-	//height: 260px;
-	display: grid;
-	place-items: center;
-	//grid-area: mainContent;
-}
-.question{
+// .tutorial {
+// 	//width: 400px;
+// 	//height: 260px;
+// 	grid-area: mainContent;
+// 	display: grid;
+// 	place-items: center;
+// }
+.question {
 	height: 65px;
 	width: 200px;
 
