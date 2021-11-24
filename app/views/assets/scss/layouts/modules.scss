@@ -1,6 +1,8 @@
-@use "../main.scss" as *;
+@use '../abstracts' as *;
+@use '../components' as *;
+@use '../main.scss';
 body {
-	background-color: green;
+	background-color: $lightGreenCyan;
 	overflow-x: hidden;
 }
 
@@ -14,31 +16,6 @@ h1.overview {
 	border-bottom: 5px solid rgb(255, 0, 0);
 	line-height: 0.1em;
 	margin: 100px 0 20px;
-}
-
-.dashed-circle {
-	float: left;
-	left: 30px;
-	top: -20%;
-
-	position: relative;
-	display: block;
-	margin: 10px;
-	width: 100px;
-	height: 100px;
-	border: 13px solid red;
-
-	line-height: 100px;
-	text-align: center;
-	background-color: white;
-	font-family: Arial, Helvetica, sans-serif;
-	font-style: italic;
-
-	color: black;
-}
-
-.dashed-circle:hover {
-	transform: translate(5.5%, 15%) scale(1.1);
 }
 
 .dice {
@@ -83,9 +60,9 @@ h1.overview {
 h1.overview span.overview {
 	margin-bottom: 50px;
 	padding: 0 10px;
-	background-color: green;
+	background-color: $lightGreenCyan;
 	font-size: 150%;
-	color: red;
+	color: black;
 }
 
 h1 {
