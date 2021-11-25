@@ -127,7 +127,7 @@ $(() => {
                 $(answer).addClass("correct");
                 if(correctAnswers === currentQuestion.a.length) {
                     console.log("Everything is correct");
-                    //Sidste besked?
+                    //Display final div and move on to next exercise or go back to overview
                 }
             } else {
                 $(answer).addClass("false");
