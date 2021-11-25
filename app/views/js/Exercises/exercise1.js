@@ -11,6 +11,7 @@ import "../../assets/scss/layouts/exercises/exercise1.scss";
 import { default as audioPlayer } from "../CustomModules/audioPlayer";
 import lottie from "lottie-web/build/player/lottie";
 import { cardFlip } from "../CustomModules/cardFlip";
+import { endScreen } from "../CustomModules/endDiv";
 
 let position = { x: 0, y: 0 };
 const cards = [];
@@ -58,6 +59,7 @@ $(() => {
 
 	$(".speaker").on("click", () => {
 		audioPlayer.playWord(cards[currentCardnum]);
+		endScreen("module-overview", "exercise2");
 	});
 });
 
@@ -440,8 +442,7 @@ function FromStackAnimation(card) {
 }
 
 function ExerciseComplete() {
-	alert("you'r fucking done mate");
-	window.location.href = "/page/login";
+	endScreen("module-overview", "exercise2");
 }
 
 /**

@@ -127,7 +127,7 @@ $(() => {
                 $(answer).addClass("correct");
                 if(correctAnswers === currentQuestion.a.length) {
                     console.log("Everything is correct");
-                    //Sidste besked?
+                    //Display final div and move on to next exercise or go back to overview
                 }
             } else {
                 $(answer).addClass("false");
@@ -298,7 +298,7 @@ $(() => {
             visibility: "hidden",
         })
 
-        let vid = `<iframe class="VidAfterTutorial" width='1120' height='630' src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen=''></iframe>`
+        let vid = `<iframe class="VidAfterTutorial" src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen=''></iframe>`
         let button = `<div class="removeVid">Take me to the questions</div>`
         
         $(".video").append(vid);

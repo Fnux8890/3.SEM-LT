@@ -13,6 +13,7 @@ import "../../assets/scss/layouts/exercises/exercise3.scss";
 import {
 	default as audioPlayer
 } from "../CustomModules/audioPlayer";
+import { endScreen } from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -130,8 +131,8 @@ $(() => {
 		if (cardIndex == 0) {
 			$(".answerOption").remove();
 			console.log("GOOD JOB!");
-			endExercise();
-			return;
+			//TODO endScreen virker ikke her???
+			endScreen("module-overview", "Set1Test");
 		}
 		cardIndex--;
 
