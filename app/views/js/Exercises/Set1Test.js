@@ -40,8 +40,11 @@ $(() => {
     });
 
     $("#tutorialbutton").on("click", () => {
-        RemoveTutorial();
-        newQuestion();
+        if(questionIndex === -1) {
+            WatchVid();
+        }else {
+            RemoveTutorial();
+        }   
     });
 
     $(document).on("click", ".helpIcon", function () {
@@ -236,7 +239,6 @@ $(() => {
      */
     function SetUpHtmlDivs(data) {
         SetUpTutorial(data);
-        //MakeSpeakerIcon();
         MakeHelpIcon();
         MakeCloseIcon();
     }
@@ -271,10 +273,7 @@ $(() => {
             visibility: "visible",
             display: "grid",
         });
-        $(".speaker").css({
-            visibility: "visible",
-        });
-        $("iframe").css({
+        $(".VidInTask").css({
             visibility: "hidden",
         });
     }
@@ -288,11 +287,26 @@ $(() => {
             visibility: "hidden",
             display: "none",
         });
-        $(".speaker").css({
-            visibility: "hidden",
-        });
-        $("iframe").css({
+        $(".VidInTask").css({
             visibility: "visible",
         });
+    }
+
+    function WatchVid() {
+        console.log("inside");
+        $(".tutorial").css({
+            visibility: "hidden",
+        })
+
+        let vid = `<iframe class="VidAfterTutorial" width='1120' height='630' src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen=''></iframe>`
+        let button = `<div class="removeVid">Take me to the questions</div>`
+        
+        $(".video").append(vid);
+        $(".video").append(button);
+        $(".removeVid").on("click", function() {
+            $(".video").remove();
+            RemoveTutorial();
+            newQuestion();
+        })
     }
 });
