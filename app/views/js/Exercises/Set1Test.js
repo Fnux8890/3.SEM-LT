@@ -20,7 +20,7 @@ library.add(faTimes);
 
 $(() => {
     const questions = [];
-    let questionIndex = 3;
+    let questionIndex = -1;
 
     $.ajax({
         url: `http://localhost:3000/Build/GetQuestions`,
@@ -114,15 +114,23 @@ $(() => {
         console.log("Check");
         let currentQuestion = questions[questionIndex];
 
+        let correctAnswers = 0;
 
-        $(".chosenAnswer").each(function (i, answer) {
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        $(".chosenAnswer").each( async function (i, answer) {
             if (currentQuestion.a.includes($(answer).text().trim())) {
-                console.log("yay" + $(answer).text());
+                correctAnswers++;
                 $(answer).addClass("correct");
+                if(correctAnswers === currentQuestion.a.length) {
+                    console.log("Everything is correct");
+                    //Sidste besked?
+                }
             } else {
-                console.log("no" + $(answer).text());
-                console.log(currentQuestion.a);
                 $(answer).addClass("false");
+                await delay(3000);
+                $(answer).removeClass("chosenAnswer");
+                $(answer).removeClass("false");
             }
         })
 
@@ -134,8 +142,6 @@ $(() => {
         // }
 
     });
-
-
 
 
 
