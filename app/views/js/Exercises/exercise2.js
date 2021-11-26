@@ -1,6 +1,9 @@
 import anime from 'animejs';
 import '@lottiefiles/lottie-player';
-import { library, icon } from '@fortawesome/fontawesome-svg-core';
+import {
+	library,
+	icon
+} from '@fortawesome/fontawesome-svg-core';
 import {
 	faQuestionCircle,
 	faVolumeUp,
@@ -10,11 +13,19 @@ import {
 	faStar,
 	faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
-import { default as audioPlayer } from '../CustomModules/audioPlayer';
+import {
+	default as audioPlayer
+} from '../CustomModules/audioPlayer';
 import '../../assets/scss/layouts/exercises/exercise2.scss';
-import { cardFlip } from '../CustomModules/cardFlip';
-import { populateTutorial } from '../CustomModules/tutorial';
-import { endScreen } from "../CustomModules/endDiv";
+import {
+	cardFlip
+} from '../CustomModules/cardFlip';
+import {
+	populateTutorial
+} from '../CustomModules/tutorial';
+import {
+	endScreen
+} from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -43,10 +54,16 @@ $(() => {
 	});
 
 	//Indsætning af ikon (krydset)
-	$('.close').append(icon({ prefix: 'fas', iconName: 'times' }).html);
+	$('.close').append(icon({
+		prefix: 'fas',
+		iconName: 'times'
+	}).html);
 
 	$('#tutorialbutton').append(
-		icon({ prefix: 'fas', iconName: 'thumbs-up' }).html
+		icon({
+			prefix: 'fas',
+			iconName: 'thumbs-up'
+		}).html
 	);
 
 	$('.close svg').on('click', function () {
@@ -145,7 +162,10 @@ function findMaincontentCenter(card) {
 	x -= $(card).width() / 2;
 	y += $('.mainContent').height() / 2;
 	y -= $(card).height() / 2;
-	return { x, y };
+	return {
+		x,
+		y
+	};
 }
 
 const timeline = anime.timeline;
@@ -162,11 +182,11 @@ function animationFromStack(card, event) {
 	});
 
 	t1.add({
-		translateX: maincontentCenter.x,
-		translateY: maincontentCenter.y,
-		easing: 'easeOutQuint',
-		duration: 1000,
-	})
+			translateX: maincontentCenter.x,
+			translateY: maincontentCenter.y,
+			easing: 'easeOutQuint',
+			duration: 1000,
+		})
 		.finished.then(() => {
 			$(card)
 				.css({
@@ -245,7 +265,10 @@ function RemoveTutorial() {
 		$('.tutorial').remove();
 		$('#tutorialbutton').remove();
 		$('.curtain').remove();
-		$('.speaker').append(icon({ prefix: 'fas', iconName: 'volume-up' }).html);
+		$('.speaker').append(icon({
+			prefix: 'fas',
+			iconName: 'volume-up'
+		}).html);
 		resolve(html);
 	});
 }
@@ -259,7 +282,7 @@ function MakeCardStack() {
 		let card = `
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
-                <div class="front">Bagside af kort</div>
+                <div class="front"></div>
                 <div class="back">${element.word}</div>
             </div>
         </div>`;
@@ -337,9 +360,14 @@ function StartRecording() {
 	let recordingNow = `<div class="recordingNow"></div>`;
 	$('.microphone').append(recordingNow);
 	$('.recordingNow').append(
-		icon({ prefix: 'fas', iconName: 'microphone' }).html
+		icon({
+			prefix: 'fas',
+			iconName: 'microphone'
+		}).html
 	);
-	navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+	navigator.mediaDevices.getUserMedia({
+		audio: true
+	}).then((stream) => {
 		let mediaRecorder = new MediaRecorder(stream);
 		mediaRecorder.start();
 
@@ -389,26 +417,37 @@ function setupRating() {
 	for (i = 0; i < 5; i++) {
 		let ratingStars = `<span class="star stars${i}"></span>`;
 		$('.rating').append(ratingStars);
-		$(`.stars${i}`).append(icon({ prefix: 'fas', iconName: 'star' }).html);
+		$(`.stars${i}`).append(icon({
+			prefix: 'fas',
+			iconName: 'star'
+		}).html);
 	}
 }
 
 function appendMicrophone() {
 	let recordDiv = "<div class='recordIcon'></div>";
 	$('.microphone').append(recordDiv);
-	$('.recordIcon').append(icon({ prefix: 'fas', iconName: 'microphone' }).html);
+	$('.recordIcon').append(icon({
+		prefix: 'fas',
+		iconName: 'microphone'
+	}).html);
 }
 
 function appendPlaybutton() {
 	let playrecording = `<div class="playRec"></div>`;
 	$('.play').append(playrecording);
-	$('.playRec').append(icon({ prefix: 'fas', iconName: 'play' }).html);
+	$('.playRec').append(icon({
+		prefix: 'fas',
+		iconName: 'play'
+	}).html);
 }
 
 function animateCardOut() {
 	console.log('removing card');
 	let card = `.card${currentCardnum}`;
-	let t1 = anime.timeline({ targets: card });
+	let t1 = anime.timeline({
+		targets: card
+	});
 	t1.add({
 		translateX: -1000,
 		easing: 'easeOutQuint',

@@ -56,7 +56,7 @@ body {
 
 .front {
   color: #fff;
-  background: #2196f3;
+  background: $thirdColor;
   font-size: 1.5rem;
 }
 .back {
@@ -65,7 +65,7 @@ body {
   left: 0;
   -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
-  color: #2196f3;
+  color: $thirdColor;
   background: white;
   font-size: 2rem;
 }
