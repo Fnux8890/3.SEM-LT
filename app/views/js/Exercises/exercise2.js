@@ -14,6 +14,7 @@ import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import '../../assets/scss/layouts/exercises/exercise2.scss';
 import { cardFlip } from '../CustomModules/cardFlip';
 import { populateTutorial } from '../CustomModules/tutorial';
+import { endScreen } from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -364,8 +365,8 @@ function StartRecording() {
 				}
 				console.log(currentCardnum);
 				if (currentCardnum === 0) {
-					endScreen();
-					console.log('finished');
+					endScreen("module-overview", "exercise3");
+					console.log("finished");
 				}
 			});
 		}, 3000);
@@ -407,23 +408,10 @@ function animateCardOut() {
 		$(card).remove();
 		ratingdone = false;
 		currentCardnum--;
+		currentCard = cards[currentCardnum];
 		card = `.card${currentCardnum}`;
 		animationFromStack(card);
 		changeSentence();
 		changeTranslation();
 	});
-}
-
-function endScreen() {
-	console.log('Finished exercise');
-	let curtainexists = $('.curtain');
-	if (curtainexists.length < 1) {
-		$(
-			'.speaker, .sentence, .translation, .close, .RecordAndRate, .cardStack'
-		).remove();
-		$('.mainContent')
-			.append(`<div class='curtain'></div>`)
-			.append(`<div class="endNote">You win</div>`);
-		$('.endNote').append(`<p class="endText">You did great!</p>`);
-	}
 }

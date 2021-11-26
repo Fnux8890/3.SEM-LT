@@ -12,6 +12,7 @@ import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import lottie from 'lottie-web/build/player/lottie';
 import { cardFlip } from '../CustomModules/cardFlip';
 import { populateTutorial } from '../CustomModules/tutorial';
+import { endScreen } from "../CustomModules/endDiv";
 
 let position = { x: 0, y: 0 };
 const cards = [];
@@ -439,8 +440,7 @@ function FromStackAnimation(card) {
 }
 
 function ExerciseComplete() {
-	alert("you'r fucking done mate");
-	window.location.href = '/page/login';
+	endScreen("module-overview", "exercise2");
 }
 
 /**

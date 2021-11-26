@@ -13,6 +13,7 @@ import "../../assets/scss/layouts/exercises/Set1Test.scss";
 import {
     default as audioPlayer
 } from "../CustomModules/audioPlayer";
+import { endScreen } from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -40,8 +41,11 @@ $(() => {
     });
 
     $("#tutorialbutton").on("click", () => {
-        RemoveTutorial();
-        newQuestion();
+        if(questionIndex === -1) {
+            WatchVid();
+        }else {
+            RemoveTutorial();
+        }   
     });
 
     $(document).on("click", ".helpIcon", function () {
@@ -63,41 +67,86 @@ $(() => {
             direction: "normal",
         });
 
-        if (currentQuestion.a == clickedAnswer) {
-            console.log(
-                `CORRECT - question: ${currentQuestion.a} == answerOption: ${clickedAnswer}`
-            );
-            colorChange
-                .add({
+        if (questionIndex == 4) {
+
+            if ($(this).hasClass("chosenAnswer")) {
+                $(this).removeClass("chosenAnswer");
+            } else {
+                $(this).addClass("chosenAnswer");
+            }
+
+        } else {
+            if (currentQuestion.a == clickedAnswer) {
+                console.log(
+                    `CORRECT - question: ${currentQuestion.a} == answerOption: ${clickedAnswer}`
+                );
+                colorChange
+                    .add({
+                            targets: this,
+                            background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
+                            complete: function (anim) {
+                                $(e.target).removeAttr("style");
+                            },
+                        },
+                        20
+                    )
+                    .finished.then(() => {
+                        newQuestion();
+                    });
+            } else {
+                console.log("FALSE - play false-sound");
+                colorChange.add({
                         targets: this,
-                        background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
+                        background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
                         complete: function (anim) {
                             $(e.target).removeAttr("style");
                         },
                     },
-                    20
-                )
-                .finished.then(() => {
-                    newQuestion();
-                });
-        } else {
-            console.log("FALSE - play false-sound");
-            colorChange.add({
-                    targets: this,
-                    background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
-                    complete: function (anim) {
-                        $(e.target).removeAttr("style");
-                    },
-                },
-                0
-            );
+                    0
+                );
+            }
+            colorChange.finished.then(() => {
+                $(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
+            });
+
+
         }
-        colorChange.finished.then(() => {
-            $(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
-        });
+
     });
 
+    $(document).on("click", ".checkBtn", function (e) {
+        console.log("Check");
+        let currentQuestion = questions[questionIndex];
 
+        let correctAnswers = 0;
+
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        $(".chosenAnswer").each( async function (i, answer) {
+            if (currentQuestion.a.includes($(answer).text().trim())) {
+                correctAnswers++;
+                $(answer).addClass("correct");
+                if(correctAnswers === currentQuestion.a.length) {
+                    console.log("Everything is correct");
+                    //Display final div and move on to next exercise or go back to overview
+                    endScreen("module-overview", "module-overview")
+                }
+            } else {
+                $(answer).addClass("false");
+                await delay(3000);
+                $(answer).removeClass("chosenAnswer");
+                $(answer).removeClass("false");
+            }
+        })
+
+        // if (currentQuestion.a.includes($(".chosenAnswer").text)) {
+        //     console.log("yay" + $(".chosenAnswer").text());
+        // } else {
+        //     console.log("no" + $(".chosenAnswer").text());
+        //     console.log(currentQuestion.a);
+        // }
+
+    });
 
 
 
@@ -134,7 +183,9 @@ $(() => {
 
         MakeAnswerOptions(answerOptions);
         MakeQuestion(currentQuestion.q)
-
+        if (questionIndex == 4) {
+            MakeCheckAnswerBtn();
+        }
         //animateAnswerOptionsIn();
         //animationFromStack(`#card${questionIndex}`);
     }
@@ -166,6 +217,14 @@ $(() => {
         $(".answerZone").prepend(question);
     }
 
+    function MakeCheckAnswerBtn() {
+        let btn = `
+                <div class="checkBtn">
+                    <p>Check answer</p>
+                </div>`;
+        $(".answerZone").append(btn);
+    }
+
     /**
      * OBS: Does not make new array - Shuffles the existing array
      * @param {Array} array - the array to shuffle
@@ -182,7 +241,6 @@ $(() => {
      */
     function SetUpHtmlDivs(data) {
         SetUpTutorial(data);
-        //MakeSpeakerIcon();
         MakeHelpIcon();
         MakeCloseIcon();
     }
@@ -198,13 +256,14 @@ $(() => {
      */
     function MakeCloseIcon() {
         let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
-        $(".answerZone").after(closeIcon);
+        $(".container").append(closeIcon);
     }
 
     function SetUpTutorial(data) {
         let dkTutorial = data.instructions[0].instructionsDK;
         let engTutorial = data.instructions[0].instructionsENG;
-        $(".tutorial").prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
+        $("#eng").html("<h3>English instructions</h3>" + engTutorial);
+        $("#dan").html("<h3>Danish instructions</h3>" + dkTutorial);
     }
 
     function ShowTutorial() {
@@ -212,12 +271,9 @@ $(() => {
             visibility: "visible",
             display: "grid",
         });
-        $(".curtain").css({
-            visibility: "visible",
-            display: "grid",
-        });
-        $(".speaker").css({
-            visibility: "visible",
+        $(".mainContent").append(`<div class="curtain"></div>`)
+        $(".VidInTask").css({
+            visibility: "hidden",
         });
     }
 
@@ -226,12 +282,27 @@ $(() => {
             visibility: "hidden",
             display: "none",
         });
-        $(".curtain").css({
-            visibility: "hidden",
-            display: "none",
+        $(".curtain").remove();
+        $(".VidInTask").css({
+            visibility: "visible",
         });
-        $(".speaker").css({
+    }
+
+    function WatchVid() {
+        console.log("inside");
+        $(".tutorial").css({
             visibility: "hidden",
-        });
+        })
+
+        let vid = `<iframe class="VidAfterTutorial" src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen=''></iframe>`
+        let button = `<div class="removeVid">Take me to the questions</div>`
+        
+        $(".video").append(vid);
+        $(".video").append(button);
+        $(".removeVid").on("click", function() {
+            $(".video").remove();
+            RemoveTutorial();
+            newQuestion();
+        })
     }
 });

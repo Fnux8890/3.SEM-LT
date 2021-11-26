@@ -13,6 +13,9 @@ import {
 import '../../assets/scss/layouts/exercises/exercise3.scss';
 import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import { populateTutorial } from '../CustomModules/tutorial';
+import {
+	endScreen
+} from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -33,6 +36,7 @@ $(() => {
 			words.sort(() => {
 				Math.random() > 0.5 ? 1 : -1;
 			});
+			console.log(data);
 		},
 	});
 	$.ajax({
@@ -54,13 +58,7 @@ $(() => {
 
 	$(document).on('click', '.mainContent .cardcontainer', function () {
 		console.log(`card was clicked`);
-		let word = GetWord();
-		let soundfile =
-			word.soundfile_word[
-				Math.floor(Math.random() * word.soundfile_word.length)
-			];
-		audioPlayer.playWord(word);
-		console.log('Play: ' + soundfile);
+		audioPlayer.playWord(GetWord());
 	});
 
 	$(document).on('click', '.answerOption', function (e) {
@@ -135,10 +133,8 @@ $(() => {
 			return;
 		}
 		if (cardIndex == 0) {
-			$('.answerOption').remove();
-			console.log('GOOD JOB!');
-			endExercise();
-			return;
+			console.log("GOOD JOB!");
+			endScreen("module-overview", "Set1Test");
 		}
 		cardIndex--;
 
@@ -378,6 +374,7 @@ $(() => {
 					},
 					'-=200'
 				);
+				audioPlayer.playWord(GetWord());
 			})
 			.catch((err) => {
 				console.log(err);
@@ -420,7 +417,6 @@ $(() => {
 	 */
 	function SetUpHtmlDivs(data) {
 		populateTutorial(data);
-		MakeSpeakerIcon();
 		MakeCardStack();
 		MakeHelpIcon();
 		MakeCloseIcon();
@@ -438,10 +434,6 @@ $(() => {
 	function MakeCloseIcon() {
 		let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
 		$('.answerZone').after(closeIcon);
-	}
-
-	function MakeSpeakerIcon() {
-		$('.speaker').append(icon(faVolumeUp).html);
 	}
 	/**
 	 * Setsup the cardstack dependend on how many cards there is
@@ -481,12 +473,9 @@ $(() => {
 			visibility: 'visible',
 			display: 'grid',
 		});
-		$('.curtain').css({
-			visibility: 'visible',
-			display: 'grid',
-		});
-		$('.speaker').css({
-			visibility: 'visible',
+		$(".mainContent").append(`<div class="curtain"></div>`);
+		$(".speaker").css({
+			visibility: "visible",
 		});
 	}
 
@@ -495,12 +484,9 @@ $(() => {
 			visibility: 'hidden',
 			display: 'none',
 		});
-		$('.curtain').css({
-			visibility: 'hidden',
-			display: 'none',
-		});
-		$('.speaker').css({
-			visibility: 'hidden',
+		$(".curtain").remove();
+		$(".speaker").css({
+			visibility: "hidden",
 		});
 	}
 });
