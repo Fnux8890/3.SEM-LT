@@ -124,7 +124,7 @@ $(() => {
 	});
 
 	$(document).on('click', '.close', function () {
-		window.location.href = 'http://localhost:3000/page/index';
+		window.location.href = '/page/module-overview';
 	});
 
 	function newCard() {

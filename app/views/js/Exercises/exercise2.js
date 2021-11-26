@@ -49,7 +49,8 @@ $(() => {
 	);
 
 	$('.close svg').on('click', function () {
-		alert('Closing...');
+		// alert('Closing...');
+		window.location.href = '/page/module-overview';
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
 	});
 
