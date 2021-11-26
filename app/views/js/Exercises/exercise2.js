@@ -60,8 +60,6 @@ $(() => {
 
 	$(".speaker").on("click", () => {
 		audioPlayer.playWord(cards[currentCardnum]);
-		//LINJEN UNDER SKAL FJERNES!!!
-		endScreen("module-overview", "exercise3");
 	});
 });
 
@@ -415,6 +413,7 @@ function animateCardOut() {
 		$(card).remove();
 		ratingdone = false;
 		currentCardnum--;
+		currentCard = cards[currentCardnum];
 		card = `.card${currentCardnum}`;
 		animationFromStack(card);
 		changeSentence();
