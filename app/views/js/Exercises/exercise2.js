@@ -279,21 +279,32 @@ function MakeCardStackEng() {
 	let engSentence = cards[currentCardnum].translation_sentence;
 	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
-	const firstPart = engSentence.slice(0, wordIndex);
-	const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
-	let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
-	$('.translation').append(sentenceTranslated);
+	console.log(wordIndex);
+	if(wordIndex > -1) {
+		const firstPart = engSentence.slice(0, wordIndex);
+		const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
+		let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
+		$('.translation').append(sentenceTranslated);
+	}else {
+		let sentenceTranslated = `<p class="sentenceTranslated">${engSentence}<br/><span class="focusWord" style="font-weight: bold;">${focusWord}</span></p>`;
+		$('.translation').append(sentenceTranslated);
+	}
 }
 
 function changeTranslation() {
 	let engSentence = cards[currentCardnum].translation_sentence;
 	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
-	const firstPart = engSentence.slice(0, wordIndex);
-	const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
-	let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
-	$('.sentenceTranslated').html(sentenceTranslated);
-	console.log('Changing translation');
+	console.log(wordIndex);
+	if(wordIndex > -1) {
+		const firstPart = engSentence.slice(0, wordIndex);
+		const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
+		let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
+		$('.sentenceTranslated').html(sentenceTranslated);
+	}else {
+		let sentenceTranslated = `<p class="sentenceTranslated">${engSentence}<br/><span class="focusWord" style="font-weight: bold;">${focusWord}</span></p>`;
+		$('.sentenceTranslated').html(sentenceTranslated);
+	}
 }
 
 function SetupSentence() {
