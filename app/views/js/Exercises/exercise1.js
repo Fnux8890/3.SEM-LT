@@ -1,22 +1,23 @@
-import anime from "animejs";
-import interact from "interactjs";
-import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import anime from 'animejs';
+import interact from 'interactjs';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import {
 	faQuestionCircle,
 	faVolumeUp,
 	faTimes,
 	faThumbsUp,
-} from "@fortawesome/free-solid-svg-icons";
-import "../../assets/scss/layouts/exercises/exercise1.scss";
-import { default as audioPlayer } from "../CustomModules/audioPlayer";
-import lottie from "lottie-web/build/player/lottie";
-import { cardFlip } from "../CustomModules/cardFlip";
+} from '@fortawesome/free-solid-svg-icons';
+import '../../assets/scss/layouts/exercises/exercise1.scss';
+import { default as audioPlayer } from '../CustomModules/audioPlayer';
+import lottie from 'lottie-web/build/player/lottie';
+import { cardFlip } from '../CustomModules/cardFlip';
+import { populateTutorial } from '../CustomModules/tutorial';
 
 let position = { x: 0, y: 0 };
 const cards = [];
-let currentCardnum = "";
-let currentCard = "";
-let tutorial = "";
+let currentCardnum = '';
+let currentCard = '';
+let tutorial = '';
 let dropped = false;
 let incorrectAnswers = 0;
 const timeline = anime.timeline;
@@ -29,7 +30,7 @@ library.add(faThumbsUp);
 $(() => {
 	$.ajax({
 		url: `http://localhost:3000/Build/ExerciseWords?id=1`,
-		type: "GET",
+		type: 'GET',
 		success: function (data) {
 			data.cards.forEach((object) => {
 				cards.push(object);
@@ -42,21 +43,21 @@ $(() => {
 		},
 	});
 
-	DropzoneCardInteract(".vokalA");
-	DropzoneCardInteract(".vokalB");
+	DropzoneCardInteract('.vokalA');
+	DropzoneCardInteract('.vokalB');
 
 	//Indsætning af ikon (krydset)
-	$(".close").append(icon({ prefix: "fas", iconName: "times" }).html);
-	$("#tutorialbutton").append(
-		icon({ prefix: "fas", iconName: "thumbs-up" }).html
+	$('.close').append(icon({ prefix: 'fas', iconName: 'times' }).html);
+	$('#tutorialbutton').append(
+		icon({ prefix: 'fas', iconName: 'thumbs-up' }).html
 	);
 
-	$(".close svg").on("click", function () {
-		alert("Closing...");
+	$('.close svg').on('click', function () {
+		alert('Closing...');
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
 	});
 
-	$(".speaker").on("click", () => {
+	$('.speaker').on('click', () => {
 		audioPlayer.playWord(cards[currentCardnum]);
 	});
 });
@@ -75,11 +76,11 @@ function convertRemToPixels(rem) {
  * @returns returns x and y of maincontents div center is in gloabal space
  */
 function findMaincontentCenter(card) {
-	let y = $(".mainContent").offset().top - convertRemToPixels(1);
-	let x = $(".mainContent").offset().left - convertRemToPixels(1);
-	x += $(".mainContent").width() / 2;
+	let y = $('.mainContent').offset().top - convertRemToPixels(1);
+	let x = $('.mainContent').offset().left - convertRemToPixels(1);
+	x += $('.mainContent').width() / 2;
 	x -= $(card).width() / 2;
-	y += $(".mainContent").height() / 2;
+	y += $('.mainContent').height() / 2;
 	y -= $(card).height() / 2;
 	return { x, y };
 }
@@ -99,25 +100,25 @@ async function animationFromStack(card) {
 		.add({
 			translateX: maincontentCenter.x,
 			translateY: maincontentCenter.y,
-			easing: "easeOutQuint",
+			easing: 'easeOutQuint',
 			duration: 1000,
 		})
 		.finished.then(() => {
 			$(card)
 				.css({
-					transform: "none",
-					"box-shadow": "none",
+					transform: 'none',
+					'box-shadow': 'none',
 				})
 				.parent()
-				.appendTo(".mainContent")
+				.appendTo('.mainContent')
 				.css({
-					"grid-area": "Main",
-					"border-radius": "10px",
+					'grid-area': 'Main',
+					'border-radius': '10px',
 				})
 				.children(card)
 				.css({
-					"box-shadow":
-						"6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)",
+					'box-shadow':
+						'6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)',
 				});
 			return cardFlip(card, currentCard);
 		})
@@ -142,12 +143,12 @@ function animationToCenter(card) {
 	t1.add({
 		translateX: animateTo.x,
 		translateY: animateTo.y,
-		easing: "easeOutQuint",
+		easing: 'easeOutQuint',
 		duration: 1000,
 	}).finished.then(() => {
 		$(`${card}`).css({
-			transform: "none",
-			transform: "rotateX(180deg)",
+			transform: 'none',
+			transform: 'rotateX(180deg)',
 		});
 		position = { x: 0, y: 0 };
 
@@ -162,8 +163,8 @@ function animateToDropzone(card, div) {
 	top = $(div).offset().top;
 	let dropPos = { x: left, y: top };
 	let result = {
-		x: cardPos.x - dropPos.x - 20,
-		y: cardPos.y - dropPos.y - $(div).height() / 2 + 16,
+		x: cardPos.x - dropPos.x - 14,
+		y: cardPos.y - dropPos.y - $(div).height() / 2 + 30,
 	};
 	position = result;
 	let { x, y } = position;
@@ -176,28 +177,28 @@ function animateToDropzone(card, div) {
 	t1.add({
 		translateX: animateTo.x,
 		translateY: animateTo.y,
-		easing: "easeOutQuint",
+		easing: 'easeOutQuint',
 		duration: 700,
 	}).finished.then(() => {
 		$(`${card}`).css({
-			transform: "none",
-			transform: "rotateX(180deg)",
+			transform: 'none',
+			transform: 'rotateX(180deg)',
 		});
 		position = { x: 0, y: 0 };
 		$(div).css({
-			position: "relative",
+			position: 'relative',
 		});
 		$(card).appendTo(div).css({
-			position: "absolute",
-			top: "50px",
-			right: "0px",
+			position: 'absolute',
+			top: '50px',
+			right: '0px',
 		});
 	});
 }
 
 function DropzoneCardInteract(div) {
 	interact(div).dropzone({
-		accept: ".card",
+		accept: '.card',
 		ondrop: function (event) {
 			dropped = true;
 			changePostitionToDrop(div);
@@ -207,8 +208,8 @@ function DropzoneCardInteract(div) {
 				});
 			})().then(async () => {
 				if (
-					$(`${div} p`).text().trim(" ") ===
-					cards[currentCardnum].answer.trim(" ")
+					$(`${div} p`).text().trim(' ') ===
+					cards[currentCardnum].answer.trim(' ')
 				) {
 					AnimateCorrectAnswer();
 				} else {
@@ -232,28 +233,28 @@ function changePostitionToDrop(div) {
 
 function animateCardOut(div) {
 	let card = `.card${currentCardnum}`;
-	let answerClass = $(div).attr("class");
+	let answerClass = $(div).attr('class');
 	let t1 = anime.timeline({ targets: card });
-	if (answerClass === "vokalA") {
+	if (answerClass === 'vokalA') {
 		t1.add({
 			translateX: -800,
-			easing: "easeOutQuint",
+			easing: 'easeOutQuint',
 			duration: 1000,
 		});
 	}
-	if (answerClass === "vokalB") {
+	if (answerClass === 'vokalB') {
 		t1.add({
 			translateX: 800,
-			easing: "easeOutQuint",
+			easing: 'easeOutQuint',
 			duration: 1000,
 		});
 	}
 	t1.finished.then(function () {
-		$.ajax({
-			url: "",
-			type: "POST",
-			data: {},
-		});
+		// $.ajax({
+		// 	url: "",
+		// 	type: "POST",
+		// 	data: {},
+		// });
 		$(card).remove();
 		dropped = false;
 		currentCardnum--;
@@ -267,24 +268,24 @@ function animateCardOut(div) {
 function AnimateCorrectAnswer() {
 	let card = `.card${currentCardnum}`;
 	$(`${card} .front`).css({
-		"background-color": "green",
+		'background-color': 'green',
 	});
 	$(`${card}`).css({
-		transform: "none",
-		transform: "rotateX(180deg)",
+		transform: 'none',
+		transform: 'rotateX(180deg)',
 	});
 	$(`${card} .front`).html(`
 	<span id='correct'></span>
 	`);
-	$("#correct").css({
-		width: "100px",
+	$('#correct').css({
+		width: '100px',
 	});
 	let correctAnimation = lottie.loadAnimation({
-		container: document.getElementById("correct"),
-		renderer: "svg",
+		container: document.getElementById('correct'),
+		renderer: 'svg',
 		loop: false,
 		autoPlay: false,
-		path: "https://assets3.lottiefiles.com/packages/lf20_6LimOm.json",
+		path: 'https://assets3.lottiefiles.com/packages/lf20_6LimOm.json',
 	});
 	correctAnimation.autoplay = false;
 	anime({
@@ -294,13 +295,13 @@ function AnimateCorrectAnswer() {
 			{ value: 1.2, duration: 400 },
 			{ value: 1, duration: 400 },
 		],
-		rotateX: { delay: 20, value: "+=180", duration: 500 },
-		easing: "easeInOutSine",
+		rotateX: { delay: 20, value: '+=180', duration: 500 },
+		easing: 'easeInOutSine',
 		duration: 500,
 	}).finished.then(() => {
 		$(card).css({
-			"box-shadow":
-				"0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)",
+			'box-shadow':
+				'0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
 		});
 		correctAnimation.play();
 	});
@@ -309,24 +310,24 @@ function AnimateIncorrectAnswer() {
 	incorrectAnswers++;
 	let card = `.card${currentCardnum}`;
 	$(`${card} .front`).css({
-		"background-color": "red",
+		'background-color': 'red',
 	});
 	$(`${card}`).css({
-		transform: "none",
-		transform: "rotateX(180deg)",
+		transform: 'none',
+		transform: 'rotateX(180deg)',
 	});
 	$(`${card} .front`).html(`
 	<span id='incorrect'></span>
 	`);
-	$("#incorrect").css({
-		width: "100px",
+	$('#incorrect').css({
+		width: '100px',
 	});
 	let incorrectAnimation = lottie.loadAnimation({
-		container: document.getElementById("incorrect"),
-		renderer: "svg",
+		container: document.getElementById('incorrect'),
+		renderer: 'svg',
 		loop: false,
 		autoPlay: false,
-		path: "https://assets5.lottiefiles.com/temp/lf20_yYJhpG.json",
+		path: 'https://assets5.lottiefiles.com/temp/lf20_yYJhpG.json',
 	});
 	incorrectAnimation.autoplay = false;
 	anime({
@@ -336,13 +337,13 @@ function AnimateIncorrectAnswer() {
 			{ value: 1.2, duration: 400 },
 			{ value: 1, duration: 400 },
 		],
-		rotateX: { delay: 20, value: "+=180", duration: 500 },
-		easing: "easeInOutSine",
+		rotateX: { delay: 20, value: '+=180', duration: 500 },
+		easing: 'easeInOutSine',
 		duration: 500,
 	}).finished.then(() => {
 		$(card).css({
-			"box-shadow":
-				"0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)",
+			'box-shadow':
+				'0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
 		});
 		incorrectAnimation.play();
 	});
@@ -362,24 +363,18 @@ function SetupHtmlDivs(data) {
 function populateAnswers(data) {
 	let answerA = `<p> ${data.answerOptions[0]} </p>`;
 	let answerB = `<p> ${data.answerOptions[1]} </p>`;
-	$(".vokal").find(".vokalA").html(answerA);
-	$(".vokal").find(".vokalB").html(answerB);
+	$('.vokal').find('.vokalA').html(answerA);
+	$('.vokal').find('.vokalB').html(answerB);
 }
 
-function populateTutorial(data) {
-	let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
-	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
-	$("#eng").html(eng);
-	$("#dan").html(dan);
-}
 /**
  * Makes and inserts the help icon
  */
 function MakeHelpIcon() {
 	let helpIcon = `<div class='helpIcon'>${
-		icon({ prefix: "fas", iconName: "question-circle" }).html
+		icon({ prefix: 'fas', iconName: 'question-circle' }).html
 	}</div>`;
-	$(".cardStack-Container").append(helpIcon);
+	$('.cardStack-Container').append(helpIcon);
 }
 
 /**
@@ -387,14 +382,14 @@ function MakeHelpIcon() {
  */
 function CardDraggable() {
 	let card = `.card${currentCardnum}`;
-	$("#tutorialbutton").on("click", async () => {
+	$('#tutorialbutton').on('click', async () => {
 		tutorial = await RemoveTutorial();
 		const delay = (ms) =>
 			new Promise((resolve) => {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
-		if ($(".mainContent .cardcontainer").length === 0) {
+		if ($('.mainContent .cardcontainer').length === 0) {
 			FromStackAnimation(card);
 		}
 	});
@@ -410,9 +405,11 @@ function FromStackAnimation(card) {
 					listeners: {
 						start(event) {
 							console.log(cards[currentCardnum].answer);
-							$(".vokalA, .vokalB").css({
-								opacity: 0.5,
-								"border-style": "dashed",
+							$('.vokalA, .vokalB').css({
+								border: '5px dashed rgba(0,0,0,1)',
+							});
+							$('.vokalA p, .vokalB p').css({
+								opacity: 0.2,
 							});
 						},
 						move(event) {
@@ -423,13 +420,15 @@ function FromStackAnimation(card) {
 						},
 					},
 				})
-				.on("dragend", (event) => {
+				.on('dragend', (event) => {
 					if (dropped === false) {
 						animationToCenter(card);
 					}
-					$(".vokalA, .vokalB").css({
+					$('.vokalA, .vokalB').css({
+						border: '5px dashed rgba(0,0,0,0.2)',
+					});
+					$('.vokalA p, .vokalB p').css({
 						opacity: 1,
-						"border-style": "none",
 					});
 				});
 		})
@@ -440,20 +439,20 @@ function FromStackAnimation(card) {
 
 function ExerciseComplete() {
 	alert("you'r fucking done mate");
-	window.location.href = "/page/login";
+	window.location.href = '/page/login';
 }
 
 /**
  * Viser tutorial igen ved klik på hjælp ikon
  */
 function ShowTutorialAgain() {
-	$(".helpIcon").on("click", function () {
-		$(".mainContent")
+	$('.helpIcon').on('click', function () {
+		$('.mainContent')
 			.append(`<div class='curtain'></div>`)
 			.append(`<div class='tutorial'></div>`);
-		$(".tutorial").append(tutorial);
-		$(".speaker").remove();
-		$(".curtain").on("click", () => {
+		$('.tutorial').append(tutorial);
+		$('.speaker').remove();
+		$('.curtain').on('click', () => {
 			RemoveTutorial();
 		});
 		CardDraggable();
@@ -462,11 +461,11 @@ function ShowTutorialAgain() {
 
 function RemoveTutorial() {
 	return new Promise((resolve) => {
-		let html = $(".tutorial").html();
-		$(".tutorial").remove();
-		$("#tutorialbutton").remove();
-		$(".curtain").remove();
-		$(".speaker").append(icon({ prefix: "fas", iconName: "volume-up" }).html);
+		let html = $('.tutorial').html();
+		$('.tutorial').remove();
+		$('#tutorialbutton').remove();
+		$('.curtain').remove();
+		$('.speaker').append(icon({ prefix: 'fas', iconName: 'volume-up' }).html);
 		resolve(html);
 	});
 }
@@ -484,11 +483,11 @@ function MakeCardStack() {
                 <div class="back">${element.word}</div>
             </div>
         </div>`;
-		$(".cardStack-Container").append(card);
-		let zlayer = $(".front").css("z-index");
+		$('.cardStack-Container').append(card);
+		let zlayer = $('.front').css('z-index');
 		$(`#card${index}`).css({
 			transform: `translateX(${offset}px)`,
-			"z-index": zlayer + index,
+			'z-index': zlayer + index,
 		});
 		offset += 5;
 	});

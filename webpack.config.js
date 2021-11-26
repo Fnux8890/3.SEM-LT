@@ -1,5 +1,8 @@
 const path = require("path");
-const { SourceMapDevToolPlugin, ProvidePlugin } = require("webpack");
+const {
+	SourceMapDevToolPlugin,
+	ProvidePlugin
+} = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
@@ -9,6 +12,7 @@ module.exports = {
 		exercise1: path.resolve(__dirname, "./app/views/js/Exercises/exercise1.js"),
 		exercise2: path.resolve(__dirname, "./app/views/js/Exercises/exercise2.js"),
 		exercise3: path.resolve(__dirname, "./app/views/js/Exercises/exercise3.js"),
+		set1test: path.resolve(__dirname, "./app/views/js/Exercises/Set1Test.js"),
 		navbar: path.resolve(__dirname, "./app/views/js/Navbar/navbar.js"),
 		login: path.resolve(__dirname, "./app/views/js/login/login.js"),
 		createAccount: path.resolve(
@@ -25,11 +29,9 @@ module.exports = {
 		clean: true,
 	},
 	module: {
-		rules: [
-			{
+		rules: [{
 				test: /\.(s[ac]|c)ss$/i,
-				use: [
-					{
+				use: [{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
 							publicPath: "/dist/js/",
