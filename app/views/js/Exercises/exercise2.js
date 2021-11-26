@@ -60,6 +60,8 @@ $(() => {
 
 	$(".speaker").on("click", () => {
 		audioPlayer.playWord(cards[currentCardnum]);
+		//LINJEN UNDER SKAL FJERNES!!!
+		endScreen("module-overview", "exercise3");
 	});
 });
 

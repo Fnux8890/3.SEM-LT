@@ -13,6 +13,7 @@ import "../../assets/scss/layouts/exercises/Set1Test.scss";
 import {
     default as audioPlayer
 } from "../CustomModules/audioPlayer";
+import { endScreen } from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -128,6 +129,7 @@ $(() => {
                 if(correctAnswers === currentQuestion.a.length) {
                     console.log("Everything is correct");
                     //Display final div and move on to next exercise or go back to overview
+                    endScreen("module-overview", "module-overview")
                 }
             } else {
                 $(answer).addClass("false");
@@ -269,10 +271,7 @@ $(() => {
             visibility: "visible",
             display: "grid",
         });
-        $(".curtain").css({
-            visibility: "visible",
-            display: "grid",
-        });
+        $(".mainContent").append(`<div class="curtain"></div>`)
         $(".VidInTask").css({
             visibility: "hidden",
         });
@@ -283,10 +282,7 @@ $(() => {
             visibility: "hidden",
             display: "none",
         });
-        $(".curtain").css({
-            visibility: "hidden",
-            display: "none",
-        });
+        $(".curtain").remove();
         $(".VidInTask").css({
             visibility: "visible",
         });

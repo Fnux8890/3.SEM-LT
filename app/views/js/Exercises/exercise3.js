@@ -126,9 +126,7 @@ $(() => {
 			return;
 		}
 		if (cardIndex == 0) {
-			$(".answerOption").remove();
 			console.log("GOOD JOB!");
-			//TODO endScreen virker ikke her???
 			endScreen("module-overview", "Set1Test");
 		}
 		cardIndex--;
@@ -405,7 +403,6 @@ $(() => {
 	 */
 	function SetUpHtmlDivs(data) {
 		SetUpTutorial(data);
-		MakeSpeakerIcon();
 		MakeCardStack();
 		MakeHelpIcon();
 		MakeCloseIcon();
@@ -423,10 +420,6 @@ $(() => {
 	function MakeCloseIcon() {
 		let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
 		$(".answerZone").after(closeIcon);
-	}
-
-	function MakeSpeakerIcon() {
-		$(".speaker").append(icon(faVolumeUp).html);
 	}
 	/**
 	 * Setsup the cardstack dependend on how many cards there is
@@ -472,10 +465,7 @@ $(() => {
 			visibility: "visible",
 			display: "grid",
 		});
-		$(".curtain").css({
-			visibility: "visible",
-			display: "grid",
-		});
+		$(".mainContent").append(`<div class="curtain"></div>`);
 		$(".speaker").css({
 			visibility: "visible",
 		});
@@ -486,10 +476,7 @@ $(() => {
 			visibility: "hidden",
 			display: "none",
 		});
-		$(".curtain").css({
-			visibility: "hidden",
-			display: "none",
-		});
+		$(".curtain").remove();
 		$(".speaker").css({
 			visibility: "hidden",
 		});

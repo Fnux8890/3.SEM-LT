@@ -2,12 +2,13 @@ export function endScreen(Module, Next) {
 	console.log("Finished exercise");
 	let curtainexists = $(".curtain");
 	if (curtainexists.length < 1) {
+        console.log("inside if statement");
 		$(
-			".speaker, .sentence, .translation, .close, .RecordAndRate, .cardStack"
+			".speaker, .sentence, .translation, .close, .RecordAndRate, .cardStack, .helpIcon, .answerZone, .tutorial, iframe"
 		).remove();
 		$(".mainContent")
 			.append(`<div class='curtain'></div>`)
-			.append(`<div class="endNote">You win</div>`);
+			.append(`<div class="endNote"></div>`);
 		$(".endNote").append(`<p class="endText">You did great!</p>`);
         $(".endNote").append(`<div class="BackToOverview">Back to Module Overview</div>`);
         $(".endNote").append(`<div class="NextExercise">Next Exercise</div>`);
