@@ -27,6 +27,7 @@
 	border: none;
 	outline: none;
 	color: white;
+	border-bottom: none;
 	@include fontMediaQuery;
 
 	svg {

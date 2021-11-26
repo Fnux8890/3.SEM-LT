@@ -13,6 +13,7 @@ import {
 import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import '../../assets/scss/layouts/exercises/exercise2.scss';
 import { cardFlip } from '../CustomModules/cardFlip';
+import { populateTutorial } from '../CustomModules/tutorial';
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -389,13 +390,6 @@ function appendPlaybutton() {
 	let playrecording = `<div class="playRec"></div>`;
 	$('.play').append(playrecording);
 	$('.playRec').append(icon({ prefix: 'fas', iconName: 'play' }).html);
-}
-
-function populateTutorial(data) {
-	let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
-	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
-	$('#eng').html(eng);
-	$('#dan').html(dan);
 }
 
 function animateCardOut() {

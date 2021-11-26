@@ -12,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import '../../assets/scss/layouts/exercises/exercise3.scss';
 import { default as audioPlayer } from '../CustomModules/audioPlayer';
+import { populateTutorial } from '../CustomModules/tutorial';
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -418,7 +419,7 @@ $(() => {
 	 * The basic setup for the html document.
 	 */
 	function SetUpHtmlDivs(data) {
-		SetUpTutorial(data);
+		populateTutorial(data);
 		MakeSpeakerIcon();
 		MakeCardStack();
 		MakeHelpIcon();
@@ -473,16 +474,6 @@ $(() => {
 	function RemoveCardBack() {
 		let id = `${$('.mainContent .cardcontainer').attr('id')} .front`;
 		$(`#${id}`).removeClass('front cardBack').addClass('front');
-	}
-
-	function SetUpTutorial(data) {
-		// let dkTutorial = data.instructions.instructionsDK;
-		// let engTutorial = data.instructions.instructionsENG;
-		// $('.tutorial').prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
-		let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
-		let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
-		$('#eng').html(eng);
-		$('#dan').html(dan);
 	}
 
 	function ShowTutorial() {

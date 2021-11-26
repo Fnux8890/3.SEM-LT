@@ -11,6 +11,7 @@ import '../../assets/scss/layouts/exercises/exercise1.scss';
 import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import lottie from 'lottie-web/build/player/lottie';
 import { cardFlip } from '../CustomModules/cardFlip';
+import { populateTutorial } from '../CustomModules/tutorial';
 
 let position = { x: 0, y: 0 };
 const cards = [];
@@ -366,12 +367,6 @@ function populateAnswers(data) {
 	$('.vokal').find('.vokalB').html(answerB);
 }
 
-function populateTutorial(data) {
-	let eng = `<h3>English instructions</h3> <br>${data.instructions.instructionsENG}`;
-	let dan = `<h3>Danish instructions</h3> <br>${data.instructions.instructionsDK}`;
-	$('#eng').html(eng);
-	$('#dan').html(dan);
-}
 /**
  * Makes and inserts the help icon
  */
@@ -414,7 +409,7 @@ function FromStackAnimation(card) {
 								border: '5px dashed rgba(0,0,0,1)',
 							});
 							$('.vokalA p, .vokalB p').css({
-								opacity: 0.5,
+								opacity: 0.2,
 							});
 						},
 						move(event) {
@@ -430,7 +425,7 @@ function FromStackAnimation(card) {
 						animationToCenter(card);
 					}
 					$('.vokalA, .vokalB').css({
-						border: '5px dashed rgba(0,0,0,0.5)',
+						border: '5px dashed rgba(0,0,0,0.2)',
 					});
 					$('.vokalA p, .vokalB p').css({
 						opacity: 1,
