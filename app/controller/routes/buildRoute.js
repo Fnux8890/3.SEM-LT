@@ -89,7 +89,7 @@ function insertSentence(sentence, res) {
 async function getExerciseWithWords(id) {
   let result = await exercisesModel.aggregate([{
       $match: {
-        name: "Exercise 1",
+        name: `Exercise ${id}`,
       },
     },
     {

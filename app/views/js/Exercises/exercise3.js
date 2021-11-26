@@ -13,7 +13,9 @@ import "../../assets/scss/layouts/exercises/exercise3.scss";
 import {
 	default as audioPlayer
 } from "../CustomModules/audioPlayer";
-import { endScreen } from "../CustomModules/endDiv";
+import {
+	endScreen
+} from "../CustomModules/endDiv";
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -33,6 +35,7 @@ $(() => {
 			words.sort(() => {
 				Math.random() > 0.5 ? 1 : -1;
 			});
+			console.log(data);
 		},
 	});
 	$.ajax({
@@ -54,13 +57,7 @@ $(() => {
 
 	$(document).on("click", ".mainContent .cardcontainer", function () {
 		console.log(`card was clicked`);
-		let word = GetWord();
-		let soundfile =
-			word.soundfile_word[
-				Math.floor(Math.random() * word.soundfile_word.length)
-			];
-		audioPlayer.playWord(word);
-		console.log("Play: " + soundfile);
+		audioPlayer.playWord(GetWord());
 	});
 
 	$(document).on("click", ".answerOption", function (e) {
@@ -365,6 +362,7 @@ $(() => {
 					},
 					"-=200"
 				);
+				audioPlayer.playWord(GetWord());
 			})
 			.catch((err) => {
 				console.log(err);
