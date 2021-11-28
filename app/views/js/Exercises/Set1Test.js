@@ -107,7 +107,6 @@ $(() => {
         setTimeout(res, ms);
       });
 
-    $('.chosenAnswer').each(async (i, answer) => {
       if (currentQuestion.a.includes($(answer).text().trim())) {
         correctAnswers += 1;
         $(answer).addClass('correct');
@@ -134,6 +133,7 @@ $(() => {
       return;
     }
     questionIndex += 1;
+    $('.chosenAnswer').each(async (i, answer) => {
 
     const currentQuestion = questions[questionIndex];
     let answerOptions = [];

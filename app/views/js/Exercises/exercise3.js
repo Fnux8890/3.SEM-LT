@@ -15,6 +15,12 @@ import '../../assets/scss/layouts/exercises/exercise3.scss';
 import * as audioPlayer from '../CustomModules/audioPlayer';
 import populateTutorial from '../CustomModules/tutorial';
 import {
+	default as audioPlayer
+} from '../CustomModules/audioPlayer';
+import {
+	populateTutorial
+} from '../CustomModules/tutorial';
+import {
 	endScreen
 } from '../CustomModules/endDiv';
 
@@ -271,7 +277,7 @@ $(() => {
 				easing: 'linear',
 				direction: 'normal',
 			})
-			.finished.then(() => {
+			.finished.then(function () {
 				anime({
 						targets: card,
 						scale: [{
