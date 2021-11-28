@@ -4,11 +4,22 @@ import setModel from '../../models/setModel';
 import exercisesModel from '../../models/exercisesModel';
 import wordModel from '../../models/wordsModel';
 import sentenceModel from '../../models/sentenceModel';
+import moduleModel from '../../models/moduleModel';
+
 const router = Router();
 const mongodb = require('mongodb');
 
 const binary = mongodb.Binary;
 const mongoClient = mongodb.MongoClient;
+
+router.get('/getModules', async (req, res) => {
+	try {
+		const modules = await moduleModel.find({});
+		res.status(200).json({ modules });
+	} catch (err) {
+		res.status(500).json({ msg: err });
+	}
+});
 
 router.post('/postRecording', (req, res) => {
 	let recording = {
@@ -19,7 +30,7 @@ router.post('/postRecording', (req, res) => {
 	console.log(recording);
 	res.end();
 });
-// ? Not surtain what this does: svar: poster en sentence til mongodb
+
 router.post('/postSentence', (req, res) => {
 	let sentence = {
 		name: req.body.name,

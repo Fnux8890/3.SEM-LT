@@ -8,43 +8,41 @@ html(lang='en')
     link(rel='stylesheet' href='../../dist/css/modules.css')
     script(src='../dist/js/modules.js')
   body 
-    include ./Navbar/navbar
-    #container 
+    //include ./Navbar/navbar
+    #container
       h1.overview
         span.overview Basic modules
-      #set1.smallcard
-        h1 Set 1
-        h2 E and Æ vowal sounds
-      #set2.smallcard
-        h1 Set 2
-        h2 Coming soon
-      #set3.smallcard
-        h1 Set 3
-        h2 Coming soon
-      #set4.smallcard
-        h1 Set 4
-        h2 Coming soon
+      #sets 
+        #set1.smallcard
+          h1 Set 1
+          h2 E and Æ vowal sounds
+        #set2.smallcard
+          h1 Set 2
+          h2 Coming soon
+        #set3.smallcard
+          h1 Set 3
+          h2 Coming soon
       ul.cardDeck
         li.cardItem
-          #basic1.details
+          #basic1.modules
             h2 Basic 1
             p In this module, you will blabla
         li.cardItem
-          #basic2.details
+          #basic2.modules
             h2 Basic 2
             p Coming soon
         li.cardItem
-          #basic3.details
+          #basic3.modules
             h2 Basic 3
             p Coming soon
         li.cardItem
-          #basic4.details
+          #basic4.modules
             h2 Basic 4
             p Coming soon
       h1.overview
         span.overview Special modules
       ul
         li.cardItem
-          #special1.details
+          #special1.modules
             h2 Special 1
             p Coming soon

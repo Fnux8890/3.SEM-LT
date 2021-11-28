@@ -1,9 +1,61 @@
 import '../assets/scss/layouts/modules.scss';
+import { cardFlip } from './CustomModules/cardFlip';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+library.add(faQuestionCircle);
 
 $(() => {
-	$('div.details').on('click', function () {
+	$.ajax({
+		url: `http://localhost:3000/build/getModules`,
+		type: 'GET',
+		success: function (data) {
+			console.log(data);
+			let firstDescription = data.modules[1].description;
+			let firstSetDescription = data.modules[1].sets[0].description;
+			console.log(firstDescription);
+			console.log(firstSetDescription);
+			$('div#basic1 > p').html(firstDescription);
+			$('div#set1 > h2').html(firstSetDescription);
+		},
+	});
+	function MakeHelpIcon() {
+		let helpIcon = `<div class='helpIcon'>${
+			icon({ prefix: 'fas', iconName: 'question-circle' }).html
+		}</div>`;
+		$('#container').append(helpIcon);
+	}
+	function ShowTutorialAgain() {
+		$('div.helpIcon').on('click', function () {
+			$('#container')
+				.prepend(`<div class='curtain'></div>`)
+				.prepend(`<div class='tutorial'></div>`);
+			$('.tutorial').append(
+				'<p>Choose the module with the subject you want to practice. After that, choose the set with the exercises you want to practice.</p>'
+			);
+			$('.curtain').on('click', () => {
+				RemoveTutorial();
+			});
+		});
+	}
+
+	function RemoveTutorial() {
+		return new Promise(resolve => {
+			let html = $('.tutorial').html();
+			$('.tutorial').remove();
+			$('#tutorialbutton').remove();
+			$('.curtain').remove();
+			$('.speaker').append(
+				icon({ prefix: 'fas', iconName: 'volume-up' }).html
+			);
+			resolve(html);
+		});
+	}
+
+	MakeHelpIcon();
+	ShowTutorialAgain();
+
+	$('div.modules').on('click', function () {
 		$(this).toggleClass('clicked').css('transition-duration', '0.8s');
-		$('ul li .details').not('.clicked').toggleClass('.notSelected');
 	});
 
 	$('div#basic1').on('click', function () {
@@ -21,35 +73,48 @@ $(() => {
 	});
 
 	$('div#set1').one('click', function () {
-		$(this).css('transform', 'translate(5.5%, 15%) scale(1.1)');
-		$(this).after(`
+		$(this).append(`
 		<div id="exercise1" class="hide">
-		<div class="dashed-circle exercise1">Exercise 1</div>
-		<div class="dashed-circle exercise2">Exercise 2</div>
-		<div class="dashed-circle exercise3">Exercise 3</div>
-<div class="fourth-face dice test">
-				<div class="column">
-					<span class="dot"></span>
-					<span class="dot"></span>
-					<span class="dot"></span>
-					
-				</div>
-				<span style="color:white;font-size:40;text-align:center">Final test</span>
-				<div class="column">
-					<span class="dot"></span>
-					<span class="dot"></span>
-					<span class="dot"></span>
-				</div>
-			</div>
-
+		<div class="exercise exercise1"><p>Exercise 1</p></div>
+		<div class="exercise exercise2"><p>Exercise 2</p></div>
+		<div class="exercise exercise3"><p>Exercise 3</p></div>
+		<div class="test"><p>Final test</p></div>
 		</div>
-		
 		`);
 	});
 
 	$('div#set1').on('click', function () {
+		$(this).toggleClass('hover');
+		if ($('#exercise1').is(':visible')) {
+			$('#exercise1').slideUp('slow');
+			$('#set2').animate(
+				{
+					top: '80%',
+				},
+				'slow'
+			);
+			$('#set3').animate(
+				{
+					top: '120%',
+				},
+				'slow'
+			);
+		} else {
+			$('#exercise1').slideDown('slow');
+			$('#set2').animate(
+				{
+					top: '100%',
+				},
+				'slow'
+			);
+			$('#set3').animate(
+				{
+					top: '140%',
+				},
+				'slow'
+			);
+		}
 		console.log('clicked');
-		$('#exercise1').toggleClass('hide');
 		$('.exercise1').on('click', function () {
 			window.open('http://localhost:3000/page/exercise1', '_parent');
 		});
