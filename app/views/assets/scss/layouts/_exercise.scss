@@ -2,306 +2,306 @@
 @use '../components' as *;
 @use '../main.scss';
 body {
-  overflow: hidden;
+	overflow: hidden;
 }
 .container {
-  @include container;
+	@include container;
 }
 
 .cardStack {
-  grid-area: stack;
-  cursor: default;
+	grid-area: stack;
+	cursor: default;
 }
 
 .cardStack .cardStack-Container > .cardcontainer {
-  margin-top: 1rem;
-  margin-left: 1rem;
-  position: absolute;
-  top: 0;
-  left: 0;
+	margin-top: 1rem;
+	margin-left: 1rem;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .mainContent {
-  grid-area: mainContent;
-  display: grid;
-  place-items: center;
-  grid-template-areas: 'speaker Main Main .';
-  grid-auto-rows: 100%;
-  grid-template-columns: 1fr repeat(2, minmax(100px, 1fr)) 1fr;
+	grid-area: mainContent;
+	display: grid;
+	place-items: center;
+	grid-template-areas: 'speaker Main Main .';
+	grid-auto-rows: 100%;
+	grid-template-columns: 1fr repeat(2, minmax(100px, 1fr)) 1fr;
 }
 
 .card {
-  width: $card-width;
-  height: $card-height;
-  background-color: transparent;
-  border-radius: 10px;
-  transform-style: preserve-3d;
-  box-shadow: $card-boxShadow;
+	width: $card-width;
+	height: $card-height;
+	background-color: transparent;
+	border-radius: 10px;
+	transform-style: preserve-3d;
+	box-shadow: $card-boxShadow;
 }
 
 .front,
 .back {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border-style: solid;
-  border-radius: 10px;
-  justify-content: center;
-  align-items: center;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  z-index: 10;
-  font-size: 1.3vw;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	border-style: solid;
+	border-radius: 10px;
+	justify-content: center;
+	align-items: center;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	z-index: 10;
+	font-size: 1.3vw;
 }
 
 .front {
-  color: #fff;
-  background: $thirdColor;
-  font-size: 1.5rem;
+	color: #fff;
+	background: $thirdColor;
+	font-size: 1.5rem;
 }
 .back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  -webkit-transform: rotateX(180deg);
-  transform: rotateX(180deg);
-  color: $thirdColor;
-  background: white;
-  font-size: 2rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+	color: $thirdColor;
+	background: white;
+	font-size: 2rem;
 }
 
 .vokal {
-  grid-area: vokaler;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  grid-auto-rows: auto;
-  place-items: center;
+	grid-area: vokaler;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-auto-rows: auto;
+	place-items: center;
 }
 
 .vokalA,
 .vokalB {
-  color: black;
-  text-align: center;
-  font-size: 120px;
-  border-radius: 10px;
-  padding: 40px 55px;
-  border: 5px dashed rgba(0, 0, 0, 0.2);
-  p {
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-  }
+	color: black;
+	text-align: center;
+	font-size: 120px;
+	border-radius: 10px;
+	padding: 40px 55px;
+	border: 5px dashed rgba(0, 0, 0, 0.2);
+	p {
+		cursor: pointer;
+		padding: 0;
+		margin: 0;
+	}
 }
 
 .vokalA p {
-  padding: 0 17px;
+	padding: 0 18.5px;
 }
 
 .tutorial {
-  text-align: center;
-  display: grid;
-  grid-template-rows: repeat(2, 1fr) 0.25fr;
-  border-style: solid;
-  border-radius: 10px;
-  justify-content: center;
-  background-color: white;
-  visibility: visible;
-  z-index: 12;
-  grid-area: Main;
-  box-shadow: 3.2px 3px 2.7px rgba(0, 0, 0, 0.028),
-    8px 7.5px 6.9px rgba(0, 0, 0, 0.04),
-    16.3px 15.2px 14.2px rgba(0, 0, 0, 0.05),
-    33.6px 31.4px 29.2px rgba(0, 0, 0, 0.062),
-    92px 86px 80px rgba(0, 0, 0, 0.09);
+	text-align: center;
+	display: grid;
+	grid-template-rows: repeat(2, 1fr) 0.25fr;
+	border-style: solid;
+	border-radius: 10px;
+	justify-content: center;
+	background-color: white;
+	visibility: visible;
+	z-index: 12;
+	grid-area: Main;
+	box-shadow: 3.2px 3px 2.7px rgba(0, 0, 0, 0.028),
+		8px 7.5px 6.9px rgba(0, 0, 0, 0.04),
+		16.3px 15.2px 14.2px rgba(0, 0, 0, 0.05),
+		33.6px 31.4px 29.2px rgba(0, 0, 0, 0.062),
+		92px 86px 80px rgba(0, 0, 0, 0.09);
 
-  @include fontMediaQuery;
+	@include fontMediaQuery;
 
-  #eng,
-  #dan {
-    margin: 1rem 0 0 0;
-    padding: 0 1rem 0 1rem;
-    text-align: left;
-    @include fontMediaQuery;
-    .skeleton {
-      border-bottom: none;
-    }
-    .title {
-      border-bottom: none;
-      margin-bottom: 1rem;
+	#eng,
+	#dan {
+		margin: 1rem 0 0 0;
+		padding: 0 1rem 0 1rem;
+		text-align: left;
+		@include fontMediaQuery;
+		.skeleton {
+			border-bottom: none;
+		}
+		.title {
+			border-bottom: none;
+			margin-bottom: 1rem;
 
-      h3 {
-        margin-top: 0;
-        display: inline-block;
-        border-bottom: 1px solid black !important;
-        padding-bottom: 2px;
-        margin-bottom: 1rem;
-        border-bottom: none;
-      }
-    }
-    .text {
-      min-height: 110px;
-      min-width: 450px;
-      text-align: left;
-    }
+			h3 {
+				margin-top: 0;
+				display: inline-block;
+				border-bottom: 1px solid black !important;
+				padding-bottom: 2px;
+				margin-bottom: 1rem;
+				border-bottom: none;
+			}
+		}
+		.text {
+			min-height: 110px;
+			min-width: 450px;
+			text-align: left;
+		}
 
-    .text {
-      margin-bottom: 1rem;
-    }
-  }
-  :first-child {
-    border-bottom: 1px solid black;
-  }
+		.text {
+			margin-bottom: 1rem;
+		}
+	}
+	:first-child {
+		border-bottom: 1px solid black;
+	}
 }
 
 .tutorialContainer {
-  display: grid;
-  place-items: center right;
+	display: grid;
+	place-items: center right;
 }
 
 #tutorialbutton {
-  visibility: 'visible';
-  z-index: 11;
+	visibility: 'visible';
+	z-index: 11;
 
-  @include button-WithGlyp;
-  svg {
-    border-bottom: none;
-  }
-  &:hover {
-    cursor: -webkit-pointer;
-    scale: 1.1;
-    svg {
-      transform: rotate(-45deg);
-      animation: svgRotateEnter 0.2s;
-    }
-  }
-  &:not(:hover) {
-    scale: 1;
-    svg {
-      transform: rotate(0deg);
-      animation: svgRotateLeave 0.2s;
-    }
-  }
+	@include button-WithGlyp;
+	svg {
+		border-bottom: none;
+	}
+	&:hover {
+		cursor: -webkit-pointer;
+		scale: 1.1;
+		svg {
+			transform: rotate(-45deg);
+			animation: svgRotateEnter 0.2s;
+		}
+	}
+	&:not(:hover) {
+		scale: 1;
+		svg {
+			transform: rotate(0deg);
+			animation: svgRotateLeave 0.2s;
+		}
+	}
 }
 
 @keyframes svgRotateEnter {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(-45deg);
-  }
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(-45deg);
+	}
 }
 
 @keyframes svgRotateLeave {
-  0% {
-    transform: rotate(-45deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+	0% {
+		transform: rotate(-45deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
 }
 
 .curtain {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.6;
-  z-index: 10;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  p {
-    color: white;
-    z-index: 11;
-  }
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0.6;
+	z-index: 10;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	p {
+		color: white;
+		z-index: 11;
+	}
 }
 .close {
-  grid-area: close;
-  display: grid;
-  place-items: start end;
-  font-size: calc(15px + 2vw);
-  margin-top: 1rem;
-  margin-right: 1rem;
+	grid-area: close;
+	display: grid;
+	place-items: start end;
+	font-size: calc(15px + 2vw);
+	margin-top: 1rem;
+	margin-right: 1rem;
 
-  svg {
-    cursor: pointer;
-  }
+	svg {
+		cursor: pointer;
+	}
 }
 .helpIcon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-top: calc(2rem + 200px);
-  margin-left: 1rem;
-  font-size: calc(15px + 2vw);
-  cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-top: calc(2rem + 200px);
+	margin-left: 1rem;
+	font-size: calc(15px + 2vw);
+	cursor: pointer;
 }
 
 .speaker {
-  font-size: calc(15px + 2vw);
-  grid-area: speaker;
-  cursor: pointer;
+	font-size: calc(15px + 2vw);
+	grid-area: speaker;
+	cursor: pointer;
 }
 
 .endNote {
-  text-align: center;
-  border-style: solid;
-  border-radius: 10px;
-  justify-content: center;
-  background-color: white;
-  visibility: visible;
-  z-index: 12;
-  grid-area: Main;
-  @include fontMediaQuery;
-  p {
-    padding: 50px;
-    text-align: left;
-    @include fontMediaQuery;
-  }
+	text-align: center;
+	border-style: solid;
+	border-radius: 10px;
+	justify-content: center;
+	background-color: white;
+	visibility: visible;
+	z-index: 12;
+	grid-area: Main;
+	@include fontMediaQuery;
+	p {
+		padding: 50px;
+		text-align: left;
+		@include fontMediaQuery;
+	}
 }
 
 .skeleton {
-  opacity: 0.7;
-  animation: skeleton-loading 1s linear infinite alternate;
+	opacity: 0.7;
+	animation: skeleton-loading 1s linear infinite alternate;
 }
 
 .skeleton-text {
-  background-color: darkgray;
-  height: 0.5rem;
-  margin-bottom: 1rem;
-  border-radius: 0.25rem;
+	background-color: darkgray;
+	height: 0.5rem;
+	margin-bottom: 1rem;
+	border-radius: 0.25rem;
 }
 
 .skeleton-text:last-child {
-  margin-bottom: 0;
-  width: 80%;
+	margin-bottom: 0;
+	width: 80%;
 }
 .skeleton-title {
-  margin-bottom: 1rem;
-  width: 40%;
+	margin-bottom: 1rem;
+	width: 40%;
 }
 
 @keyframes skeleton-loading {
-  0% {
-    background-color: hsl(200, 20%, 70%);
-  }
-  100% {
-    background-color: hsl(200, 20%, 95%);
-  }
+	0% {
+		background-color: hsl(200, 20%, 70%);
+	}
+	100% {
+		background-color: hsl(200, 20%, 95%);
+	}
 }
 
 .BackToOverview,
 .NextExercise {
-  padding: 10px;
-  z-index: 11;
-  height: 65px;
-  color: black;
-  border-style: none;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  background-color: $thirdColor;
-  margin: 10px;
+	padding: 10px;
+	z-index: 11;
+	height: 65px;
+	color: black;
+	border-style: none;
+	border-radius: 10px;
+	cursor: pointer;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	background-color: $thirdColor;
+	margin: 10px;
 }

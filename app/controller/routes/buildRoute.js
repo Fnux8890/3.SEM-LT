@@ -1,6 +1,4 @@
-import {
-	Router
-} from 'express';
+import { Router } from 'express';
 import mongoose from 'mongoose';
 import setModel from '../../models/setModel';
 import exercisesModel from '../../models/exercisesModel';
@@ -18,11 +16,11 @@ router.get('/getModules', async (req, res) => {
 	try {
 		const modules = await moduleModel.find({});
 		res.status(200).json({
-			modules
+			modules,
 		});
 	} catch (err) {
 		res.status(500).json({
-			msg: err
+			msg: err,
 		});
 	}
 });
@@ -57,11 +55,14 @@ function insertRecording(recording, res) {
 		} else {
 			try {
 				wordModel
-					.findOneAndUpdate({
-						word: recording.name
-					}, {
-						soundfile: recording
-					})
+					.findOneAndUpdate(
+						{
+							word: recording.name,
+						},
+						{
+							soundfile: recording,
+						}
+					)
 					.exec();
 				console.log('inserted recording');
 			} catch (err) {
@@ -82,11 +83,14 @@ function insertSentence(sentence, res) {
 		} else {
 			try {
 				sentenceModel
-					.findOneAndUpdate({
-						sentence: sentence.name
-					}, {
-						soundfile: sentence
-					})
+					.findOneAndUpdate(
+						{
+							sentence: sentence.name,
+						},
+						{
+							soundfile: sentence,
+						}
+					)
 					.exec();
 				console.log('inserted recording');
 			} catch (err) {
@@ -98,89 +102,99 @@ function insertSentence(sentence, res) {
 }
 
 async function getExerciseWithWords(id) {
-	let result = await exercisesModel.aggregate([{
-		'$match': {
-			'name': `Exercise ${id}`
-		}
-	}, {
-		'$unwind': {
-			'path': '$cards'
-		}
-	}, {
-		'$addFields': {
-			'cards': {
-				'wordId': {
-					'$toObjectId': '$cards.wordId'
-				},
-				'sentenceId': {
-					'$toObjectId': '$cards.sentenceId'
-				}
-			}
-		}
-	}, {
-		'$lookup': {
-			'from': 'words',
-			'localField': 'cards.wordId',
-			'foreignField': '_id',
-			'as': 'cards.word'
-		}
-	}, {
-		'$unwind': {
-			'path': '$cards.word'
-		}
-	}, {
-		'$project': {
-			'_id': 0,
-			'name': '$name',
-			'description': '$description',
-			'subject': '$subject',
-			'instructions': '$instructions',
-			'answerOptions': '$answerOptions',
-			'soundfile_E': '$soundfile_E',
-			'soundfile_Æ': '$soundfile_Æ',
-			'cards': {
-				'word': '$cards.word.word',
-				'translation_word': '$cards.word.translation',
-				'soundfile_word': '$cards.word.soundfile',
-				'answer': '$cards.answer',
-				'sentence': '$cards.sentence.sentence',
-				'translation_sentence': '$cards.sentence.translation',
-				'soundfile_sentence': '$cards.sentence.soundfile'
-			}
-		}
-	}, {
-		'$group': {
-			'_id': {
-				'name': '$name',
-				'description': '$description',
-				'instructions': '$instructions',
-				'subject': '$subject',
-				'answerOptions': '$answerOptions',
-				'soundfile_E': '$soundfile_E',
-				'soundfile_Æ': '$soundfile_Æ'
+	let result = await exercisesModel.aggregate([
+		{
+			$match: {
+				name: `Exercise ${id}`,
 			},
-			'cards': {
-				'$addToSet': '$cards'
-			}
-		}
-	}, {
-		'$project': {
-			'_id': 0,
-			'name': '$_id.name',
-			'description': '$_id.description',
-			'subject': '$_id.subject',
-			'instructions': '$_id.instructions',
-			'answerOptions': '$_id.answerOptions',
-			'soundfile_E': '$_id.soundfile_E',
-			'soundfile_Æ': '$_id.soundfile_Æ',
-			'cards': '$cards'
-		}
-	}]);
+		},
+		{
+			$unwind: {
+				path: '$cards',
+			},
+		},
+		{
+			$addFields: {
+				cards: {
+					wordId: {
+						$toObjectId: '$cards.wordId',
+					},
+					sentenceId: {
+						$toObjectId: '$cards.sentenceId',
+					},
+				},
+			},
+		},
+		{
+			$lookup: {
+				from: 'words',
+				localField: 'cards.wordId',
+				foreignField: '_id',
+				as: 'cards.word',
+			},
+		},
+		{
+			$unwind: {
+				path: '$cards.word',
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				name: '$name',
+				description: '$description',
+				subject: '$subject',
+				instructions: '$instructions',
+				answerOptions: '$answerOptions',
+				soundfile_E: '$soundfile_E',
+				soundfile_Æ: '$soundfile_Æ',
+				cards: {
+					word: '$cards.word.word',
+					translation_word: '$cards.word.translation',
+					soundfile_word: '$cards.word.soundfile',
+					answer: '$cards.answer',
+					sentence: '$cards.sentence.sentence',
+					translation_sentence: '$cards.sentence.translation',
+					soundfile_sentence: '$cards.sentence.soundfile',
+				},
+			},
+		},
+		{
+			$group: {
+				_id: {
+					name: '$name',
+					description: '$description',
+					instructions: '$instructions',
+					subject: '$subject',
+					answerOptions: '$answerOptions',
+					soundfile_E: '$soundfile_E',
+					soundfile_Æ: '$soundfile_Æ',
+				},
+				cards: {
+					$addToSet: '$cards',
+				},
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				name: '$_id.name',
+				description: '$_id.description',
+				subject: '$_id.subject',
+				instructions: '$_id.instructions',
+				answerOptions: '$_id.answerOptions',
+				soundfile_E: '$_id.soundfile_E',
+				soundfile_Æ: '$_id.soundfile_Æ',
+				cards: '$cards',
+			},
+		},
+	]);
 	return result[0];
 }
 
 async function getExerciseSentences() {
-	let result = await exercisesModel.aggregate([{
+	let result = await exercisesModel.aggregate([
+		{
 			$match: {
 				name: 'Exercise 2',
 			},
@@ -229,16 +243,6 @@ async function getExerciseSentences() {
 			},
 		},
 		{
-			$unwind: {
-				path: '$cards.word.soundfile',
-			},
-		},
-		{
-			$unwind: {
-				path: '$cards.sentence.soundfile',
-			},
-		},
-		{
 			$project: {
 				_id: 0,
 				name: '$name',
@@ -248,10 +252,10 @@ async function getExerciseSentences() {
 				cards: {
 					word: '$cards.word.word',
 					translation_word: '$cards.word.translation',
-					soundfile_word: '$cards.word.soundfile.file',
+					soundfile_word: '$cards.word.soundfile',
 					sentence: '$cards.sentence.sentence',
 					translation_sentence: '$cards.sentence.translation',
-					soundfile_sentence: '$cards.sentence.soundfile.file',
+					soundfile_sentence: '$cards.sentence.soundfile',
 				},
 			},
 		},
@@ -287,7 +291,7 @@ async function getExerciseSentences() {
 router.route('/ExerciseWords').get(async (req, res) => {
 	if (req.query.id === undefined) {
 		res.json({
-			error: 'No id given'
+			error: 'No id given',
 		});
 		return;
 	}
@@ -300,10 +304,12 @@ router.route('/ExerciseWordsAndSentences').get(async (req, res) => {
 	res.json(sentenceQuery);
 });
 
-router.route("/GetQuestions").get(async (req, res) => {
-	let testData = await exercisesModel.find({
-		name: "TestName"
-	}).exec();
+router.route('/GetQuestions').get(async (req, res) => {
+	let testData = await exercisesModel
+		.find({
+			name: 'TestName',
+		})
+		.exec();
 	res.json(testData);
 });
 

@@ -131,8 +131,6 @@ function tutorialButtonOnClick() {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
-		console.table(cards);
-		//console.log(cards[currentCard].soundFile_word[0].file);
 		animationFromStack(card, event);
 		$('.translation').css('visibility', 'visible');
 		$('.sentence').css('visibility', 'visible');
@@ -197,6 +195,7 @@ function animationFromStack(card, event) {
 					'grid-area': 'wordDiv',
 				});
 			cardFlip(card, currentCard);
+			console.log(JSON.stringify(currentCard, null, 2));
 			audioPlayer.playSentence(currentCard);
 		})
 		.catch(err => {
@@ -303,7 +302,6 @@ function MakeCardStackEng() {
 	let engSentence = cards[currentCardnum].translation_sentence;
 	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
-	console.log(wordIndex);
 	if (wordIndex > -1) {
 		const firstPart = engSentence.slice(0, wordIndex);
 		const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
@@ -319,7 +317,6 @@ function changeTranslation() {
 	let engSentence = cards[currentCardnum].translation_sentence;
 	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
-	console.log(wordIndex);
 	if (wordIndex > -1) {
 		const firstPart = engSentence.slice(0, wordIndex);
 		const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
@@ -353,7 +350,6 @@ function changeSentence() {
 	let secondDiv = `<div class="secondPart">${secondPart}</div>`;
 	let wordDiv = `<div class="word"></div>`;
 	$('.sentence').html([firstDiv, wordDiv, secondDiv]);
-	console.log('Changing sentence');
 }
 
 function StartRecording() {
@@ -370,7 +366,7 @@ function StartRecording() {
 		.getUserMedia({
 			audio: true,
 		})
-		.then(stream => {
+		.then((stream) => {
 			let mediaRecorder = new MediaRecorder(stream);
 			mediaRecorder.start();
 
@@ -384,8 +380,6 @@ function StartRecording() {
 				const audioBlob = new Blob(audioChunks, 'audio/mp3');
 				const audioUrl = URL.createObjectURL(audioBlob);
 				const audio = new Audio(audioUrl);
-				console.log(audio);
-				console.table(audioChunks);
 				$('.playRec').on('click', () => {
 					audio.play();
 				});
@@ -395,25 +389,19 @@ function StartRecording() {
 				mediaRecorder.stop();
 				$('.recordingNow').remove();
 				appendPlaybutton();
-				$('.stars0, .stars1, .stars2, .stars3, .stars4').one(
-					'click',
-					() => {
-						$('.playRec').remove();
-						console.log('clicked stars');
-						mediaRecorder = null;
-						//Gem stjernerne og træk næste kort.
-						let divexists = $('.recordIcon');
-						if (divexists.length < 1) {
-							appendMicrophone();
-							animateCardOut(`.cardcontainer${currentCardnum}`);
-						}
-						console.log(currentCardnum);
-						if (currentCardnum === 0) {
-							endScreen('module-overview', 'exercise3');
-							console.log('finished');
-						}
+				$('.stars0, .stars1, .stars2, .stars3, .stars4').one('click', () => {
+					$('.playRec').remove();
+					mediaRecorder = null;
+					//Gem stjernerne og træk næste kort.
+					let divexists = $('.recordIcon');
+					if (divexists.length < 1) {
+						appendMicrophone();
+						animateCardOut(`.cardcontainer${currentCardnum}`);
 					}
-				);
+					if (currentCardnum === 0) {
+						endScreen('module-overview', 'exercise3');
+					}
+				});
 			}, 3000);
 		});
 }
@@ -455,7 +443,6 @@ function appendPlaybutton() {
 }
 
 function animateCardOut() {
-	console.log('removing card');
 	let card = `.card${currentCardnum}`;
 	let t1 = anime.timeline({
 		targets: card,
