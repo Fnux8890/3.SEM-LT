@@ -27,7 +27,7 @@ $(() => {
 		type: 'GET',
 		success: function (data) {
 			console.table(data);
-			data[0].questions.forEach((object) => {
+			data[0].questions.forEach(object => {
 				questions.push(object);
 			});
 			questions.sort(() => {
@@ -52,7 +52,7 @@ $(() => {
 	});
 
 	$(document).on('click', '.close', function () {
-		window.location.href = 'http://localhost:3000/page/index';
+		window.location.href = '/page/module-overview';
 	});
 
 	$(document).on('click', '.answerOption', function (e) {
@@ -80,7 +80,10 @@ $(() => {
 					.add(
 						{
 							targets: this,
-							background: ['rgb(41, 171, 89)', 'rgb(48, 151, 115)'],
+							background: [
+								'rgb(41, 171, 89)',
+								'rgb(48, 151, 115)',
+							],
 							complete: function (anim) {
 								$(e.target).removeAttr('style');
 							},
@@ -115,7 +118,7 @@ $(() => {
 
 		let correctAnswers = 0;
 
-		const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+		const delay = ms => new Promise(res => setTimeout(res, ms));
 
 		$('.chosenAnswer').each(async function (i, answer) {
 			if (currentQuestion.a.includes($(answer).text().trim())) {
@@ -145,7 +148,8 @@ $(() => {
 	function newQuestion() {
 		if ($('.mainContent .cardcontainer').length != 0) {
 			console.log(
-				'Error - card not gone yet: ' + $('.mainContent .cardcontainer').length
+				'Error - card not gone yet: ' +
+					$('.mainContent .cardcontainer').length
 			);
 			return;
 		}
@@ -161,7 +165,7 @@ $(() => {
 		let answerOptions = [];
 		//TO-DO: gør a til array på mongodb?
 		if (questionIndex == 4) {
-			currentQuestion.a.forEach((answer) => {
+			currentQuestion.a.forEach(answer => {
 				answerOptions.push(answer);
 			});
 		} else {
@@ -240,7 +244,9 @@ $(() => {
 	 * Makes and inserts the help icon
 	 */
 	function MakeHelpIcon() {
-		let helpIcon = `<div class='helpIcon'>${icon(faQuestionCircle).html}</div>`;
+		let helpIcon = `<div class='helpIcon'>${
+			icon(faQuestionCircle).html
+		}</div>`;
 		$('.mainContent').before(helpIcon);
 	}
 	/**

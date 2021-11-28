@@ -34,10 +34,10 @@ library.add(faThumbsUp);
 
 $(() => {
 	$.ajax({
-		url: 'http://localhost:3000/Build/ExerciseWords?id=1',
+		url: '/Build/ExerciseWords?id=1',
 		type: 'GET',
 		success(data) {
-			data.cards.forEach((object) => {
+			data.cards.forEach(object => {
 				cards.push(object);
 			});
 			cards.sort(() => (Math.random() > 0.5 ? 1 : -1));
@@ -83,7 +83,9 @@ $(() => {
  * @returns pixeles based of rem units
  */
 function convertRemToPixels(rem) {
-	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+	return (
+		rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+	);
 }
 /**
  * Finds the center of the mainContent class baseed of the cardstack position
@@ -137,7 +139,7 @@ async function animationFromStack(card) {
 				});
 			return cardFlip(card, currentCard);
 		})
-		.catch((err) => {
+		.catch(err => {
 			console.log(err);
 		});
 }
@@ -218,7 +220,7 @@ function DropzoneCardInteract(div) {
 			dropped = true;
 			changePostitionToDrop(div);
 			(async () => {
-				return new Promise((resolve) => {
+				return new Promise(resolve => {
 					setTimeout(resolve, 1000);
 				});
 			})().then(async () => {
@@ -230,8 +232,8 @@ function DropzoneCardInteract(div) {
 				} else {
 					AnimateIncorrectAnswer();
 				}
-				const delay = (ms) =>
-					new Promise((resolve) => {
+				const delay = ms =>
+					new Promise(resolve => {
 						setTimeout(resolve, ms);
 					});
 				await delay(2200);
@@ -400,8 +402,8 @@ function CardDraggable() {
 	let card = `.card${currentCardnum}`;
 	$('#tutorialbutton').on('click', async () => {
 		tutorial = await RemoveTutorial();
-		const delay = (ms) =>
-			new Promise((resolve) => {
+		const delay = ms =>
+			new Promise(resolve => {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
@@ -436,7 +438,7 @@ function FromStackAnimation(card) {
 						},
 					},
 				})
-				.on('dragend', (event) => {
+				.on('dragend', event => {
 					if (dropped === false) {
 						animationToCenter(card);
 					}
@@ -448,7 +450,7 @@ function FromStackAnimation(card) {
 					});
 				});
 		})
-		.catch((error) => {
+		.catch(error => {
 			console.log(error.message);
 		});
 }
@@ -475,12 +477,14 @@ function ShowTutorialAgain() {
 }
 
 function RemoveTutorial() {
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		let html = $('.tutorial').html();
 		$('.tutorial').remove();
 		$('#tutorialbutton').remove();
 		$('.curtain').remove();
-		$('.speaker').append(icon({ prefix: 'fas', iconName: 'volume-up' }).html);
+		$('.speaker').append(
+			icon({ prefix: 'fas', iconName: 'volume-up' }).html
+		);
 		resolve(html);
 	});
 }
