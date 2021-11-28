@@ -2,7 +2,6 @@
 /* eslint-disable no-undef */
 import anime from 'animejs';
 import interact from 'interactjs';
-import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import {
   faQuestionCircle,
   faVolumeUp,
@@ -16,7 +15,11 @@ import cardFlip from '../CustomModules/cardFlip';
 import populateTutorial from '../CustomModules/tutorial';
 import { endScreen } from '../CustomModules/endDiv';
 
-let position = { x: 0, y: 0 };
+let position = {
+	x: 0,
+	y: 0
+};
+let exerciseData;
 const cards = [];
 let currentCardnum = '';
 let currentCard = '';
@@ -63,6 +66,17 @@ $(() => {
   $('.speaker').on('click', () => {
     audioPlayer.default.playWord(cards[currentCardnum]);
   });
+	$('.speaker').on('click', () => {
+		audioPlayer.playWord(cards[currentCardnum]);
+	});
+
+	$(".vokalA").on("click", () => {
+		audioPlayer.playVowel(exerciseData, "E");
+	})
+
+	$(".vokalB").on("click", () => {
+		audioPlayer.playVowel(exerciseData, "Æ");
+	})
 });
 
 /**
@@ -314,6 +328,7 @@ function AnimateCorrectAnswer() {
     correctAnimation.play();
   });
 }
+
 function AnimateIncorrectAnswer() {
   incorrectAnswers += 1;
   const card = `.card${currentCardnum}`;
