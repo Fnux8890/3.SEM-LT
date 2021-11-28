@@ -1,6 +1,7 @@
-import { join } from "path";
-import { promises, readFileSync, writeFileSync } from "fs";
-import { platform } from "os";
+/* eslint-disable no-restricted-syntax */
+import { join } from 'path';
+import { promises, readFileSync, writeFileSync } from 'fs';
+import { platform } from 'os';
 
 /*
  * This method is used to insert at string into another string at a given index.
@@ -27,33 +28,33 @@ async function* walk(dir) {
     else if (d.isFile()) yield entry;
   }
 }
-//TODO should make the function to multiple function
-export const insertNavbar = (req, res, next) => {
-  if (req.method === "GET") {
-    let afterPagePath = req.baseUrl.split("/");
+// TODO should make the function to multiple function
+export default function insertNavbar(req, res, next) {
+  if (req.method === 'GET') {
+    const afterPagePath = req.baseUrl.split('/');
     let currentFilePath;
     let matchFound = false;
     let folderSubLevel;
     (async () => {
       for await (const p of walk(
-        join(__dirname, "..", "..", "..", "app", "views", "pages")
+        join(__dirname, '..', '..', '..', 'app', 'views', 'pages'),
       )) {
         let currentFile;
-        if (platform() === "win32") {
-          currentFile = p.split("\\").pop().split(".").shift();
+        if (platform() === 'win32') {
+          currentFile = p.split('\\').pop().split('.').shift();
         } else {
-          currentFile = p.split("/").pop().split(".").shift();
+          currentFile = p.split('/').pop().split('.').shift();
         }
         if (currentFile === afterPagePath[afterPagePath.length - 1]) {
           matchFound = true;
           let endPath;
-          if (platform() === "win32") {
-            endPath = p.split("\\");
+          if (platform() === 'win32') {
+            endPath = p.split('\\');
           } else {
-            endPath = p.split("/");
+            endPath = p.split('/');
           }
-          let j = endPath.indexOf("pages");
-          for (let i = 0; i <= j; i++) {
+          const j = endPath.indexOf('pages');
+          for (let i = 0; i <= j; i += 1) {
             endPath.shift();
           }
           folderSubLevel = endPath.length - 1;
@@ -67,57 +68,57 @@ export const insertNavbar = (req, res, next) => {
       }
     })()
       .then(() => {
-        //TODO make better map handler
-        if (afterPagePath[afterPagePath.length - 1].includes("map")) {
+        // TODO make better map handler
+        if (afterPagePath[afterPagePath.length - 1].includes('map')) {
           return;
         }
         if (
           matchFound === false &&
-          afterPagePath[afterPagePath.length - 1] !== "page"
+          afterPagePath[afterPagePath.length - 1] !== 'page'
         ) {
-          console.log(`AfterPagePath: ${afterPagePath}`);
           const err = new Error(
-            "File does not exists under the views directory"
+            'File does not exists under the views directory',
           );
           err.status = 404;
           next(err);
         }
         if (
           matchFound === true &&
-          afterPagePath[afterPagePath.length - 1] !== "page" &&
-          currentFilePath.includes("exercise") === false &&
-          currentFilePath.includes("Set") === false
+          afterPagePath[afterPagePath.length - 1] !== 'page' &&
+          currentFilePath.includes('exercise') === false &&
+          currentFilePath.includes('Set') === false
         ) {
-          let file = join(
+          const file = join(
             __dirname,
-            "../../../app",
-            "views",
-            "pages",
-            `${currentFilePath}`
+            '../../../app',
+            'views',
+            'pages',
+            `${currentFilePath}`,
           );
-          let pugFile = readFileSync(file, "utf-8");
-          if (pugFile.indexOf("Navbar/navbar") === -1) {
-            let insertNavbarString = ``;
+          let pugFile = readFileSync(file, 'utf-8');
+          if (pugFile.indexOf('Navbar/navbar') === -1) {
+            let insertNavbarString = '';
             if (folderSubLevel >= 1) {
-              for (let index = 0; index < folderSubLevel; index++) {
-                insertNavbarString += `../`;
+              for (let index = 0; index < folderSubLevel; index += 1) {
+                insertNavbarString += '../';
               }
-              insertNavbarString += `Navbar/navbar\n        `;
+              insertNavbarString += 'Navbar/navbar\n        ';
             } else {
-              insertNavbarString = `./Navbar/navbar\n        `;
+              insertNavbarString = './Navbar/navbar\n        ';
             }
             pugFile = insert(
               pugFile,
-              pugFile.indexOf("body") + "body".length + 9,
-              `include ${insertNavbarString}`
+              pugFile.indexOf('body') + 'body'.length + 9,
+              `include ${insertNavbarString}`,
             );
-            writeFileSync(file, pugFile, "utf-8");
+            writeFileSync(file, pugFile, 'utf-8');
           }
         }
         next();
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.log(err.message);
       });
   }
-};
+}

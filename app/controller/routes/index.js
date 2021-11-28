@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-let logedIn = false;
+const express = require('express');
 
-//this is a test
-router.get("/index", (req, res) => {
-	res.render("index", {
-		logedIn: logedIn,
-	});
-	res.end();
+const router = express.Router();
+const logedIn = false;
+
+// this is a test
+router.get('/index', (req, res) => {
+  res.render('index', {
+    logedIn,
+  });
+  res.end();
 });
 
 module.exports = router;

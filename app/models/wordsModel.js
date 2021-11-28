@@ -1,18 +1,19 @@
-import {Schema, model} from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const words = new Schema({
+const words = new Schema(
+  {
     word: {
-        type: String,
+      type: String,
     },
     translation: {
-        type: String,
+      type: String,
     },
     soundfile: {
-        type: Array,
+      type: Array,
     },
-},
-    {collection: 'words'},
-)
+  },
+  { collection: 'words' },
+);
 
 const wordModel = model('word', words);
 
