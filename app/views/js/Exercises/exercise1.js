@@ -1,6 +1,9 @@
 import anime from 'animejs';
 import interact from 'interactjs';
-import { library, icon } from '@fortawesome/fontawesome-svg-core';
+import {
+	library,
+	icon
+} from '@fortawesome/fontawesome-svg-core';
 import {
 	faQuestionCircle,
 	faVolumeUp,
@@ -8,13 +11,25 @@ import {
 	faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import '../../assets/scss/layouts/exercises/exercise1.scss';
-import { default as audioPlayer } from '../CustomModules/audioPlayer';
+import {
+	default as audioPlayer
+} from '../CustomModules/audioPlayer';
 import lottie from 'lottie-web/build/player/lottie';
-import { cardFlip } from '../CustomModules/cardFlip';
-import { populateTutorial } from '../CustomModules/tutorial';
-import { endScreen } from "../CustomModules/endDiv";
+import {
+	cardFlip
+} from '../CustomModules/cardFlip';
+import {
+	populateTutorial
+} from '../CustomModules/tutorial';
+import {
+	endScreen
+} from "../CustomModules/endDiv";
 
-let position = { x: 0, y: 0 };
+let position = {
+	x: 0,
+	y: 0
+};
+let exerciseData;
 const cards = [];
 let currentCardnum = '';
 let currentCard = '';
@@ -41,6 +56,7 @@ $(() => {
 			});
 			SetupHtmlDivs(data);
 			CardDraggable();
+			exerciseData = data;
 		},
 	});
 
@@ -48,9 +64,15 @@ $(() => {
 	DropzoneCardInteract('.vokalB');
 
 	//Indsætning af ikon (krydset)
-	$('.close').append(icon({ prefix: 'fas', iconName: 'times' }).html);
+	$('.close').append(icon({
+		prefix: 'fas',
+		iconName: 'times'
+	}).html);
 	$('#tutorialbutton').append(
-		icon({ prefix: 'fas', iconName: 'thumbs-up' }).html
+		icon({
+			prefix: 'fas',
+			iconName: 'thumbs-up'
+		}).html
 	);
 
 	$('.close svg').on('click', function () {
@@ -62,6 +84,14 @@ $(() => {
 	$('.speaker').on('click', () => {
 		audioPlayer.playWord(cards[currentCardnum]);
 	});
+
+	$(".vokalA").on("click", () => {
+		audioPlayer.playVowel(exerciseData, "E");
+	})
+
+	$(".vokalB").on("click", () => {
+		audioPlayer.playVowel(exerciseData, "Æ");
+	})
 });
 
 /**
@@ -84,7 +114,10 @@ function findMaincontentCenter(card) {
 	x -= $(card).width() / 2;
 	y += $('.mainContent').height() / 2;
 	y -= $(card).height() / 2;
-	return { x, y };
+	return {
+		x,
+		y
+	};
 }
 
 /**
@@ -119,8 +152,7 @@ async function animationFromStack(card) {
 				})
 				.children(card)
 				.css({
-					'box-shadow':
-						'6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)',
+					'box-shadow': '6px -6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19)',
 				});
 			return cardFlip(card, currentCard);
 		})
@@ -135,9 +167,15 @@ async function animationFromStack(card) {
  * @returns Returns a pormis for when animation is done
  */
 function animationToCenter(card) {
-	let { x, y } = position;
+	let {
+		x,
+		y
+	} = position;
 	x = -x;
-	let animateTo = { x: x, y: y };
+	let animateTo = {
+		x: x,
+		y: y
+	};
 	var t1 = timeline({
 		targets: card,
 	});
@@ -152,26 +190,44 @@ function animationToCenter(card) {
 			transform: 'none',
 			transform: 'rotateX(180deg)',
 		});
-		position = { x: 0, y: 0 };
+		position = {
+			x: 0,
+			y: 0
+		};
 
 		return t1.finished;
 	});
 }
 
 function animateToDropzone(card, div) {
-	let { left, top } = $(card).offset();
-	let cardPos = { x: left, y: top };
+	let {
+		left,
+		top
+	} = $(card).offset();
+	let cardPos = {
+		x: left,
+		y: top
+	};
 	left = $(div).offset().left;
 	top = $(div).offset().top;
-	let dropPos = { x: left, y: top };
+	let dropPos = {
+		x: left,
+		y: top
+	};
 	let result = {
 		x: cardPos.x - dropPos.x - 14,
 		y: cardPos.y - dropPos.y - $(div).height() / 2 + 30,
 	};
 	position = result;
-	let { x, y } = position;
+	let {
+		x,
+		y
+	} = position;
 	x = -x;
-	let animateTo = { x: x, y: y };
+	let animateTo = {
+		x: x,
+		y: y
+	};
 	let t1 = timeline({
 		targets: card,
 	});
@@ -186,7 +242,10 @@ function animateToDropzone(card, div) {
 			transform: 'none',
 			transform: 'rotateX(180deg)',
 		});
-		position = { x: 0, y: 0 };
+		position = {
+			x: 0,
+			y: 0
+		};
 		$(div).css({
 			position: 'relative',
 		});
@@ -236,7 +295,9 @@ function changePostitionToDrop(div) {
 function animateCardOut(div) {
 	let card = `.card${currentCardnum}`;
 	let answerClass = $(div).attr('class');
-	let t1 = anime.timeline({ targets: card });
+	let t1 = anime.timeline({
+		targets: card
+	});
 	if (answerClass === 'vokalA') {
 		t1.add({
 			translateX: -800,
@@ -292,22 +353,33 @@ function AnimateCorrectAnswer() {
 	correctAnimation.autoplay = false;
 	anime({
 		targets: card,
-		scale: [
-			{ value: 1 },
-			{ value: 1.2, duration: 400 },
-			{ value: 1, duration: 400 },
+		scale: [{
+				value: 1
+			},
+			{
+				value: 1.2,
+				duration: 400
+			},
+			{
+				value: 1,
+				duration: 400
+			},
 		],
-		rotateX: { delay: 20, value: '+=180', duration: 500 },
+		rotateX: {
+			delay: 20,
+			value: '+=180',
+			duration: 500
+		},
 		easing: 'easeInOutSine',
 		duration: 500,
 	}).finished.then(() => {
 		$(card).css({
-			'box-shadow':
-				'0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
+			'box-shadow': '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
 		});
 		correctAnimation.play();
 	});
 }
+
 function AnimateIncorrectAnswer() {
 	incorrectAnswers++;
 	let card = `.card${currentCardnum}`;
@@ -334,18 +406,28 @@ function AnimateIncorrectAnswer() {
 	incorrectAnimation.autoplay = false;
 	anime({
 		targets: card,
-		scale: [
-			{ value: 1 },
-			{ value: 1.2, duration: 400 },
-			{ value: 1, duration: 400 },
+		scale: [{
+				value: 1
+			},
+			{
+				value: 1.2,
+				duration: 400
+			},
+			{
+				value: 1,
+				duration: 400
+			},
 		],
-		rotateX: { delay: 20, value: '+=180', duration: 500 },
+		rotateX: {
+			delay: 20,
+			value: '+=180',
+			duration: 500
+		},
 		easing: 'easeInOutSine',
 		duration: 500,
 	}).finished.then(() => {
 		$(card).css({
-			'box-shadow':
-				'0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
+			'box-shadow': '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
 		});
 		incorrectAnimation.play();
 	});
@@ -466,7 +548,10 @@ function RemoveTutorial() {
 		$('.tutorial').remove();
 		$('#tutorialbutton').remove();
 		$('.curtain').remove();
-		$('.speaker').append(icon({ prefix: 'fas', iconName: 'volume-up' }).html);
+		$('.speaker').append(icon({
+			prefix: 'fas',
+			iconName: 'volume-up'
+		}).html);
 		resolve(html);
 	});
 }

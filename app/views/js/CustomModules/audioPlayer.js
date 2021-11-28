@@ -14,7 +14,9 @@ function b64toBlob(b64Data, contentType = "", sliceSize = 512) {
     byteArrays.push(byteArray);
   }
 
-  const blob = new Blob(byteArrays, { type: contentType });
+  const blob = new Blob(byteArrays, {
+    type: contentType
+  });
   return blob;
 }
 //cards[currentCard].soundfile_sentence
@@ -34,7 +36,21 @@ export function playWord(card) {
   audio.play();
 }
 
+export function playVowel(data, vowel) {
+  let soundfile;
+  if (vowel == "E") {
+    soundfile = data.soundfile_E;
+  } else if (vowel == "Æ") {
+    soundfile = data.soundfile_Æ;
+  }
+  const audioBlob = b64toBlob(soundfile, "audio/mp3");
+  const audioUrl = URL.createObjectURL(audioBlob);
+  const audio = new Audio(audioUrl);
+  audio.play();
+}
+
 export default {
   playWord,
   playSentence,
+  playVowel,
 };
