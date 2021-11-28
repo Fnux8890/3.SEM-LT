@@ -2,13 +2,6 @@ import { Router } from 'express';
 const router = Router();
 import { requireAuth } from '../middleware/user-auth';
 
-//
-import express from 'express';
-import connectDB from '../../db/connect';
-import { ObjectId } from 'mongodb';
-import { checkPrimeSync } from 'crypto';
-import { mongoClient } from 'mongodb';
-
 router.route('/login').get((req, res) => {
 	res.render('./Login/login');
 });
