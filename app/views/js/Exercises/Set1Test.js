@@ -17,7 +17,7 @@ library.add(faTimes);
 
 $(() => {
   const questions = [];
-  let questionIndex = -1;
+  const questionIndex = -1;
 
   $.ajax({
     url: 'http://localhost:3000/Build/GetQuestions',
@@ -43,9 +43,9 @@ $(() => {
     ShowTutorial();
   });
 
-	$(document).on('click', '.close', function () {
-		window.location.href = '/page/module-overview';
-	});
+  $(document).on('click', '.close', () => {
+    window.location.href = '/page/module-overview';
+  });
 
   $(document).on('click', '.answerOption', (e) => {
     const currentQuestion = questions[questionIndex];
@@ -97,7 +97,7 @@ $(() => {
     }
   });
 
-  $(document).on('click', '.checkBtn', () => {
+  $(document).on('click', '.checkBtn', async () => {
     const currentQuestion = questions[questionIndex];
 
     let correctAnswers = 0;
@@ -107,45 +107,46 @@ $(() => {
         setTimeout(res, ms);
       });
 
-      if (currentQuestion.a.includes($(answer).text().trim())) {
-        correctAnswers += 1;
-        $(answer).addClass('correct');
-        if (correctAnswers === currentQuestion.a.length) {
-          // Display final div and move on to next exercise or go back to overview
-          endScreen('module-overview', 'module-overview');
-        }
-      } else {
-        $(answer).addClass('false');
-        await delay(3000);
-        $(answer).removeClass('chosenAnswer');
-        $(answer).removeClass('false');
+    if (currentQuestion.a.includes($(answer).text().trim())) {
+      correctAnswers += 1;
+      $(answer).addClass('correct');
+      if (correctAnswers === currentQuestion.a.length) {
+        // Display final div and move on to next exercise or go back to overview
+        endScreen('module-overview', 'module-overview');
       }
-    });
+    } else {
+      $(answer).addClass('false');
+      await delay(3000);
+      $(answer).removeClass('chosenAnswer');
+      $(answer).removeClass('false');
+    }
   });
+});
 
-  function newQuestion() {
-    if ($('.mainContent .cardcontainer').length !== 0) {
-      return;
-    }
-    if (questionIndex >= questions.length) {
-      $('.answerOption').remove();
-      endExercise();
-      return;
-    }
-    questionIndex += 1;
-    $('.chosenAnswer').each(async (i, answer) => {
-
+function newQuestion() {
+  if ($('.mainContent .cardcontainer').length !== 0) {
+    return;
+  }
+  if (questionIndex >= questions.length) {
+    $('.answerOption').remove();
+    endExercise();
+    return;
+  }
+  questionIndex += 1;
+  // eslint-disable-next-line no-unused-vars
+  $('.chosenAnswer').each(async (i, answer) => {
     const currentQuestion = questions[questionIndex];
     let answerOptions = [];
     // TO-DO: gør a til array på mongodb?
     if (questionIndex === 4) {
-      currentQuestion.a.forEach((answer) => {
-        answerOptions.push(answer);
+      currentQuestion.a.forEach((answerCQ) => {
+        answerOptions.push(answerCQ);
       });
     } else {
       answerOptions = [currentQuestion.a];
     }
     // Lav answerOptions array:
+    // eslint-disable-next-line no-shadow
     for (let i = 0; i < currentQuestion.answerOptions.length; i += 1) {
       answerOptions.push(currentQuestion.answerOptions[i]);
     }
@@ -155,117 +156,115 @@ $(() => {
     if (questionIndex === 4) {
       MakeCheckAnswerBtn();
     }
-  }
-  /**
-   * Creates the answerOption divs, from the given array
-   * @param {Array<string>} answerArray - Array of the answer-options for the current question
-   */
-  function MakeAnswerOptions(answerArray) {
-    $('.answerOption').remove();
-    shuffleArray(answerArray);
-    answerArray.forEach((element, index) => {
-      const answerOption = `
+  });
+}
+/**
+ * Creates the answerOption divs, from the given array
+ * @param {Array<string>} answerArray - Array of the answer-options for the current question
+ */
+function MakeAnswerOptions(answerArray) {
+  $('.answerOption').remove();
+  shuffleArray(answerArray);
+  answerArray.forEach((element, index) => {
+    const answerOption = `
                 <div class="answerOption ansOpt${index}">
                     <p>${element}</p>
                 </div>`;
-      $('.answerZone').append(answerOption);
-    });
-  }
-  /**
-   * Creates the question div
-   * @param {string} questionTxt - the question, as a string
-   */
-  function MakeQuestion(questionTxt) {
-    $('.question').remove();
-    const question = `
+    $('.answerZone').append(answerOption);
+  });
+}
+/**
+ * Creates the question div
+ * @param {string} questionTxt - the question, as a string
+ */
+function MakeQuestion(questionTxt) {
+  $('.question').remove();
+  const question = `
         <div class="question q${questionIndex}">
             <p>${questionTxt}</p>
         </div>`;
-    $('.answerZone').prepend(question);
-  }
+  $('.answerZone').prepend(question);
+}
 
-  function MakeCheckAnswerBtn() {
-    const btn = `
+function MakeCheckAnswerBtn() {
+  const btn = `
                 <div class="checkBtn">
                     <p>Check answer</p>
                 </div>`;
-    $('.answerZone').append(btn);
-  }
+  $('.answerZone').append(btn);
+}
 
-  /**
-   * OBS: Does not make new array - Shuffles the existing array
-   * @param {Array} array - the array to shuffle
-   */
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      // eslint-disable-next-line no-param-reassign
-      [array[i], array[j]] = [array[j], array[i]];
-    }
+/**
+ * OBS: Does not make new array - Shuffles the existing array
+ * @param {Array} array - the array to shuffle
+ */
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    // eslint-disable-next-line no-param-reassign
+    [array[i], array[j]] = [array[j], array[i]];
   }
+}
 
-  /**
-   * The basic setup for the html document.
-   */
-  function SetUpHtmlDivs(data) {
-    populateTutorial(data);
-    MakeHelpIcon();
-    MakeCloseIcon();
-  }
-  /**
-   * Makes and inserts the help icon
-   */
-  function MakeHelpIcon() {
-    const helpIcon = `<div class='helpIcon'>${
-      icon(faQuestionCircle).html
-    }</div>`;
-    $('.mainContent').before(helpIcon);
-  }
-  /**
-   * Makes and inserts the close icon
-   */
-  function MakeCloseIcon() {
-    const closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
-    $('.container').append(closeIcon);
-  }
+/**
+ * The basic setup for the html document.
+ */
+function SetUpHtmlDivs(data) {
+  populateTutorial(data);
+  MakeHelpIcon();
+  MakeCloseIcon();
+}
+/**
+ * Makes and inserts the help icon
+ */
+function MakeHelpIcon() {
+  const helpIcon = `<div class='helpIcon'>${icon(faQuestionCircle).html}</div>`;
+  $('.mainContent').before(helpIcon);
+}
+/**
+ * Makes and inserts the close icon
+ */
+function MakeCloseIcon() {
+  const closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
+  $('.container').append(closeIcon);
+}
 
-  function ShowTutorial() {
-    $('.tutorial').css({
-      visibility: 'visible',
-      display: 'grid',
-    });
-    $('.mainContent').append('<div class="curtain"></div>');
-    $('.VidInTask').css({
-      visibility: 'hidden',
-    });
-  }
+function ShowTutorial() {
+  $('.tutorial').css({
+    visibility: 'visible',
+    display: 'grid',
+  });
+  $('.mainContent').append('<div class="curtain"></div>');
+  $('.VidInTask').css({
+    visibility: 'hidden',
+  });
+}
 
-  function RemoveTutorial() {
-    $('.tutorial').css({
-      visibility: 'hidden',
-      display: 'none',
-    });
-    $('.curtain').remove();
-    $('.VidInTask').css({
-      visibility: 'visible',
-    });
-  }
+function RemoveTutorial() {
+  $('.tutorial').css({
+    visibility: 'hidden',
+    display: 'none',
+  });
+  $('.curtain').remove();
+  $('.VidInTask').css({
+    visibility: 'visible',
+  });
+}
 
-  function WatchVid() {
-    $('.tutorial').css({
-      visibility: 'hidden',
-    });
+function WatchVid() {
+  $('.tutorial').css({
+    visibility: 'hidden',
+  });
 
-    const vid =
-      "<iframe class=\"VidAfterTutorial\" src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen=''></iframe>";
-    const button = '<div class="removeVid">Take me to the questions</div>';
+  const vid =
+    "<iframe class=\"VidAfterTutorial\" src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen=''></iframe>";
+  const button = '<div class="removeVid">Take me to the questions</div>';
 
-    $('.video').append(vid);
-    $('.video').append(button);
-    $('.removeVid').on('click', () => {
-      $('.video').remove();
-      RemoveTutorial();
-      newQuestion();
-    });
-  }
-});
+  $('.video').append(vid);
+  $('.video').append(button);
+  $('.removeVid').on('click', () => {
+    $('.video').remove();
+    RemoveTutorial();
+    newQuestion();
+  });
+}
