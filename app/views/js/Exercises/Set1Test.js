@@ -23,7 +23,7 @@ $(() => {
 	let questionIndex = -1;
 
 	$.ajax({
-		url: `http://localhost:3000/Build/GetQuestions`,
+		url: `/Build/GetQuestions`,
 		type: 'GET',
 		success: function (data) {
 			console.table(data);

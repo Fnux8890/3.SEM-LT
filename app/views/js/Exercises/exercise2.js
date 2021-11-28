@@ -1,9 +1,6 @@
 import anime from 'animejs';
 import '@lottiefiles/lottie-player';
-import {
-	library,
-	icon
-} from '@fortawesome/fontawesome-svg-core';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import {
 	faQuestionCircle,
 	faVolumeUp,
@@ -13,19 +10,11 @@ import {
 	faStar,
 	faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-	default as audioPlayer
-} from '../CustomModules/audioPlayer';
+import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import '../../assets/scss/layouts/exercises/exercise2.scss';
-import {
-	cardFlip
-} from '../CustomModules/cardFlip';
-import {
-	populateTutorial
-} from '../CustomModules/tutorial';
-import {
-	endScreen
-} from "../CustomModules/endDiv";
+import { cardFlip } from '../CustomModules/cardFlip';
+import { populateTutorial } from '../CustomModules/tutorial';
+import { endScreen } from '../CustomModules/endDiv';
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -42,7 +31,7 @@ let tutorial = '';
 let ratingdone = false;
 
 $(() => {
-	$.getJSON('http://localhost:3000/Build/ExerciseWordsAndSentences', (data) => {
+	$.getJSON('/Build/ExerciseWordsAndSentences', data => {
 		data.cards.forEach(function (card) {
 			cards.push(card);
 		});
@@ -54,15 +43,17 @@ $(() => {
 	});
 
 	//Indsætning af ikon (krydset)
-	$('.close').append(icon({
-		prefix: 'fas',
-		iconName: 'times'
-	}).html);
+	$('.close').append(
+		icon({
+			prefix: 'fas',
+			iconName: 'times',
+		}).html
+	);
 
 	$('#tutorialbutton').append(
 		icon({
 			prefix: 'fas',
-			iconName: 'thumbs-up'
+			iconName: 'thumbs-up',
 		}).html
 	);
 
@@ -117,20 +108,26 @@ function startRating() {
 	});
 	$('.stars4').on({
 		mouseenter: function () {
-			$('.stars0, .stars1, .stars2, .stars3, .stars4').css('color', 'yellow');
+			$('.stars0, .stars1, .stars2, .stars3, .stars4').css(
+				'color',
+				'yellow'
+			);
 		},
 		mouseleave: function () {
-			$('.stars0, .stars1, .stars2, .stars3, .stars4').css('color', 'black');
+			$('.stars0, .stars1, .stars2, .stars3, .stars4').css(
+				'color',
+				'black'
+			);
 		},
 	});
 }
 
 function tutorialButtonOnClick() {
-	$('#tutorialbutton').on('click', async (event) => {
+	$('#tutorialbutton').on('click', async event => {
 		let card = `.card${currentCardnum}`;
 		tutorial = await RemoveTutorial();
-		const delay = (ms) =>
-			new Promise((resolve) => {
+		const delay = ms =>
+			new Promise(resolve => {
 				setTimeout(resolve, ms);
 			});
 		await delay(200);
@@ -148,7 +145,9 @@ function tutorialButtonOnClick() {
  * @returns pixeles based of rem units
  */
 function convertRemToPixels(rem) {
-	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+	return (
+		rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+	);
 }
 /**
  * Finds the center of the mainContent class baseed of the cardstack position
@@ -164,7 +163,7 @@ function findMaincontentCenter(card) {
 	y -= $(card).height() / 2;
 	return {
 		x,
-		y
+		y,
 	};
 }
 
@@ -182,11 +181,11 @@ function animationFromStack(card, event) {
 	});
 
 	t1.add({
-			translateX: maincontentCenter.x,
-			translateY: maincontentCenter.y,
-			easing: 'easeOutQuint',
-			duration: 1000,
-		})
+		translateX: maincontentCenter.x,
+		translateY: maincontentCenter.y,
+		easing: 'easeOutQuint',
+		duration: 1000,
+	})
 		.finished.then(() => {
 			$(card)
 				.css({
@@ -200,7 +199,7 @@ function animationFromStack(card, event) {
 			cardFlip(card, currentCard);
 			audioPlayer.playSentence(currentCard);
 		})
-		.catch((err) => {
+		.catch(err => {
 			console.log(err);
 		});
 
@@ -265,10 +264,12 @@ function RemoveTutorial() {
 		$('.tutorial').remove();
 		$('#tutorialbutton').remove();
 		$('.curtain').remove();
-		$('.speaker').append(icon({
-			prefix: 'fas',
-			iconName: 'volume-up'
-		}).html);
+		$('.speaker').append(
+			icon({
+				prefix: 'fas',
+				iconName: 'volume-up',
+			}).html
+		);
 		resolve(html);
 	});
 }
@@ -303,12 +304,12 @@ function MakeCardStackEng() {
 	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
 	console.log(wordIndex);
-	if(wordIndex > -1) {
+	if (wordIndex > -1) {
 		const firstPart = engSentence.slice(0, wordIndex);
 		const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
 		let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
 		$('.translation').append(sentenceTranslated);
-	}else {
+	} else {
 		let sentenceTranslated = `<p class="sentenceTranslated">${engSentence}<br/><span class="focusWord" style="font-weight: bold;">${focusWord}</span></p>`;
 		$('.translation').append(sentenceTranslated);
 	}
@@ -319,12 +320,12 @@ function changeTranslation() {
 	let focusWord = cards[currentCardnum].translation_word;
 	const wordIndex = engSentence.indexOf(focusWord);
 	console.log(wordIndex);
-	if(wordIndex > -1) {
+	if (wordIndex > -1) {
 		const firstPart = engSentence.slice(0, wordIndex);
 		const secondPart = engSentence.slice(wordIndex + focusWord.length + 1);
 		let sentenceTranslated = `<p class="sentenceTranslated">${firstPart} <span class="focusWord" style="font-weight: bold;">${focusWord}</span> ${secondPart}</p>`;
 		$('.sentenceTranslated').html(sentenceTranslated);
-	}else {
+	} else {
 		let sentenceTranslated = `<p class="sentenceTranslated">${engSentence}<br/><span class="focusWord" style="font-weight: bold;">${focusWord}</span></p>`;
 		$('.sentenceTranslated').html(sentenceTranslated);
 	}
@@ -362,54 +363,59 @@ function StartRecording() {
 	$('.recordingNow').append(
 		icon({
 			prefix: 'fas',
-			iconName: 'microphone'
+			iconName: 'microphone',
 		}).html
 	);
-	navigator.mediaDevices.getUserMedia({
-		audio: true
-	}).then((stream) => {
-		let mediaRecorder = new MediaRecorder(stream);
-		mediaRecorder.start();
+	navigator.mediaDevices
+		.getUserMedia({
+			audio: true,
+		})
+		.then(stream => {
+			let mediaRecorder = new MediaRecorder(stream);
+			mediaRecorder.start();
 
-		const audioChunks = [];
+			const audioChunks = [];
 
-		mediaRecorder.ondataavailable = function (e) {
-			audioChunks.push(e.data);
-		};
+			mediaRecorder.ondataavailable = function (e) {
+				audioChunks.push(e.data);
+			};
 
-		mediaRecorder.addEventListener('stop', () => {
-			const audioBlob = new Blob(audioChunks, 'audio/mp3');
-			const audioUrl = URL.createObjectURL(audioBlob);
-			const audio = new Audio(audioUrl);
-			console.log(audio);
-			console.table(audioChunks);
-			$('.playRec').on('click', () => {
-				audio.play();
+			mediaRecorder.addEventListener('stop', () => {
+				const audioBlob = new Blob(audioChunks, 'audio/mp3');
+				const audioUrl = URL.createObjectURL(audioBlob);
+				const audio = new Audio(audioUrl);
+				console.log(audio);
+				console.table(audioChunks);
+				$('.playRec').on('click', () => {
+					audio.play();
+				});
 			});
+
+			setTimeout(() => {
+				mediaRecorder.stop();
+				$('.recordingNow').remove();
+				appendPlaybutton();
+				$('.stars0, .stars1, .stars2, .stars3, .stars4').one(
+					'click',
+					() => {
+						$('.playRec').remove();
+						console.log('clicked stars');
+						mediaRecorder = null;
+						//Gem stjernerne og træk næste kort.
+						let divexists = $('.recordIcon');
+						if (divexists.length < 1) {
+							appendMicrophone();
+							animateCardOut(`.cardcontainer${currentCardnum}`);
+						}
+						console.log(currentCardnum);
+						if (currentCardnum === 0) {
+							endScreen('module-overview', 'exercise3');
+							console.log('finished');
+						}
+					}
+				);
+			}, 3000);
 		});
-
-		setTimeout(() => {
-			mediaRecorder.stop();
-			$('.recordingNow').remove();
-			appendPlaybutton();
-			$('.stars0, .stars1, .stars2, .stars3, .stars4').one('click', () => {
-				$('.playRec').remove();
-				console.log('clicked stars');
-				mediaRecorder = null;
-				//Gem stjernerne og træk næste kort.
-				let divexists = $('.recordIcon');
-				if (divexists.length < 1) {
-					appendMicrophone();
-					animateCardOut(`.cardcontainer${currentCardnum}`);
-				}
-				console.log(currentCardnum);
-				if (currentCardnum === 0) {
-					endScreen("module-overview", "exercise3");
-					console.log("finished");
-				}
-			});
-		}, 3000);
-	});
 }
 
 function setupRating() {
@@ -417,36 +423,42 @@ function setupRating() {
 	for (i = 0; i < 5; i++) {
 		let ratingStars = `<span class="star stars${i}"></span>`;
 		$('.rating').append(ratingStars);
-		$(`.stars${i}`).append(icon({
-			prefix: 'fas',
-			iconName: 'star'
-		}).html);
+		$(`.stars${i}`).append(
+			icon({
+				prefix: 'fas',
+				iconName: 'star',
+			}).html
+		);
 	}
 }
 
 function appendMicrophone() {
 	let recordDiv = "<div class='recordIcon'></div>";
 	$('.microphone').append(recordDiv);
-	$('.recordIcon').append(icon({
-		prefix: 'fas',
-		iconName: 'microphone'
-	}).html);
+	$('.recordIcon').append(
+		icon({
+			prefix: 'fas',
+			iconName: 'microphone',
+		}).html
+	);
 }
 
 function appendPlaybutton() {
 	let playrecording = `<div class="playRec"></div>`;
 	$('.play').append(playrecording);
-	$('.playRec').append(icon({
-		prefix: 'fas',
-		iconName: 'play'
-	}).html);
+	$('.playRec').append(
+		icon({
+			prefix: 'fas',
+			iconName: 'play',
+		}).html
+	);
 }
 
 function animateCardOut() {
 	console.log('removing card');
 	let card = `.card${currentCardnum}`;
 	let t1 = anime.timeline({
-		targets: card
+		targets: card,
 	});
 	t1.add({
 		translateX: -1000,

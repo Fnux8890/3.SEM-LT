@@ -13,9 +13,7 @@ import {
 import '../../assets/scss/layouts/exercises/exercise3.scss';
 import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import { populateTutorial } from '../CustomModules/tutorial';
-import {
-	endScreen
-} from "../CustomModules/endDiv";
+import { endScreen } from '../CustomModules/endDiv';
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
@@ -27,10 +25,10 @@ $(() => {
 	let cardIndex;
 
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseWords?id=1`,
+		url: `/Build/ExerciseWords?id=1`,
 		type: 'GET',
 		success: function (data) {
-			data.cards.forEach((object) => {
+			data.cards.forEach(object => {
 				words.push(object);
 			});
 			words.sort(() => {
@@ -40,10 +38,10 @@ $(() => {
 		},
 	});
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseWords?id=3`,
+		url: `/Build/ExerciseWords?id=3`,
 		type: 'GET',
 		success: function (data) {
-			data.cards.forEach((object) => {
+			data.cards.forEach(object => {
 				words.push(object);
 			});
 			words.sort(() => {
@@ -128,13 +126,14 @@ $(() => {
 	function newCard() {
 		if ($('.mainContent .cardcontainer').length != 0) {
 			console.log(
-				'Error - card not gone yet: ' + $('.mainContent .cardcontainer').length
+				'Error - card not gone yet: ' +
+					$('.mainContent .cardcontainer').length
 			);
 			return;
 		}
 		if (cardIndex == 0) {
-			console.log("GOOD JOB!");
-			endScreen("module-overview", "Set1Test");
+			console.log('GOOD JOB!');
+			endScreen('module-overview', 'Set1Test');
 		}
 		cardIndex--;
 
@@ -376,7 +375,7 @@ $(() => {
 				);
 				audioPlayer.playWord(GetWord());
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 
@@ -406,7 +405,8 @@ $(() => {
 	 */
 	function convertRemToPixels(rem) {
 		return (
-			rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+			rem *
+			parseFloat(getComputedStyle(document.documentElement).fontSize)
 		);
 	}
 
@@ -425,7 +425,9 @@ $(() => {
 	 * Makes and inserts the help icon
 	 */
 	function MakeHelpIcon() {
-		let helpIcon = `<div class='helpIcon'>${icon(faQuestionCircle).html}</div>`;
+		let helpIcon = `<div class='helpIcon'>${
+			icon(faQuestionCircle).html
+		}</div>`;
 		$('.mainContent').before(helpIcon);
 	}
 	/**
@@ -473,9 +475,9 @@ $(() => {
 			visibility: 'visible',
 			display: 'grid',
 		});
-		$(".mainContent").append(`<div class="curtain"></div>`);
-		$(".speaker").css({
-			visibility: "visible",
+		$('.mainContent').append(`<div class="curtain"></div>`);
+		$('.speaker').css({
+			visibility: 'visible',
 		});
 	}
 
@@ -484,9 +486,9 @@ $(() => {
 			visibility: 'hidden',
 			display: 'none',
 		});
-		$(".curtain").remove();
-		$(".speaker").css({
-			visibility: "hidden",
+		$('.curtain').remove();
+		$('.speaker').css({
+			visibility: 'hidden',
 		});
 	}
 });
