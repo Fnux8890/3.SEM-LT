@@ -12,11 +12,11 @@ import { default as audioPlayer } from '../CustomModules/audioPlayer';
 import lottie from 'lottie-web/build/player/lottie';
 import { cardFlip } from '../CustomModules/cardFlip';
 import { populateTutorial } from '../CustomModules/tutorial';
-import { endScreen } from "../CustomModules/endDiv";
+import { endScreen } from '../CustomModules/endDiv';
 
 let position = {
-  x: 0,
-  y: 0,
+	x: 0,
+	y: 0,
 };
 let exerciseData;
 const cards = [];
@@ -33,19 +33,19 @@ library.add(faTimes);
 library.add(faThumbsUp);
 
 $(() => {
-  $.ajax({
-    url: 'http://localhost:3000/Build/ExerciseWords?id=1',
-    type: 'GET',
-    success(data) {
-      data.cards.forEach((object) => {
-        cards.push(object);
-      });
-      cards.sort(() => (Math.random() > 0.5 ? 1 : -1));
-      SetupHtmlDivs(data);
-      CardDraggable();
-      exerciseData = data;
-    },
-  });
+	$.ajax({
+		url: 'http://localhost:3000/Build/ExerciseWords?id=1',
+		type: 'GET',
+		success(data) {
+			data.cards.forEach((object) => {
+				cards.push(object);
+			});
+			cards.sort(() => (Math.random() > 0.5 ? 1 : -1));
+			SetupHtmlDivs(data);
+			CardDraggable();
+			exerciseData = data;
+		},
+	});
 
 	DropzoneCardInteract('.vokalA');
 	DropzoneCardInteract('.vokalB');
@@ -62,19 +62,19 @@ $(() => {
 		//Afslut opgaven og gem fremskridt for at kunne fortsætte hvor man slap
 	});
 
-  $('.speaker').on('click', () => {
-    audioPlayer.default.playWord(cards[currentCardnum]);
-  });
-  $('.speaker').on('click', () => {
-    audioPlayer.playWord(cards[currentCardnum]);
-  });
-  $('.vokalA').on('click', () => {
-    audioPlayer.playVowel(exerciseData, $(`.vokalA p`).text().trim(' '));
-  });
+	$('.speaker').on('click', () => {
+		audioPlayer.playWord(cards[currentCardnum]);
+	});
+	$('.speaker').on('click', () => {
+		audioPlayer.playWord(cards[currentCardnum]);
+	});
+	$('.vokalA').on('click', () => {
+		audioPlayer.playVowel(exerciseData, $(`.vokalA p`).text().trim(' '));
+	});
 
-  $('.vokalB').on('click', () => {
-    audioPlayer.playVowel(exerciseData, $(`.vokalB p`).text().trim(' '));
-  });
+	$('.vokalB').on('click', () => {
+		audioPlayer.playVowel(exerciseData, $(`.vokalB p`).text().trim(' '));
+	});
 });
 
 /**
@@ -454,7 +454,7 @@ function FromStackAnimation(card) {
 }
 
 function ExerciseComplete() {
-	endScreen("module-overview", "exercise2");
+	endScreen('module-overview', 'exercise2');
 }
 
 /**
