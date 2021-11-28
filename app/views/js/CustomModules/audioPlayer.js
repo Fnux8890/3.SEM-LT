@@ -1,4 +1,4 @@
-function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+function b64toBlob(b64Data, contentType = "", sliceSize = 512) {
   const byteCharacters = atob(b64Data);
   const byteArrays = [];
 
@@ -6,7 +6,7 @@ function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
     const slice = byteCharacters.slice(offset, offset + sliceSize);
 
     const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i += 1) {
+    for (let i = 0; i < slice.length; i++) {
       byteNumbers[i] = slice.charCodeAt(i);
     }
 
@@ -19,18 +19,18 @@ function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
   });
   return blob;
 }
-// cards[currentCard].soundfile_sentence
+//cards[currentCard].soundfile_sentence
 export function playSentence(card) {
-  const rand = Math.floor(Math.random() * card.soundfile_sentence.length);
-  const audioBlob = b64toBlob(card.soundfile_sentence[rand], 'audio/mp3');
+  let rand = Math.floor(Math.random() * card.soundfile_sentence.length);
+  const audioBlob = b64toBlob(card.soundfile_sentence[rand], "audio/mp3");
   const audioUrl = URL.createObjectURL(audioBlob);
   const audio = new Audio(audioUrl);
   audio.play();
 }
-// cards[currentCard].soundfile_word
+//cards[currentCard].soundfile_word
 export function playWord(card) {
-  const rand = Math.floor(Math.random() * card.soundfile_word.length);
-  const audioBlob = b64toBlob(card.soundfile_word[rand], 'audio/mp3');
+  let rand = Math.floor(Math.random() * card.soundfile_word.length);
+  const audioBlob = b64toBlob(card.soundfile_word[rand], "audio/mp3");
   const audioUrl = URL.createObjectURL(audioBlob);
   const audio = new Audio(audioUrl);
   audio.play();

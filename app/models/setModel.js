@@ -1,19 +1,18 @@
-import { Schema, model } from 'mongoose';
+import {Schema, model} from 'mongoose';
 
-const set = new Schema(
-  {
+const set = new Schema({
     name: {
-      type: String,
+        type: String,
     },
     description: {
-      type: String,
+        type: String,
     },
     exercises: {
-      type: Array,
+        type: Array,
     },
-  },
-  { collection: 'set' },
-);
+},
+    {collection: 'set'},
+)
 
 const setModel = model('set', set);
 
