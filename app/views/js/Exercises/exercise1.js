@@ -8,6 +8,7 @@ import {
   faTimes,
   faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import '../../assets/scss/layouts/exercises/exercise1.scss';
 import lottie from 'lottie-web/build/player/lottie';
 import * as audioPlayer from '../CustomModules/audioPlayer';
@@ -16,8 +17,8 @@ import populateTutorial from '../CustomModules/tutorial';
 import { endScreen } from '../CustomModules/endDiv';
 
 let position = {
-	x: 0,
-	y: 0
+  x: 0,
+  y: 0,
 };
 let exerciseData;
 const cards = [];
@@ -66,17 +67,19 @@ $(() => {
   $('.speaker').on('click', () => {
     audioPlayer.default.playWord(cards[currentCardnum]);
   });
-	$('.speaker').on('click', () => {
-		audioPlayer.playWord(cards[currentCardnum]);
-	});
+  $('.speaker').on('click', () => {
+    audioPlayer.playWord(cards[currentCardnum]);
+  });
 
-	$(".vokalA").on("click", () => {
-		audioPlayer.playVowel(exerciseData, "E");
-	})
+  if (exerciseData !== undefined) {
+    $('.vokalA').on('click', () => {
+      audioPlayer.playVowel(exerciseData, $(`.vokalA p`).text().trim(' '));
+    });
 
-	$(".vokalB").on("click", () => {
-		audioPlayer.playVowel(exerciseData, "Æ");
-	})
+    $('.vokalB').on('click', () => {
+      audioPlayer.playVowel(exerciseData, $(`.vokalB p`).text().trim(' '));
+    });
+  }
 });
 
 /**

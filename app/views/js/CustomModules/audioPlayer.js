@@ -15,7 +15,7 @@ function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
   }
 
   const blob = new Blob(byteArrays, {
-    type: contentType
+    type: contentType,
   });
   return blob;
 }
@@ -38,12 +38,12 @@ export function playWord(card) {
 
 export function playVowel(data, vowel) {
   let soundfile;
-  if (vowel == "E") {
+  if (vowel === 'E') {
     soundfile = data.soundfile_E;
-  } else if (vowel == "Æ") {
+  } else {
     soundfile = data.soundfile_Æ;
   }
-  const audioBlob = b64toBlob(soundfile, "audio/mp3");
+  const audioBlob = b64toBlob(soundfile, 'audio/mp3');
   const audioUrl = URL.createObjectURL(audioBlob);
   const audio = new Audio(audioUrl);
   audio.play();
