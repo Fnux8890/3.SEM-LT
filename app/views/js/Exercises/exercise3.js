@@ -59,38 +59,38 @@ $(() => {
       direction: 'normal',
     });
 
-    if (mainWord.translation_word === clickedWord) {
-      animationTurnCard(`#card${GetIndex()}`);
-      colorChange
-        .add(
-          {
-            targets: this,
-            background: ['rgb(41, 171, 89)', 'rgb(48, 151, 115)'],
-            complete() {
-              $(e.target).removeAttr('style');
-            },
-          },
-          20,
-        )
-        .finished.then(() => {
-          // TODO GØR KORT BORDER GRØN?
-        });
-    } else {
-      colorChange.add(
-        {
-          targets: this,
-          background: ['rgb(199, 54, 44)', 'rgb(48, 151, 115)'],
-          complete() {
-            $(e.target).removeAttr('style');
-          },
-        },
-        0,
-      );
-    }
-    colorChange.finished.then(() => {
-      $(e.target).removeAttr('style'); // så css på stylesheet gælder for den igen
-    });
-  });
+		if (mainWord.translation_word == clickedWord) {
+			animationTurnCard(`#card${GetIndex()}`);
+			//CORRECT CHOICE
+			colorChange
+				.add({
+						targets: this,
+						background: ['rgb(41, 171, 89)', 'rgb(48, 151, 115)'],
+						complete: function (anim) {
+							$(e.target).removeAttr('style');
+						},
+					},
+					70
+				)
+				.finished.then(() => {
+					//GØR KORT BORDER GRØN?
+				});
+		} else {
+			//WRONG CHOICE
+			colorChange.add({
+					targets: this,
+					background: ['rgb(199, 54, 44)', 'rgb(48, 151, 115)'],
+					complete: function (anim) {
+						$(e.target).removeAttr('style');
+					},
+				},
+				0
+			)
+		}
+		colorChange.finished.then(() => {
+			$(e.target).removeAttr('style'); //så css på stylesheet gælder for den igen
+		});
+	});
 
   $('#tutorialbutton').append(
     icon({ prefix: 'fas', iconName: 'thumbs-up' }).html,

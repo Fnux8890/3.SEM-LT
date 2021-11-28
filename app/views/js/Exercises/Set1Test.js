@@ -43,9 +43,9 @@ $(() => {
     ShowTutorial();
   });
 
-  $(document).on('click', '.close', () => {
-    window.location.href = 'http://localhost:3000/page/index';
-  });
+	$(document).on('click', '.close', function () {
+		window.location.href = '/page/module-overview';
+	});
 
   $(document).on('click', '.answerOption', (e) => {
     const currentQuestion = questions[questionIndex];
@@ -122,13 +122,6 @@ $(() => {
         $(answer).removeClass('false');
       }
     });
-
-    // if (currentQuestion.a.includes($(".chosenAnswer").text)) {
-    //     console.log("yay" + $(".chosenAnswer").text());
-    // } else {
-    //     console.log("no" + $(".chosenAnswer").text());
-    //     console.log(currentQuestion.a);
-    // }
   });
 
   function newQuestion() {
@@ -162,8 +155,6 @@ $(() => {
     if (questionIndex === 4) {
       MakeCheckAnswerBtn();
     }
-    // animateAnswerOptionsIn();
-    // animationFromStack(`#card${questionIndex}`);
   }
   /**
    * Creates the answerOption divs, from the given array
