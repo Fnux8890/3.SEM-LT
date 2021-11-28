@@ -22,12 +22,12 @@ body {
 }
 
 .mainContent {
-	grid-area: mainContent;
-	display: grid;
-	place-items: center;
-	grid-template-areas: 'speaker Main Main .';
-	grid-auto-rows: 100%;
-	grid-template-columns: 1fr repeat(2, minmax(100px, 1fr)) 1fr;
+  grid-area: mainContent;
+  display: grid;
+  place-items: center;
+  grid-template-areas: 'speaker Main Main .';
+  grid-auto-rows: 100%;
+  grid-template-columns: 1fr repeat(2, minmax(100px, 1fr)) 1fr;
 }
 
 .card {
@@ -81,16 +81,17 @@ body {
 
 .vokalA,
 .vokalB {
-	color: black;
-	text-align: center;
-	font-size: 120px;
-	border-radius: 10px;
-	padding: 40px 55px;
-	border: 5px dashed rgba(0, 0, 0, 0.2);
-	p {
-		padding: 0;
-		margin: 0;
-	}
+  color: black;
+  text-align: center;
+  font-size: 120px;
+  border-radius: 10px;
+  padding: 40px 55px;
+  border: 5px dashed rgba(0, 0, 0, 0.2);
+  p {
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .vokalA p {
@@ -98,59 +99,59 @@ body {
 }
 
 .tutorial {
-	text-align: center;
-	display: grid;
-	grid-template-rows: repeat(2, 1fr) 0.25fr;
-	border-style: solid;
-	border-radius: 10px;
-	justify-content: center;
-	background-color: white;
-	visibility: visible;
-	z-index: 12;
-	grid-area: Main;
-	box-shadow: 3.2px 3px 2.7px rgba(0, 0, 0, 0.028),
-		8px 7.5px 6.9px rgba(0, 0, 0, 0.04),
-		16.3px 15.2px 14.2px rgba(0, 0, 0, 0.05),
-		33.6px 31.4px 29.2px rgba(0, 0, 0, 0.062),
-		92px 86px 80px rgba(0, 0, 0, 0.09);
+  text-align: center;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr) 0.25fr;
+  border-style: solid;
+  border-radius: 10px;
+  justify-content: center;
+  background-color: white;
+  visibility: visible;
+  z-index: 12;
+  grid-area: Main;
+  box-shadow: 3.2px 3px 2.7px rgba(0, 0, 0, 0.028),
+    8px 7.5px 6.9px rgba(0, 0, 0, 0.04),
+    16.3px 15.2px 14.2px rgba(0, 0, 0, 0.05),
+    33.6px 31.4px 29.2px rgba(0, 0, 0, 0.062),
+    92px 86px 80px rgba(0, 0, 0, 0.09);
 
-	@include fontMediaQuery;
+  @include fontMediaQuery;
 
-	#eng,
-	#dan {
-		margin: 1rem 0 0 0;
-		padding: 0 1rem 0 1rem;
-		text-align: left;
-		@include fontMediaQuery;
-		.skeleton {
-			border-bottom: none;
-		}
-		.title {
-			border-bottom: none;
-			margin-bottom: 1rem;
+  #eng,
+  #dan {
+    margin: 1rem 0 0 0;
+    padding: 0 1rem 0 1rem;
+    text-align: left;
+    @include fontMediaQuery;
+    .skeleton {
+      border-bottom: none;
+    }
+    .title {
+      border-bottom: none;
+      margin-bottom: 1rem;
 
-			h3 {
-				margin-top: 0;
-				display: inline-block;
-				border-bottom: 1px solid black !important;
-				padding-bottom: 2px;
-				margin-bottom: 1rem;
-				border-bottom: none;
-			}
-		}
-		.text {
-			min-height: 110px;
-			min-width: 450px;
-			text-align: left;
-		}
+      h3 {
+        margin-top: 0;
+        display: inline-block;
+        border-bottom: 1px solid black !important;
+        padding-bottom: 2px;
+        margin-bottom: 1rem;
+        border-bottom: none;
+      }
+    }
+    .text {
+      min-height: 110px;
+      min-width: 450px;
+      text-align: left;
+    }
 
-		.text {
-			margin-bottom: 1rem;
-		}
-	}
-	:first-child {
-		border-bottom: 1px solid black;
-	}
+    .text {
+      margin-bottom: 1rem;
+    }
+  }
+  :first-child {
+    border-bottom: 1px solid black;
+  }
 }
 
 .tutorialContainer {
@@ -159,28 +160,28 @@ body {
 }
 
 #tutorialbutton {
-	visibility: 'visible';
-	z-index: 11;
+  visibility: 'visible';
+  z-index: 11;
 
-	@include button-WithGlyp;
-	svg {
-		border-bottom: none;
-	}
-	&:hover {
-		cursor: -webkit-pointer;
-		scale: 1.1;
-		svg {
-			transform: rotate(-45deg);
-			animation: svgRotateEnter 0.2s;
-		}
-	}
-	&:not(:hover) {
-		scale: 1;
-		svg {
-			transform: rotate(0deg);
-			animation: svgRotateLeave 0.2s;
-		}
-	}
+  @include button-WithGlyp;
+  svg {
+    border-bottom: none;
+  }
+  &:hover {
+    cursor: -webkit-pointer;
+    scale: 1.1;
+    svg {
+      transform: rotate(-45deg);
+      animation: svgRotateEnter 0.2s;
+    }
+  }
+  &:not(:hover) {
+    scale: 1;
+    svg {
+      transform: rotate(0deg);
+      animation: svgRotateLeave 0.2s;
+    }
+  }
 }
 
 @keyframes svgRotateEnter {
@@ -263,34 +264,34 @@ body {
 }
 
 .skeleton {
-	opacity: 0.7;
-	animation: skeleton-loading 1s linear infinite alternate;
+  opacity: 0.7;
+  animation: skeleton-loading 1s linear infinite alternate;
 }
 
 .skeleton-text {
-	background-color: darkgray;
-	height: 0.5rem;
-	margin-bottom: 1rem;
-	border-radius: 0.25rem;
+  background-color: darkgray;
+  height: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
 }
 
 .skeleton-text:last-child {
-	margin-bottom: 0;
-	width: 80%;
+  margin-bottom: 0;
+  width: 80%;
 }
 .skeleton-title {
-	margin-bottom: 1rem;
-	width: 40%;
+  margin-bottom: 1rem;
+  width: 40%;
 }
 
 @keyframes skeleton-loading {
-	0% {
-		background-color: hsl(200, 20%, 70%);
-	}
-	100% {
-		background-color: hsl(200, 20%, 95%);
-	}
-} ;
+  0% {
+    background-color: hsl(200, 20%, 70%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
 
 .BackToOverview,
 .NextExercise {

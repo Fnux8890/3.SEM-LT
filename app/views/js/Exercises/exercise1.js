@@ -46,6 +46,7 @@ $(() => {
       cards.sort(() => (Math.random() > 0.5 ? 1 : -1));
       SetupHtmlDivs(data);
       CardDraggable();
+      exerciseData = data;
     },
   });
 
@@ -70,16 +71,13 @@ $(() => {
   $('.speaker').on('click', () => {
     audioPlayer.playWord(cards[currentCardnum]);
   });
+  $('.vokalA').on('click', () => {
+    audioPlayer.playVowel(exerciseData, $(`.vokalA p`).text().trim(' '));
+  });
 
-  if (exerciseData !== undefined) {
-    $('.vokalA').on('click', () => {
-      audioPlayer.playVowel(exerciseData, $(`.vokalA p`).text().trim(' '));
-    });
-
-    $('.vokalB').on('click', () => {
-      audioPlayer.playVowel(exerciseData, $(`.vokalB p`).text().trim(' '));
-    });
-  }
+  $('.vokalB').on('click', () => {
+    audioPlayer.playVowel(exerciseData, $(`.vokalB p`).text().trim(' '));
+  });
 });
 
 /**
