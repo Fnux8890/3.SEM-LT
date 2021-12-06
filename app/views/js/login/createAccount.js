@@ -37,10 +37,10 @@ $(() => {
 		if (password == confirm)
 			try {
 				const username = document.getElementById('username').value;
-				console.log(username + 'Hello world');
+				console.log(username + ' Hello world');
 				await axios.post('/api/v1/users', { username, password });
 
-				window.location.href('/page/module-overview', '_parent');
+				window.location.href = '/page/module-overview';
 			} catch (error) {
 				console.log(error);
 				usernameError();
