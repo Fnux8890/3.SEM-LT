@@ -3,11 +3,11 @@
 	display: grid;
 	gap: 1rem;
 	grid-template-areas:
-		"stack . drawcard . close"
-		". mainContent mainContent mainContent ."
-		"vokaler vokaler vokaler vokaler vokaler";
+		'stack . drawcard . close'
+		'. mainContent mainContent mainContent .'
+		'vokaler vokaler vokaler vokaler vokaler';
 	grid-auto-rows: auto 300px 200px;
-	grid-template-rows: auto 300px 400px;
+	grid-template-rows: auto 300px auto;
 	height: 100vh;
 }
 
@@ -27,6 +27,7 @@
 	border: none;
 	outline: none;
 	color: white;
+	border-bottom: none;
 	@include fontMediaQuery;
 
 	svg {

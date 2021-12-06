@@ -1,106 +1,62 @@
-@use "../main.scss" as *;
+@use '../abstracts' as *;
+@use '../components' as *;
+@use '../main.scss';
 body {
-	background-color: green;
-	overflow-x: hidden;
+	background-color: $lightGreenCyan;
+	overflow: scroll;
 }
 
 ul li {
 	list-style: none;
 }
 
+h1 {
+	text-align: center;
+}
+
 h1.overview {
 	width: 100%;
 	text-align: center;
-	border-bottom: 5px solid rgb(255, 0, 0);
+	border-bottom: 0.2604166666666667vw solid black;
 	line-height: 0.1em;
-	margin: 100px 0 20px;
-}
-
-.dashed-circle {
-	float: left;
-	left: 30px;
-	top: -20%;
-
-	position: relative;
-	display: block;
-	margin: 10px;
-	width: 100px;
-	height: 100px;
-	border: 13px solid red;
-
-	line-height: 100px;
-	text-align: center;
-	background-color: white;
-	font-family: Arial, Helvetica, sans-serif;
-	font-style: italic;
-
-	color: black;
-}
-
-.dashed-circle:hover {
-	transform: translate(5.5%, 15%) scale(1.1);
-}
-
-.dice {
-	padding: 4px;
-	background-color: tomato;
-	width: 104px;
-	height: 104px;
-	border-radius: 10%;
-	position: absolute;
-	left: 80%;
-	font-family: Helvetica;
-}
-
-.dice:hover {
-	transform: translate(5.5%, 15%) scale(1.1);
-}
-
-.fourth-face {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
-
-.fourth-face .column {
-	display: flex;
-
-	justify-content: space-between;
-}
-
-.fourth-face .dot:nth-of-type(2) {
-	align-self: flex-end;
-}
-
-.dot {
-	display: block;
-	width: 24px;
-	height: 24px;
-	border-radius: 50%;
-	background-color: white;
+	margin: 10.319917440660475vh 0px 2.063983488132095vh;
+	font-family: $headingFont;
 }
 
 h1.overview span.overview {
 	margin-bottom: 50px;
 	padding: 0 10px;
-	background-color: green;
+	background-color: $lightGreenCyan;
 	font-size: 150%;
-	color: red;
+	color: black;
+	font-family: $headingFont;
 }
 
-h1 {
+.helpIcon {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-top: calc(2rem + 200px);
+	margin-left: 1rem;
+	font-size: calc(15px + 2vw);
+	cursor: pointer;
+	z-index: 8;
+}
+
+h2,
+p {
+	color: $thirdColor;
+	z-index: 4;
+}
+
+h2 {
+	color: $thirdColor;
 	text-align: center;
-}
+	width: 100%;
 
-.smallcard > h1 {
-	text-align: center;
-	top: 30%;
-	background-color: #fcf8f4;
-}
-
-.smallcard > h2 {
-	background-color: none;
-	top: 30%;
+	line-height: 140%;
+	transition-property: top;
+	transition-duration: 0.3s;
 }
 
 .cardDeck {
@@ -111,12 +67,34 @@ h1 {
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: repeat(2, 500px);
 }
+
 .cardItem {
 	transform: skewY(0);
 	z-index: 1;
 	transition-property: z-index;
 	transition-duration: 0.3s;
 	display: grid;
+}
+
+.test {
+	padding: 4px;
+	background-color: tomato;
+	width: 5.416666666666667vw;
+	height: 10.732714138286894vh;
+	border-radius: 50%;
+	margin-top: 1.5479876160990713vh;
+	margin-right: 0.5208333333333334vw;
+
+	font-family: $lesserHeadingFont;
+	float: right;
+}
+
+.test > p {
+	font-family: $lesserHeadingFont;
+	text-align: center;
+	vertical-align: middle;
+	margin-top: 40px;
+	font-size: larger;
 }
 
 div.smallcard {
@@ -126,14 +104,47 @@ div.smallcard {
 	width: 45%;
 	height: 30%;
 	top: 0;
-	background-color: #c4c5c5;
+	background-color: white;
 	border-radius: 2vw;
-	box-shadow: inset 0px 0px 0px 2vw #fcf8f4;
-	box-sizing: border-box;
+	box-shadow: inset 0px 0px 0px 5px $thirdColor;
+
 	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
 	visibility: hidden;
-	/*transition-property: transform;
-	transition-duration: 2s;*/
+}
+
+.smallcard > h1 {
+	text-align: center;
+	top: 30%;
+	font-family: $headingFont;
+	color: $thirdColor;
+}
+
+.smallcard > h2 {
+	top: 30%;
+	font-family: $headingFont;
+	color: $thirdColor;
+}
+
+.modules {
+	place-self: center;
+	z-index: 2;
+	width: 300px;
+	height: 300px;
+
+	background-color: white;
+	border-radius: 20px;
+	box-sizing: border-box;
+
+	transform: rotate(0deg) translate(0, 0);
+	transition-property: transform;
+	transition-duration: 0.3s;
+
+	box-shadow: inset 0px 0px 0px 5px $thirdColor;
+}
+
+.modules > p {
+	font-family: $lesserHeadingFont;
+	text-align: center;
 }
 
 .show {
@@ -141,48 +152,52 @@ div.smallcard {
 }
 
 #exercise1 {
-	position: absolute;
-	z-index: 50000;
-	margin-top: 150px;
-	height: 100px;
+	margin-top: 7.395833333333333vw;
+	position: inherit;
+	left: 18%;
+	z-index: 10;
+	height: 50%;
+	background-color: white;
+	border-radius: 2vw;
+	box-shadow: inset 0px 0px 0px 0.3vw $thirdColor;
 
-	width: 42%;
-	left: 28%;
+	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
+}
+
+.exercise {
+	height: 10.319917440660475vh;
+	width: 5.208333333333333vw;
+	float: left;
+	background-color: purple;
+	margin-right: 1vw;
+	margin-top: 2vh;
+	margin-left: 1vw;
+}
+
+.exercise > p {
+	margin-top: 4.12796697626419vh;
+	font-family: $lesserHeadingFont;
+	color: tomato;
+	text-align: center;
+	font-size: larger;
+}
+
+#sets {
+	z-index: 20;
 }
 
 #set1 {
-	top: 10%;
+	top: 40%;
 }
 
 #set2 {
 	animation-duration: 1.4s;
-	top: 50%;
+	top: 80%;
 }
 
 #set3 {
 	animation-duration: 1.6s;
-	top: 90%;
-}
-
-#set4 {
-	animation-duration: 1.8s;
-	top: 130%;
-}
-
-.details {
-	place-self: center;
-	z-index: 2;
-	width: 270px;
-	height: 400px;
-	top: 0;
-	background-color: #c4c5c5;
-	border-radius: 2vw;
-	box-shadow: inset 0px 0px 0px 7vw #fcf8f4;
-	box-sizing: border-box;
-	filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.4));
-	transform: rotate(0deg) translate(0, 0);
-	transition-property: transform;
-	transition-duration: 0.3s;
+	top: 120%;
 }
 
 @keyframes fadeIn {
@@ -194,40 +209,14 @@ div.smallcard {
 	}
 }
 
-.smallcard:hover {
+.smallcard:hover,
+.exercise:hover,
+.test:hover {
 	transform: translate(5.5%, 15%) scale(1.1);
 }
 
-.square {
-	border-style: solid;
-	width: 50px;
-	height: 50px;
-}
-
-h2,
-p,
-img {
-	position: absolute;
-	z-index: 4;
-}
-
-p {
-	font-size: 1.4em;
-
-	padding: 2% 2.5% 2% 2.5%;
-	top: 40%;
-	left: 10%;
-}
-
-h2 {
-	text-align: center;
-	width: 100%;
-	left: -0%;
-	top: 10%;
-	background-color: #fcf8f4;
-	line-height: 140%;
-	transition-property: top;
-	transition-duration: 0.3s;
+.hover {
+	transform: translate(5.5%, 15%) scale(1.1);
 }
 
 .clicked {
@@ -238,7 +227,7 @@ h2 {
 }
 
 .slideRight {
-	transform: translate(100%) scale(2, 2);
+	transform: translate(155%, 140%) scale(5, 5);
 }
 
 .notSelected {
@@ -248,19 +237,51 @@ h2 {
 li:hover {
 	z-index: 4;
 }
-li:hover h2 {
-	top: 10%;
-}
-li:hover .details:not(.clicked) {
+li:hover .modules:not(.clicked) {
 	transform: translate(5.5%, 15%) scale(1.2) rotate(4deg);
 }
 
-@media (min-width: 0px) {
-	.details {
-		box-shadow: inset 0px 0px 0px 2.2vw #fcf8f4;
+.hide {
+	display: none;
+}
+
+.curtain {
+	position: absolute;
+	width: 100%;
+	height: 200%;
+	background-color: black;
+	opacity: 0.6;
+	z-index: 10;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	p {
+		color: white;
+		z-index: 11;
 	}
 }
 
-.hide {
-	visibility: hidden;
+.tutorial {
+	position: absolute;
+	left: 10%;
+	top: 50%;
+	text-align: center;
+	border-style: solid;
+	border-radius: 10px;
+	justify-content: center;
+	background-color: white;
+	visibility: visible;
+	z-index: 12;
+	@include fontMediaQuery;
+
+	p {
+		padding: 0 1rem;
+		text-align: left;
+		@include fontMediaQuery;
+	}
+
+	p:nth-child(1) {
+		padding-bottom: 1rem;
+	}
 }

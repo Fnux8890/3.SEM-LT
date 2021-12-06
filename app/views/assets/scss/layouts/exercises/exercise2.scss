@@ -2,38 +2,39 @@
 @use "../../abstracts" as *;
 
 .translation {
-  grid-area: close;
-  display: grid;
-  grid-template-areas: ". . word . flag";
-  grid-template-columns: repeat(5 auto);
-  background-color: white;
-  place-self: right;
-  height: 30%;
-  width: 300px;
-  margin-top: 5rem;
-  margin-right: 2rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  grid-column: 4 / span 2;
-  border-style: solid;
-  border-radius: 10px;
-  border-color: $CardFrontColor;
-  visibility: hidden;
-  p {
-    grid-area: word;
-  }
-  .flag {
-    grid-area: flag;
-    place-self: center end;
-    img {
-      margin-right: 20px;
-      right: 0;
-      width: 50px;
-      height: 50px;
-    }
-  }
+	grid-area: close;
+	display: grid;
+	grid-template-areas: '. . word . flag';
+	grid-template-columns: repeat(5 auto);
+	background-color: white;
+	place-self: right;
+	height: 120px;
+	width: 300px;
+	margin-top: 5rem;
+	margin-right: 2rem;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	grid-column: 4 / span 2;
+	border-style: solid;
+	border-radius: 10px;
+	border-color: $thirdColor;
+	visibility: hidden;
+	p {
+		grid-area: word;
+	}
+	.flag {
+		grid-area: flag;
+		place-self: center end;
+		img {
+			margin-right: 20px;
+			right: 0;
+			width: 50px;
+			height: 50px;
+		}
+	}
 }
 
 .sentenceTranslated {
+  margin-left: 5px;
   place-self: center;
   color: black;
 }
@@ -53,18 +54,18 @@
   border-radius: 10px;
   border-color: red;
   width: calc(206px * 3);
-  height: 55%;
+  // height: 55%;
   background-color: white;
   visibility: hidden;
   .firstPart {
     grid-area: sentenceFirst;
     place-self: center;
-    font-size: 2rem;
+    font-size: 1.9rem;
   }
   .secondPart {
     grid-area: sentenceLast;
     place-self: center;
-    font-size: 2rem;
+    font-size: 1.9rem;
   }
   .word {
     place-self: center;
@@ -72,7 +73,12 @@
 }
 
 .RecordAndRate {
-  top: -100px;
+  @media screen and (max-height: 760px) {
+    top: 0;
+  }
+  @media screen and (min-height: 900px) {
+    top: -100px;
+  }
   position: relative;
   grid-area: vokaler;
   display: grid;

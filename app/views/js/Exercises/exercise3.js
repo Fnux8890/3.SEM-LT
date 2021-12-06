@@ -1,20 +1,24 @@
-import anime from "animejs";
+import anime from 'animejs';
 import {
 	library,
 	findIconDefinition,
 	icon,
-} from "@fortawesome/fontawesome-svg-core";
+} from '@fortawesome/fontawesome-svg-core';
 import {
 	faQuestionCircle,
 	faVolumeUp,
 	faTimes,
-} from "@fortawesome/free-solid-svg-icons";
-import "../../assets/scss/layouts/exercises/exercise3.scss";
-import { default as audioPlayer } from "../CustomModules/audioPlayer";
+	faThumbsUp,
+} from '@fortawesome/free-solid-svg-icons';
+import '../../assets/scss/layouts/exercises/exercise3.scss';
+import { default as audioPlayer } from '../CustomModules/audioPlayer';
+import { populateTutorial } from '../CustomModules/tutorial';
+import { endScreen } from '../CustomModules/endDiv';
 
 library.add(faQuestionCircle);
 library.add(faVolumeUp);
 library.add(faTimes);
+library.add(faThumbsUp);
 
 $(() => {
 	const words = [];
@@ -22,21 +26,22 @@ $(() => {
 
 	$.ajax({
 		url: `/Build/ExerciseWords?id=1`,
-		type: "GET",
+		type: 'GET',
 		success: function (data) {
-			data.cards.forEach((object) => {
+			data.cards.forEach(object => {
 				words.push(object);
 			});
 			words.sort(() => {
 				Math.random() > 0.5 ? 1 : -1;
 			});
+			console.log(data);
 		},
 	});
 	$.ajax({
-		url: `http://localhost:3000/Build/ExerciseWords?id=3`,
-		type: "GET",
+		url: `/Build/ExerciseWords?id=3`,
+		type: 'GET',
 		success: function (data) {
-			data.cards.forEach((object) => {
+			data.cards.forEach(object => {
 				words.push(object);
 			});
 			words.sort(() => {
@@ -49,25 +54,19 @@ $(() => {
 		},
 	});
 
-	$(document).on("click", ".mainContent .cardcontainer", function () {
+	$(document).on('click', '.mainContent .cardcontainer', function () {
 		console.log(`card was clicked`);
-		let word = GetWord();
-		let soundfile =
-			word.soundfile_word[
-				Math.floor(Math.random() * word.soundfile_word.length)
-			];
-		audioPlayer.playWord(word);
-		console.log("Play: " + soundfile);
+		audioPlayer.playWord(GetWord());
 	});
 
-	$(document).on("click", ".answerOption", function (e) {
+	$(document).on('click', '.answerOption', function (e) {
 		let mainWord = GetWord();
 
 		let clickedWord = $(this).text().trim();
 
 		var colorChange = anime.timeline({
-			easing: "linear",
-			direction: "normal",
+			easing: 'linear',
+			direction: 'normal',
 		});
 
 		if (mainWord.translation_word == clickedWord) {
@@ -79,9 +78,9 @@ $(() => {
 				.add(
 					{
 						targets: this,
-						background: ["rgb(41, 171, 89)", "rgb(48, 151, 115)"],
+						background: ['rgb(41, 171, 89)', 'rgb(48, 151, 115)'],
 						complete: function (anim) {
-							$(e.target).removeAttr("style");
+							$(e.target).removeAttr('style');
 						},
 					},
 					20
@@ -90,48 +89,51 @@ $(() => {
 					//GØR KORT BORDER GRØN?
 				});
 		} else {
-			console.log("FALSE - play false-sound");
+			console.log('FALSE - play false-sound');
 			colorChange.add(
 				{
 					targets: this,
-					background: ["rgb(199, 54, 44)", "rgb(48, 151, 115)"],
+					background: ['rgb(199, 54, 44)', 'rgb(48, 151, 115)'],
 					complete: function (anim) {
-						$(e.target).removeAttr("style");
+						$(e.target).removeAttr('style');
 					},
 				},
 				0
 			);
 		}
 		colorChange.finished.then(() => {
-			$(e.target).removeAttr("style"); //så css på stylesheet gælder for den igen
+			$(e.target).removeAttr('style'); //så css på stylesheet gælder for den igen
 		});
 	});
 
-	$("#tutorialbutton").on("click", () => {
+	$('#tutorialbutton').append(
+		icon({ prefix: 'fas', iconName: 'thumbs-up' }).html
+	);
+
+	$('#tutorialbutton').on('click', () => {
 		RemoveTutorial();
 		newCard();
 	});
 
-	$(document).on("click", ".helpIcon", function () {
+	$(document).on('click', '.helpIcon', function () {
 		ShowTutorial();
 	});
 
-	$(document).on("click", ".close", function () {
-		window.location.href = "http://localhost:3000/page/index";
+	$(document).on('click', '.close', function () {
+		window.location.href = '/page/module-overview';
 	});
 
 	function newCard() {
-		if ($(".mainContent .cardcontainer").length != 0) {
+		if ($('.mainContent .cardcontainer').length != 0) {
 			console.log(
-				"Error - card not gone yet: " + $(".mainContent .cardcontainer").length
+				'Error - card not gone yet: ' +
+					$('.mainContent .cardcontainer').length
 			);
 			return;
 		}
 		if (cardIndex == 0) {
-			$(".answerOption").remove();
-			console.log("GOOD JOB!");
-			endExercise();
-			return;
+			console.log('GOOD JOB!');
+			endScreen('module-overview', 'Set1Test');
 		}
 		cardIndex--;
 
@@ -158,14 +160,14 @@ $(() => {
 	 * @param {Array<words>} words - Array of the answer-option's word-objects
 	 */
 	function MakeAnswerOptions(answerArray) {
-		$(".answerOption").remove();
+		$('.answerOption').remove();
 		shuffleArray(answerArray);
 		answerArray.forEach((element, index) => {
 			let answerOption = `
                 <div class="answerOption ansOpt${index}">
                     <p>${element.translation_word}</p>
                 </div>`;
-			$(".answerZone").append(answerOption);
+			$('.answerZone').append(answerOption);
 		});
 	}
 
@@ -193,7 +195,7 @@ $(() => {
 	 * @returns index of the main card
 	 */
 	function GetIndex() {
-		let mainId = $(".mainContent .cardcontainer").attr("id");
+		let mainId = $('.mainContent .cardcontainer').attr('id');
 		let regex = /[0-9]+$/;
 		let cardIndex = mainId.match(regex);
 
@@ -208,15 +210,15 @@ $(() => {
 	 * @returns Returns a promis for when animation is done
 	 */
 	function animateAnswerOptionsIn() {
-		let target = ".answerOption";
+		let target = '.answerOption';
 		var t1 = timeline({
 			targets: target,
-			direction: "normal",
+			direction: 'normal',
 		});
 		t1.add(
 			{
 				delay: 500,
-				easing: "easeInOutSine",
+				easing: 'easeInOutSine',
 				duration: 1200,
 				scale: [
 					{
@@ -246,22 +248,22 @@ $(() => {
 	function animateOutOfFrame(card) {
 		var t1 = timeline({
 			targets: card,
-			direction: "normal",
+			direction: 'normal',
 		});
-		let x = -($("body").width() / 2);
+		let x = -($('body').width() / 2);
 		x -= $(card).width();
 		t1.add(
 			{
 				delay: 500,
 				translateX: x,
-				easing: "easeOutQuint",
+				easing: 'easeOutQuint',
 				duration: 1000,
 			},
 			500
 		);
 		t1.finished.then(function () {
 			$(card).parent().remove();
-			console.log("card removed");
+			console.log('card removed');
 			newCard();
 		}, 1000);
 
@@ -274,12 +276,12 @@ $(() => {
 	 */
 	function animationTurnCard(card) {
 		RemoveCardBack();
-		console.log("animateTurnCard: " + card);
+		console.log('animateTurnCard: ' + card);
 		var t1 = anime
 			.timeline({
 				targets: card,
-				easing: "linear",
-				direction: "normal",
+				easing: 'linear',
+				direction: 'normal',
 			})
 			.finished.then(function () {
 				anime(
@@ -300,16 +302,16 @@ $(() => {
 						],
 						rotateX: {
 							delay: 20,
-							value: "-=180",
+							value: '-=180',
 							duration: 500,
 						},
-						easing: "easeInOutSine",
+						easing: 'easeInOutSine',
 						duration: 1200,
 					},
-					"-=200"
+					'-=200'
 				).finished.then(() => {
 					$(card).css({
-						transform: "none",
+						transform: 'none',
 					});
 					animateOutOfFrame(card);
 				});
@@ -332,18 +334,18 @@ $(() => {
 		t1.add({
 			translateX: maincontentCenter.x,
 			translateY: maincontentCenter.y,
-			easing: "easeOutQuint",
+			easing: 'easeOutQuint',
 			duration: 1000,
 		})
 			.finished.then(() => {
 				$(card)
 					.css({
-						transform: "none",
+						transform: 'none',
 					})
 					.parent()
-					.appendTo(".mainContent")
+					.appendTo('.mainContent')
 					.css({
-						"grid-area": "Main",
+						'grid-area': 'Main',
 					});
 				anime(
 					{
@@ -363,16 +365,17 @@ $(() => {
 						],
 						rotateX: {
 							delay: 20,
-							value: "+=180",
+							value: '+=180',
 							duration: 500,
 						},
-						easing: "easeInOutSine",
+						easing: 'easeInOutSine',
 						duration: 1200,
 					},
-					"-=200"
+					'-=200'
 				);
+				audioPlayer.playWord(GetWord());
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 
@@ -384,11 +387,11 @@ $(() => {
 	 * @returns returns x and y of maincontents div center is in gloabal space
 	 */
 	function findMaincontentCenter(card) {
-		let y = $(".mainContent").offset().top - convertRemToPixels(1);
-		let x = $(".mainContent").offset().left - convertRemToPixels(1);
-		x += $(".mainContent").width() / 2;
+		let y = $('.mainContent').offset().top - convertRemToPixels(1);
+		let x = $('.mainContent').offset().left - convertRemToPixels(1);
+		x += $('.mainContent').width() / 2;
 		x -= $(card).width() / 2;
-		y += $(".mainContent").height() / 2;
+		y += $('.mainContent').height() / 2;
 		y -= $(card).height() / 2;
 		return {
 			x,
@@ -402,7 +405,8 @@ $(() => {
 	 */
 	function convertRemToPixels(rem) {
 		return (
-			rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+			rem *
+			parseFloat(getComputedStyle(document.documentElement).fontSize)
 		);
 	}
 
@@ -412,8 +416,7 @@ $(() => {
 	 * The basic setup for the html document.
 	 */
 	function SetUpHtmlDivs(data) {
-		SetUpTutorial(data);
-		MakeSpeakerIcon();
+		populateTutorial(data);
 		MakeCardStack();
 		MakeHelpIcon();
 		MakeCloseIcon();
@@ -422,19 +425,17 @@ $(() => {
 	 * Makes and inserts the help icon
 	 */
 	function MakeHelpIcon() {
-		let helpIcon = `<div class='helpIcon'>${icon(faQuestionCircle).html}</div>`;
-		$(".mainContent").before(helpIcon);
+		let helpIcon = `<div class='helpIcon'>${
+			icon(faQuestionCircle).html
+		}</div>`;
+		$('.mainContent').before(helpIcon);
 	}
 	/**
 	 * Makes and inserts the close icon
 	 */
 	function MakeCloseIcon() {
 		let closeIcon = `<div class='close'>${icon(faTimes).html}</div>`;
-		$(".answerZone").after(closeIcon);
-	}
-
-	function MakeSpeakerIcon() {
-		$(".speaker").append(icon(faVolumeUp).html);
+		$('.answerZone').after(closeIcon);
 	}
 	/**
 	 * Setsup the cardstack dependend on how many cards there is
@@ -450,56 +451,44 @@ $(() => {
 					<div class="front cardBack">${element.word}</div>
                 </div>
             </div>`;
-			$(".cardStack-Container").append(card);
-			let zlayer = $(".front").css("z-index");
+			$('.cardStack-Container').append(card);
+			let zlayer = $('.front').css('z-index');
 			$(`#card${index}`).css({
 				transform: `translateX(${offset}px)`,
-				"z-index": zlayer + index,
+				'z-index': zlayer + index,
 			});
 			offset += 5;
 		});
-		console.log("made cardstack");
+		console.log('made cardstack');
 	}
 
 	/**
 	 * Fjerner .cardBack class fra det nuværende kort, så bagsiden igen viser ordet
 	 */
 	function RemoveCardBack() {
-		let id = `${$(".mainContent .cardcontainer").attr("id")} .front`;
-		$(`#${id}`).removeClass("front cardBack").addClass("front");
-	}
-
-	function SetUpTutorial(data) {
-		let dkTutorial = data.instructions.instructionsDK;
-		let engTutorial = data.instructions.instructionsENG;
-		$(".tutorial").prepend(`<p>${dkTutorial}</p><p>${engTutorial}</p>`);
+		let id = `${$('.mainContent .cardcontainer').attr('id')} .front`;
+		$(`#${id}`).removeClass('front cardBack').addClass('front');
 	}
 
 	function ShowTutorial() {
-		$(".tutorial").css({
-			visibility: "visible",
-			display: "grid",
+		$('.tutorial').css({
+			visibility: 'visible',
+			display: 'grid',
 		});
-		$(".curtain").css({
-			visibility: "visible",
-			display: "grid",
-		});
-		$(".speaker").css({
-			visibility: "visible",
+		$('.mainContent').append(`<div class="curtain"></div>`);
+		$('.speaker').css({
+			visibility: 'visible',
 		});
 	}
 
 	function RemoveTutorial() {
-		$(".tutorial").css({
-			visibility: "hidden",
-			display: "none",
+		$('.tutorial').css({
+			visibility: 'hidden',
+			display: 'none',
 		});
-		$(".curtain").css({
-			visibility: "hidden",
-			display: "none",
-		});
-		$(".speaker").css({
-			visibility: "hidden",
+		$('.curtain').remove();
+		$('.speaker').css({
+			visibility: 'hidden',
 		});
 	}
 });

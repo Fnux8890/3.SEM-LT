@@ -1,17 +1,15 @@
 doctype html
 html 
     head
-        title Exercise 1
-        link(rel="stylesheet", type="text/css", href="../../dist/css/exercise1.css")
+        title Set 1 Test
+        link(rel="stylesheet", type="text/css", href="../../dist/css/Set1Test.css")
         meta(charset='utf-8')
-        script(src="../../dist/js/exercise1.js")
+        script(src="../../dist/js/set1test.js")
     body
-         .container
-            .cardStack
-                .cardStack-Container
-            .mainContent 
-                .speaker
+           .container 
+            .mainContent
                 .curtain
+                .video
                 .tutorial
                     #dan
                         .title
@@ -29,12 +27,7 @@ html
                             .skeleton.skeleton-text
                             .skeleton.skeleton-text
                             .skeleton.skeleton-text
-                    
                     .tutorialContainer
                         button#tutorialbutton I understand
-            .vokal
-                .vokalA
-                div(class = 'vokalB')
-            div(class="close")
-        
-    
+                iframe(width='560' height='315' src='https://www.youtube.com/embed/45kiQoQuGD4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen='' class="VidInTask")
+                .answerZone

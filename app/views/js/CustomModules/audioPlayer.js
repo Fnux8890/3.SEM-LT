@@ -1,4 +1,4 @@
-function b64toBlob(b64Data, contentType = "", sliceSize = 512) {
+function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
 	const byteCharacters = atob(b64Data);
 	const byteArrays = [];
 
@@ -14,19 +14,37 @@ function b64toBlob(b64Data, contentType = "", sliceSize = 512) {
 		byteArrays.push(byteArray);
 	}
 
-	const blob = new Blob(byteArrays, { type: contentType });
+	const blob = new Blob(byteArrays, {
+		type: contentType,
+	});
 	return blob;
 }
 //cards[currentCard].soundfile_sentence
 export function playSentence(card) {
-	const audioBlob = b64toBlob(card.soundfile_sentence, "audio/mp3");
+	console.table(card);
+	let rand = Math.floor(Math.random() * card.soundfile_sentence.length);
+	const audioBlob = b64toBlob(card.soundfile_sentence[rand], 'audio/mp3');
 	const audioUrl = URL.createObjectURL(audioBlob);
 	const audio = new Audio(audioUrl);
 	audio.play();
 }
 //cards[currentCard].soundfile_word
 export function playWord(card) {
-	const audioBlob = b64toBlob(card.soundfile_word, "audio/mp3");
+	let rand = Math.floor(Math.random() * card.soundfile_word.length);
+	const audioBlob = b64toBlob(card.soundfile_word[rand], 'audio/mp3');
+	const audioUrl = URL.createObjectURL(audioBlob);
+	const audio = new Audio(audioUrl);
+	audio.play();
+}
+
+export function playVowel(data, vowel) {
+	let soundfile;
+	if (vowel === 'E') {
+		soundfile = data.soundfile_E;
+	} else {
+		soundfile = data.soundfile_Æ;
+	}
+	const audioBlob = b64toBlob(soundfile, 'audio/mp3');
 	const audioUrl = URL.createObjectURL(audioBlob);
 	const audio = new Audio(audioUrl);
 	audio.play();
@@ -35,4 +53,5 @@ export function playWord(card) {
 export default {
 	playWord,
 	playSentence,
+	playVowel,
 };

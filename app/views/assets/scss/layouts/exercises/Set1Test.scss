@@ -1,0 +1,149 @@
+@use "../exercise" as *;
+@use "../../abstracts" as *;
+.container {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas:
+    "stack . . . close"
+    "mainContent mainContent mainContent mainContent mainContent";
+  grid-template-rows: 10% 90%;
+  height: 100vh;
+}
+
+.mainContent {
+  grid-area: mainContent;
+  display: grid;
+  grid-template-areas: "video video q q";
+}
+
+.VidInTask {
+  grid-area: video;
+  visibility: hidden;
+  margin: 10px;
+  width: 50vw;
+  height: 28.125vw;
+}
+
+.tutorial {
+  margin: 0 30px;
+  grid-area: video;
+  grid-column-start: video;
+  grid-column-end: q;
+  max-width: 60%;
+  min-width: 500px;
+}
+
+.helpIcon {
+  margin-top: 1rem;
+}
+
+.answerZone {
+  grid-area: q;
+  display: grid;
+
+  grid-auto-rows: auto;
+  place-items: center;
+  z-index: 0;
+  padding-bottom: 15px;
+
+  overflow: hidden;
+}
+.answerOption,
+.question,
+.checkBtn {
+  height: 65px;
+  width: 90%;
+
+  color: black;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  border-style: none;
+  border-radius: 10px;
+  margin: 10px;
+
+  z-index: 1;
+  cursor: pointer;
+
+  background-color: $primaryColor;
+  opacity: 1;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.checkBtn {
+  background-color: $thirdColor;
+  width: 100%;
+  margin-top: 20px;
+  min-width: 206px;
+}
+
+.question {
+  cursor: default;
+  width: 100%;
+  margin-bottom: 20px;
+  min-width: 206px;
+}
+.answerOption:hover {
+  background-color: $secundaryColor;
+  color: white;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.19), 0 8px 8px rgba(0, 0, 0, 0.23);
+}
+.answerOption p,
+.question p {
+  padding: 0 5px;
+  margin: 0;
+}
+
+.question {
+  background-color: $thirdColor;
+}
+
+.chosenAnswer {
+  background-color: $fifthColor;
+}
+
+.correct {
+  background-color: $fourthColor;
+}
+
+.false {
+  background-color: red;
+}
+
+.video {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(2, auto);
+  grid-area: video;
+  grid-column-start: video;
+  grid-column-end: q;
+  z-index: 11;
+  place-items: center;
+}
+
+.VidAfterTutorial {
+  width: 50vw;
+  height: 28.125vw;
+}
+
+.removeVid {
+  display: grid;
+  background-color: $thirdColor;
+  margin-top: 10px;
+  min-width: 200px;
+  max-width: 300px;
+  z-index: 11;
+  height: 65px;
+  color: black;
+  border-style: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  place-items: center;
+}
+
+.endNote {
+  grid-area: video;
+  grid-column-start: video;
+  grid-column-end: q;
+}
