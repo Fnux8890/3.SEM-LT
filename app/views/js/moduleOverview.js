@@ -63,6 +63,8 @@ $(() => {
 
 		$(this).toggleClass('slideRight');
 		$('.smallcard').toggleClass('show');
+		$('div#basic1 > p').toggleClass('hide');
+
 		$('#basic2').toggleClass('hide');
 		$('#basic3').toggleClass('hide');
 		$('#basic4').toggleClass('hide');
