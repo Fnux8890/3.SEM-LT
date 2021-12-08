@@ -41,7 +41,7 @@ export function playVowel(data, vowel) {
 	let soundfile;
 	if (vowel === 'E') {
 		soundfile = data.soundfile_E;
-	} else {
+	} else if (vowel === 'Æ') {
 		soundfile = data.soundfile_Æ;
 	}
 	const audioBlob = b64toBlob(soundfile, 'audio/mp3');

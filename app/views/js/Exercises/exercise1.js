@@ -495,7 +495,7 @@ function MakeCardStack() {
 		let card = `
         <div class='cardcontainer cardcontainer${index}' id='cardcontainer${index}'>
             <div class="card card${index}" id='card${index}'>
-                <div class="front">E or Æ vokal word</div>
+                <div class="front">E or Æ vowel word</div>
                 <div class="back">${element.word}</div>
             </div>
         </div>`;
