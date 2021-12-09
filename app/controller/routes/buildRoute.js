@@ -31,7 +31,6 @@ router.post('/postRecording', (req, res) => {
 		file: binary(req.files.uploadedFile.data),
 	};
 	insertRecording(recording, res);
-	console.log(recording);
 	res.end();
 });
 
@@ -41,7 +40,6 @@ router.post('/postSentence', (req, res) => {
 		file: binary(req.files.uploadedFile.data),
 	};
 	insertSentence(sentence, res);
-	console.log(sentence);
 	res.end();
 });
 //TODO rewrite to use mongodb instead of having to connections to mongodb
@@ -60,7 +58,7 @@ function insertRecording(recording, res) {
 							word: recording.name,
 						},
 						{
-							$push: { soundfile: recording },
+							$addToSet: { soundfile: recording.file },
 						}
 					)
 					.exec();
@@ -88,7 +86,7 @@ function insertSentence(sentence, res) {
 							sentence: sentence.name,
 						},
 						{
-							$push: { soundfile: { sentence } },
+							$addToSet: { soundfile: sentence.file },
 						}
 					)
 					.exec();
