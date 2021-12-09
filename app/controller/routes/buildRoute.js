@@ -60,7 +60,7 @@ function insertRecording(recording, res) {
 							word: recording.name,
 						},
 						{
-							soundfile: recording,
+							$push: { soundfile: recording },
 						}
 					)
 					.exec();
@@ -88,7 +88,7 @@ function insertSentence(sentence, res) {
 							sentence: sentence.name,
 						},
 						{
-							soundfile: sentence,
+							$push: { soundfile: { sentence } },
 						}
 					)
 					.exec();
